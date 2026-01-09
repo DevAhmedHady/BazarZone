@@ -1,0 +1,113 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.BasicTheme": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    },
+    "Volo.Abp.Account": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "10.0.1",
+      "isInstalled": true,
+      "creationTime": "01/08/2026 17:05:22 +00:00"
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "BazarZone.Application": {
+      "path": "src/BazarZone.Application/BazarZone.Application.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.Application.Tests": {
+      "path": "test/BazarZone.Application.Tests/BazarZone.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "BazarZone.Domain.Shared": {
+      "path": "src/BazarZone.Domain.Shared/BazarZone.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.Application.Contracts": {
+      "path": "src/BazarZone.Application.Contracts/BazarZone.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.HttpApi": {
+      "path": "src/BazarZone.HttpApi/BazarZone.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.HttpApi.Client": {
+      "path": "src/BazarZone.HttpApi.Client/BazarZone.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.Web": {
+      "path": "src/BazarZone.Web/BazarZone.Web.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.Web.Tests": {
+      "path": "test/BazarZone.Web.Tests/BazarZone.Web.Tests.abppkg",
+      "folder": "test"
+    },
+    "BazarZone.EntityFrameworkCore.Tests": {
+      "path": "test/BazarZone.EntityFrameworkCore.Tests/BazarZone.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "BazarZone.EntityFrameworkCore": {
+      "path": "src/BazarZone.EntityFrameworkCore/BazarZone.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.TestBase": {
+      "path": "test/BazarZone.TestBase/BazarZone.TestBase.abppkg",
+      "folder": "test"
+    },
+    "BazarZone.Domain.Tests": {
+      "path": "test/BazarZone.Domain.Tests/BazarZone.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "BazarZone.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/BazarZone.HttpApi.Client.ConsoleTestApp/BazarZone.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "BazarZone.DbMigrator": {
+      "path": "src/BazarZone.DbMigrator/BazarZone.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "BazarZone.Domain": {
+      "path": "src/BazarZone.Domain/BazarZone.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

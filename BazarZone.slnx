@@ -1,0 +1,24 @@
+<Solution>
+    <Configurations>
+        <Platform Name="Any CPU" />
+    </Configurations>
+    <Folder Name="/src/">
+        <Project Path="src/BazarZone.Domain/BazarZone.Domain.csproj" />
+        <Project Path="src/BazarZone.Application/BazarZone.Application.csproj" />
+        <Project Path="src/BazarZone.EntityFrameworkCore/BazarZone.EntityFrameworkCore.csproj" />
+        <Project Path="src/BazarZone.Web/BazarZone.Web.csproj" />
+        <Project Path="src/BazarZone.Domain.Shared/BazarZone.Domain.Shared.csproj" />
+        <Project Path="src/BazarZone.Application.Contracts/BazarZone.Application.Contracts.csproj" />
+        <Project Path="src/BazarZone.HttpApi/BazarZone.HttpApi.csproj" />
+        <Project Path="src/BazarZone.HttpApi.Client/BazarZone.HttpApi.Client.csproj" />
+        <Project Path="src/BazarZone.DbMigrator/BazarZone.DbMigrator.csproj" />
+    </Folder>
+    <Folder Name="/test/">
+        <Project Path="test/BazarZone.Application.Tests/BazarZone.Application.Tests.csproj" />
+        <Project Path="test/BazarZone.Web.Tests/BazarZone.Web.Tests.csproj" />
+        <Project Path="test/BazarZone.EntityFrameworkCore.Tests/BazarZone.EntityFrameworkCore.Tests.csproj" />
+        <Project Path="test/BazarZone.TestBase/BazarZone.TestBase.csproj" />
+        <Project Path="test/BazarZone.Domain.Tests/BazarZone.Domain.Tests.csproj" />
+        <Project Path="test/BazarZone.HttpApi.Client.ConsoleTestApp/BazarZone.HttpApi.Client.ConsoleTestApp.csproj" />
+    </Folder>
+</Solution>
