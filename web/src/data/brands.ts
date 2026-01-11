@@ -231,7 +231,7 @@ export const brands: Brand[] = [
     founded: "2011",
     products: [
       { id: "tp-1", name: "حقيبة سفر ذكية", description: "حقيبة بشاحن مدمج", image: "https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=400&h=300&fit=crop", brandId: "travel-pro", price: "1,499 ريال", inStock: true },
-      { id: "tp-2", name:="وسادة سفر ذاكرة", description: "وسادة رقبة مريحة", image: "https://images.unsplash.com/photo-1580661019560-2675c819e3f6?w=400&h=300&fit=crop", brandId: "travel-pro", price: "199 ريال", inStock: true },
+      { id: "tp-2", name: "وسادة سفر ذاكرة", description: "وسادة رقبة مريحة", image: "https://images.unsplash.com/photo-1580661019560-2675c819e3f6?w=400&h=300&fit=crop", brandId: "travel-pro", price: "199 ريال", inStock: true },
       { id: "tp-3", name: "محفظة سفر", description: "محفظة تنظيم للوثائق", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop", brandId: "travel-pro", price: "149 ریال", inStock: true },
       { id: "tp-4", name: "حقيبة ظهر للسفر", description: "حقيبة متعددة الجيوب", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop", brandId: "travel-pro", price: "599 ريال", inStock: true },
       { id: "tp-5", name: "طقم أدوات سفر", description: "زجاجات وحاويات سيليكون", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&h=300&fit=crop", brandId: "travel-pro", price: "129 ريال", inStock: true },

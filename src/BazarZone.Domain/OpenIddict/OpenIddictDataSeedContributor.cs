@@ -86,6 +86,30 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
             );
         }
 
+        // React Client
+        var reactClientId = configurationSection["BazarZone_React:ClientId"];
+        if (!reactClientId.IsNullOrWhiteSpace())
+        {
+            var reactClientRootUrl = configurationSection["BazarZone_React:RootUrl"]?.TrimEnd('/');
+            await CreateOrUpdateApplicationAsync(
+                applicationType: OpenIddictConstants.ApplicationTypes.Web,
+                name: reactClientId!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "React Application",
+                secret: null,
+                grantTypes: new List<string> {
+                    OpenIddictConstants.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.GrantTypes.RefreshToken
+                },
+                scopes: commonScopes,
+                redirectUris: new List<string> { reactClientRootUrl! },
+                postLogoutRedirectUris: new List<string> { reactClientRootUrl! },
+                clientUri: reactClientRootUrl,
+                logoUri: "/images/clients/react.svg"
+            );
+        }
+
         
         
 
