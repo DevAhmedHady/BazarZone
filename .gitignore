@@ -261,7 +261,7 @@ src/BazarZone.Web.Public/Logs/*
 src/BazarZone.Web.Public.Host/Logs/*
 src/BazarZone.AuthServer/Logs/*
 src/BazarZone.HttpApi.Host/Logs/*
-src/BazarZone.HttpApi.HostWithIds/Logs/*
+src/BazarZone.HttpApi.Host/Logs/*
 src/BazarZone.DbMigrator/Logs/*
 src/BazarZone.Blazor.Server/Logs/*
 src/BazarZone.Blazor.Server.Tiered/Logs/*

@@ -12,7 +12,6 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
-using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.Studio;
 
 namespace BazarZone.EntityFrameworkCore;
@@ -27,7 +26,6 @@ namespace BazarZone.EntityFrameworkCore;
     typeof(AbpFeatureManagementEntityFrameworkCoreModule),
     typeof(AbpIdentityEntityFrameworkCoreModule),
     typeof(AbpOpenIddictEntityFrameworkCoreModule),
-    typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(BlobStoringDatabaseEntityFrameworkCoreModule)
     )]
 public class BazarZoneEntityFrameworkCoreModule : AbpModule

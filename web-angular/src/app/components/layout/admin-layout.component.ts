@@ -27,7 +27,7 @@ import { cn } from '../../lib/utils';
       >
         <app-admin-header (onMobileMenuToggle)="mobileSidebarOpen.set(!mobileSidebarOpen())"></app-admin-header>
 
-        <main class="p-4 md:p-6">
+        <main class="admin-content">
            <router-outlet></router-outlet>
         </main>
       </div>
@@ -37,7 +37,19 @@ import { cn } from '../../lib/utils';
         <div class="fixed inset-0 z-30 bg-black/50 md:hidden animate-in fade-in" (click)="mobileSidebarOpen.set(false)"></div>
       }
     </div>
-  `
+  `,
+  styles: [`
+    .admin-content {
+      zoom: 0.9;
+      padding: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .admin-content {
+        padding: 1.5rem;
+      }
+    }
+  `]
 })
 export class AdminLayoutComponent {
   sidebarCollapsed = signal(false);

@@ -12,7 +12,6 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Identity;
 using Volo.Abp.MultiTenancy;
 using BazarZone.MultiTenancy;
-using Volo.Abp.TenantManagement;
 
 namespace BazarZone.Data;
 
@@ -22,17 +21,14 @@ public class BazarZoneDbMigrationService : ITransientDependency
 
     private readonly IDataSeeder _dataSeeder;
     private readonly IEnumerable<IBazarZoneDbSchemaMigrator> _dbSchemaMigrators;
-    private readonly ITenantRepository _tenantRepository;
     private readonly ICurrentTenant _currentTenant;
 
     public BazarZoneDbMigrationService(
         IDataSeeder dataSeeder,
-        ITenantRepository tenantRepository,
         ICurrentTenant currentTenant,
         IEnumerable<IBazarZoneDbSchemaMigrator> dbSchemaMigrators)
     {
         _dataSeeder = dataSeeder;
-        _tenantRepository = tenantRepository;
         _currentTenant = currentTenant;
         _dbSchemaMigrators = dbSchemaMigrators;
 
@@ -55,57 +51,20 @@ public class BazarZoneDbMigrationService : ITransientDependency
 
         Logger.LogInformation($"Successfully completed host database migrations.");
 
-        if (MultiTenancyConsts.IsEnabled)
-        {
-            
-            var tenants = await _tenantRepository.GetListAsync(includeDetails: true);
-
-            var migratedDatabaseSchemas = new HashSet<string>();
-            foreach (var tenant in tenants)
-            {
-                using (_currentTenant.Change(tenant.Id))
-                {
-                    if (tenant.ConnectionStrings.Any())
-                    {
-                        var tenantConnectionStrings = tenant.ConnectionStrings
-                            .Select(x => x.Value)
-                            .ToList();
-
-                        if (!migratedDatabaseSchemas.IsSupersetOf(tenantConnectionStrings))
-                        {
-                            await MigrateDatabaseSchemaAsync(tenant);
-
-                            migratedDatabaseSchemas.AddIfNotContains(tenantConnectionStrings);
-                        }
-                    }
-
-                    await SeedDataAsync(tenant);
-                }
-
-                Logger.LogInformation($"Successfully completed {tenant.Name} tenant database migrations.");
-            }
-
-            Logger.LogInformation("Successfully completed all database migrations.");
-        }
         Logger.LogInformation("You can safely end this process...");
     }
 
-    private async Task MigrateDatabaseSchemaAsync(Tenant? tenant = null)
+    private async Task MigrateDatabaseSchemaAsync()
     {
-        Logger.LogInformation(
-            $"Migrating schema for {(tenant == null ? "host" : tenant.Name + " tenant")} database...");
-        
         foreach (var migrator in _dbSchemaMigrators)
         {
             await migrator.MigrateAsync();
         }
     }
 
-    private async Task SeedDataAsync(Tenant? tenant = null)
+    private async Task SeedDataAsync()
     {
-        Logger.LogInformation($"Executing {(tenant == null ? "host" : tenant.Name + " tenant")} database seed...");
-        
-        await _dataSeeder.SeedAsync(new DataSeedContext(tenant?.Id)
+        await _dataSeeder.SeedAsync(new DataSeedContext()
             .WithProperty(IdentityDataSeedContributor.AdminEmailPropertyName,
                 BazarZoneConsts.AdminEmailDefaultValue)
             .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName,

@@ -1,6 +1,6 @@
 {
-  "id": "969c6619-8d30-4c5b-b368-99af2892d09c",
-  "creationTime": "01/08/2026 17:05:22 +00:00",
+  "id": "461ed926-57aa-4338-9a80-9d4e2dd688a1",
+  "creationTime": "01/11/2026 21:09:45 +00:00",
   "template": "app",
   "versions": {
     "AbpFramework": "10.0.1",
@@ -31,10 +31,10 @@
     "tiered": "false",
     "runInstallLibs": "",
     "useLocalReferences": "false",
-    "multiTenancy": "true",
+    "multiTenancy": "false",
     "includeTests": "true",
     "kubernetesConfiguration": "false",
-    "uiFramework": "mvc",
+    "uiFramework": "no-ui",
     "mobileFramework": "none",
     "distributedEventBus": "none",
     "databaseProvider": "ef",
@@ -42,15 +42,15 @@
     "databaseManagementSystem": "postgresql",
     "separateTenantSchema": "false",
     "createInitialMigration": "",
-    "theme": "basic",
+    "theme": "leptonx-lite",
     "themeStyle": "",
     "themeMenuPlacement": "",
     "mobileFramework": "none",
     "publicWebsite": "false",
     "socialLogin": "true",
-    "sampleCrudPage": "true",
+    "sampleCrudPage": "false",
     "selectedLanguages": ["English", "Arabic", "Chinese (Simplified)", "Chinese (Traditional)", "Czech", "English (United Kingdom)", "Finnish", "French", "German (Germany)", "Hindi ", "Hungarian", "Icelandic", "Italian", "Portuguese (Brazil)", "Romanian (Romania)", "Russian", "Slovak", "Spanish", "Swedish", "Turkish", ],
     "defaultLanguage": "English",
-    "createCommand": "abp new BazarZone -t app --ui-framework mvc --database-provider ef --database-management-system postgresql --theme basic --skip-migration  --skip-migrator  --without-cms-kit --sample-crud-page --dont-run-install-libs --dont-run-bundling -no-file-management"
+    "createCommand": "abp new BazarZone -t app --database-provider ef --database-management-system postgresql --theme leptonx-lite --skip-migration  --skip-migrator  --without-cms-kit --dont-run-install-libs --dont-run-bundling --no-multi-tenancy -no-file-management"
   }
 }

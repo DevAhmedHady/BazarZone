@@ -2,13 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": ".NET Core Launch (HttpApi.Host)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/BazarZone.Web/bin/Debug/net10.0/BazarZone.Web.dll",
+            "program": "${workspaceFolder}/src/BazarZone.HttpApi.Host/bin/Debug/net10.0/BazarZone.HttpApi.Host.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/BazarZone.Web",
+            "cwd": "${workspaceFolder}/src/BazarZone.HttpApi.Host",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",

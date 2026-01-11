@@ -1,13 +1,16 @@
 import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, LayoutDashboard, Users, ShoppingCart, BarChart3, Settings, Bell, MessageSquare, FileText, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages } from 'lucide-angular';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { LucideAngularModule, LayoutDashboard, Users, ShoppingCart, BarChart3, Settings, Bell, MessageSquare, FileText, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages, Shield } from 'lucide-angular';
 import { cn } from '../../lib/utils';
 import { LanguageService } from '../../services/language.service';
 import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
 
 interface NavItem {
   icon: any;
   labelKey: string;
+  path: string;
   active?: boolean;
   badge?: number;
 }
@@ -15,7 +18,7 @@ interface NavItem {
 @Component({
   selector: 'app-admin-sidebar',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, RouterLink, RouterLinkActive],
   template: `
     <aside
       [class]="getSidebarClasses()"
@@ -55,10 +58,11 @@ interface NavItem {
         <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto w-full">
           @for (item of navItems; track item.labelKey) {
             <a
-              href="#"
+              [routerLink]="item.path"
+              routerLinkActive="sidebar-link-active"
+              [routerLinkActiveOptions]="{ exact: item.path === '/admin' }"
               [class]="cn(
                 'sidebar-link relative',
-                item.active ? 'sidebar-link-active' : '',
                 collapsed ? 'justify-center px-2' : ''
               )"
               [title]="collapsed ? lang.t(item.labelKey) : undefined"
@@ -95,8 +99,8 @@ interface NavItem {
               </div>
               @if (!collapsed) {
                 <div class="flex-1 text-start min-w-0">
-                  <p class="text-sm font-medium text-sidebar-foreground truncate">John Doe</p>
-                  <p class="text-xs text-sidebar-muted truncate">{{ lang.t("administrator") }}</p>
+                  <p class="text-sm font-medium text-sidebar-foreground truncate">{{ authService.userName() || 'User' }}</p>
+                  <p class="text-xs text-sidebar-muted truncate">{{ authService.isAdmin() ? lang.t("administrator") : lang.t("user") }}</p>
                 </div>
                 <lucide-icon [name]="'chevron-down'" class="h-4 w-4 text-sidebar-muted flex-shrink-0"></lucide-icon>
               }
@@ -151,10 +155,10 @@ interface NavItem {
                     <div class="h-px bg-border my-2"></div>
 
                     <!-- Logout -->
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-destructive/10 text-destructive">
+                    <button (click)="logout()" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-destructive/10 text-destructive">
                       <lucide-icon [img]="LogOutIcon" class="h-4 w-4"></lucide-icon>
                       <span class="text-sm">{{ lang.t("logout") }}</span>
-                    </a>
+                    </button>
                   </div>
                 </div>
             }
@@ -183,11 +187,14 @@ interface NavItem {
        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           @for (item of navItems; track item.labelKey) {
              <a
-               href="#"
+               [routerLink]="item.path"
+               routerLinkActive="sidebar-link-active"
+               [routerLinkActiveOptions]="{ exact: item.path === '/admin' }"
                [class]="cn(
                  'sidebar-link',
                  item.active ? 'sidebar-link-active' : ''
                )"
+               (click)="onMobileClose.emit()"
              >
                <lucide-icon [img]="item.icon" class="h-5 w-5"></lucide-icon>
                <span class="flex-1">{{ lang.t(item.labelKey) }}</span>
@@ -210,9 +217,15 @@ interface NavItem {
                 <lucide-icon [img]="UserIcon" class="h-4 w-4 text-primary-foreground"></lucide-icon>
               </div>
               <div class="flex-1 text-start">
-                  <p class="text-sm font-medium text-sidebar-foreground">John Doe</p>
-                  <p class="text-xs text-sidebar-muted">{{ lang.t("administrator") }}</p>
+                  <p class="text-sm font-medium text-sidebar-foreground">{{ authService.userName() || 'User' }}</p>
+                  <p class="text-xs text-sidebar-muted">{{ authService.isAdmin() ? lang.t("administrator") : lang.t("user") }}</p>
               </div>
+            </button>
+            
+            <!-- Logout button for mobile -->
+            <button (click)="logout()" class="w-full flex items-center gap-3 px-3 py-2 mt-2 rounded-lg hover:bg-destructive/10 text-destructive">
+              <lucide-icon [img]="LogOutIcon" class="h-4 w-4"></lucide-icon>
+              <span class="text-sm">{{ lang.t("logout") }}</span>
             </button>
        </div>
     </aside>
@@ -226,6 +239,7 @@ export class AdminSidebarComponent {
 
   lang = inject(LanguageService);
   theme = inject(ThemeService);
+  authService = inject(AuthService);
   cn = cn;
 
   userMenuOpen = signal(false);
@@ -239,16 +253,18 @@ export class AdminSidebarComponent {
   MoonIcon = Moon;
   LanguagesIcon = Languages;
   LogOutIcon = LogOut;
+  ShieldIcon = Shield;
 
   navItems: NavItem[] = [
-    { icon: LayoutDashboard, labelKey: "dashboard", active: true },
-    { icon: Users, labelKey: "users", badge: 12 },
-    { icon: ShoppingCart, labelKey: "orders" },
-    { icon: BarChart3, labelKey: "analytics" },
-    { icon: FileText, labelKey: "reports" },
-    { icon: MessageSquare, labelKey: "messages", badge: 5 },
-    { icon: Bell, labelKey: "notifications" },
-    { icon: Settings, labelKey: "settings" },
+    { icon: LayoutDashboard, labelKey: "dashboard", path: "/admin" },
+    { icon: Users, labelKey: "users", path: "/admin/users" },
+    { icon: Shield, labelKey: "roles", path: "/admin/roles" },
+    { icon: ShoppingCart, labelKey: "orders", path: "/admin/orders" },
+    { icon: BarChart3, labelKey: "analytics", path: "/admin/analytics" },
+    { icon: FileText, labelKey: "reports", path: "/admin/reports" },
+    { icon: MessageSquare, labelKey: "messages", path: "/admin/messages" },
+    { icon: Bell, labelKey: "notifications", path: "/admin/notifications" },
+    { icon: Settings, labelKey: "settings", path: "/admin/settings" },
   ];
 
   isRTL() {
@@ -272,4 +288,10 @@ export class AdminSidebarComponent {
         : (this.isRTL() ? 'right-4 bottom-20' : 'left-4 bottom-20')
     );
   }
+
+  logout(): void {
+    this.userMenuOpen.set(false);
+    this.authService.logout();
+  }
 }
+

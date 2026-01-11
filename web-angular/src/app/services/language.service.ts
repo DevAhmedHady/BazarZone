@@ -13,6 +13,7 @@ export interface Translations {
 export const translations: Translations = {
     dashboard: { en: "Dashboard", ar: "لوحة التحكم" },
     users: { en: "Users", ar: "المستخدمين" },
+    roles: { en: "Roles", ar: "الأدوار" },
     orders: { en: "Orders", ar: "الطلبات" },
     analytics: { en: "Analytics", ar: "التحليلات" },
     reports: { en: "Reports", ar: "التقارير" },
@@ -49,6 +50,15 @@ export const translations: Translations = {
     profile: { en: "Profile", ar: "الملف الشخصي" },
     account: { en: "Account", ar: "الحساب" },
     language: { en: "Language", ar: "اللغة" },
+    user: { en: "User", ar: "مستخدم" },
+    login: { en: "Login", ar: "تسجيل الدخول" },
+    register: { en: "Register", ar: "تسجيل" },
+    email: { en: "Email", ar: "البريد الإلكتروني" },
+    password: { en: "Password", ar: "كلمة المرور" },
+    rememberMe: { en: "Remember me", ar: "تذكرني" },
+    forgotPassword: { en: "Forgot password?", ar: "نسيت كلمة المرور؟" },
+    userManagement: { en: "User Management", ar: "إدارة المستخدمين" },
+    roleManagement: { en: "Role Management", ar: "إدارة الأدوار" },
 };
 
 @Injectable({

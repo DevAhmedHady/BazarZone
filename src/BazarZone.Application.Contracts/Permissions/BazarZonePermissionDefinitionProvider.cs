@@ -11,10 +11,6 @@ public class BazarZonePermissionDefinitionProvider : PermissionDefinitionProvide
     {
         var myGroup = context.AddGroup(BazarZonePermissions.GroupName);
 
-        var booksPermission = myGroup.AddPermission(BazarZonePermissions.Books.Default, L("Permission:Books"));
-        booksPermission.AddChild(BazarZonePermissions.Books.Create, L("Permission:Books.Create"));
-        booksPermission.AddChild(BazarZonePermissions.Books.Edit, L("Permission:Books.Edit"));
-        booksPermission.AddChild(BazarZonePermissions.Books.Delete, L("Permission:Books.Delete"));
         //Define your own permissions here. Example:
         //myGroup.AddPermission(BazarZonePermissions.MyPermission1, L("Permission:MyPermission1"));
     }

@@ -8,6 +8,10 @@ import { ProductDetailComponent } from './pages/product-detail/product-detail';
 import { AboutComponent } from './pages/about/about';
 import { ContactComponent } from './pages/contact/contact';
 import { NotFoundComponent } from './pages/not-found/not-found';
+import { LoginComponent } from './pages/login/login.component';
+import { UserManagementComponent } from './pages/admin/user-management/user-management.component';
+import { RoleManagementComponent } from './pages/admin/role-management/role-management.component';
+import { authGuard, adminGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -22,11 +26,19 @@ export const routes: Routes = [
         ]
     },
     {
+        path: 'login',
+        component: LoginComponent
+    },
+    {
         path: 'admin',
         component: AdminLayoutComponent,
+        canActivate: [authGuard],
         children: [
-            { path: '', component: AdminComponent }
+            { path: '', component: AdminComponent },
+            { path: 'users', component: UserManagementComponent, canActivate: [adminGuard] },
+            { path: 'roles', component: RoleManagementComponent, canActivate: [adminGuard] }
         ]
     },
     { path: '**', component: NotFoundComponent }
 ];
+

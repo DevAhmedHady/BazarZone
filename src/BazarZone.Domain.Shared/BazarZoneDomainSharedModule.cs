@@ -12,7 +12,6 @@ using Volo.Abp.SettingManagement;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.BlobStoring.Database;
-using Volo.Abp.TenantManagement;
 
 namespace BazarZone;
 
@@ -24,7 +23,6 @@ namespace BazarZone;
     typeof(AbpSettingManagementDomainSharedModule),
     typeof(AbpIdentityDomainSharedModule),
     typeof(AbpOpenIddictDomainSharedModule),
-    typeof(AbpTenantManagementDomainSharedModule),
     typeof(BlobStoringDatabaseDomainSharedModule)
     )]
 public class BazarZoneDomainSharedModule : AbpModule

@@ -17,7 +17,6 @@ using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Emailing;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
-using Volo.Abp.TenantManagement;
 
 namespace BazarZone;
 
@@ -33,7 +32,6 @@ namespace BazarZone;
     typeof(AbpEmailingModule),
     typeof(AbpIdentityDomainModule),
     typeof(AbpOpenIddictDomainModule),
-    typeof(AbpTenantManagementDomainModule),
     typeof(BlobStoringDatabaseDomainModule)
     )]
 public class BazarZoneDomainModule : AbpModule

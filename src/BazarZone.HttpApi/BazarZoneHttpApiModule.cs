@@ -7,7 +7,6 @@ using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.Localization;
-using Volo.Abp.TenantManagement;
 
 namespace BazarZone;
 
@@ -17,7 +16,6 @@ namespace BazarZone;
     typeof(AbpSettingManagementHttpApiModule),
     typeof(AbpAccountHttpApiModule),
     typeof(AbpIdentityHttpApiModule),
-    typeof(AbpTenantManagementHttpApiModule),
     typeof(AbpFeatureManagementHttpApiModule)
     )]
 public class BazarZoneHttpApiModule : AbpModule

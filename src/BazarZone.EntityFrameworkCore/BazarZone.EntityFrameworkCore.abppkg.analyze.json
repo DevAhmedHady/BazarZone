@@ -122,21 +122,8 @@
     {
       "namespace": "BazarZone.EntityFrameworkCore",
       "connectionStringName": "Default",
-      "databaseTables": [
-        {
-          "entityFullName": "Books",
-          "contentType": "databaseTable",
-          "name": "BazarZone.Books.Book",
-          "summary": null
-        }
-        ],
+      "databaseTables": [],
       "replacedDbContexts": [
-        {
-          "name": "ITenantManagementDbContext",
-          "namespace": "Volo.Abp.TenantManagement.EntityFrameworkCore",
-          "declaringAssemblyName": "Volo.Abp.TenantManagement.EntityFrameworkCore",
-          "fullName": "Volo.Abp.TenantManagement.EntityFrameworkCore.ITenantManagementDbContext"
-        },
         {
           "name": "IIdentityDbContext",
           "namespace": "Volo.Abp.Identity.EntityFrameworkCore",
