@@ -1,0 +1,53 @@
+<header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-border/20">
+    <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <a routerLink="/" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                <span class="text-primary-foreground font-display font-bold text-lg">BZ</span>
+            </div>
+            <span class="font-display font-bold text-xl text-foreground group-hover:text-primary transition-colors">
+                بازار زون
+            </span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-8">
+            <ng-container *ngFor="let link of navLinks">
+                <!-- Using a regular anchor with routerLink and routerLinkActive -->
+                <!-- Note: React version uses 'active' class when active. routerLinkActive applies class. -->
+                <a [routerLink]="link.href" [routerLinkActive]="['active', 'text-foreground']"
+                    [routerLinkActiveOptions]="{exact: true}" class="nav-link font-medium">
+                    {{ link.label }}
+                </a>
+            </ng-container>
+            <app-theme-toggle></app-theme-toggle>
+            <button appButton variant="gold" size="sm">
+                ابدأ الآن
+            </button>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center gap-2">
+            <app-theme-toggle></app-theme-toggle>
+            <button class="text-foreground" (click)="toggleMobile()">
+                <lucide-icon [name]="mobileOpen() ? X : Menu" class="w-6 h-6"></lucide-icon>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav -->
+    <div *ngIf="mobileOpen()" class="md:hidden glass-panel border-t border-border/20 animate-fade-in">
+        <div class="container mx-auto px-4 py-4 flex flex-col gap-4">
+            <ng-container *ngFor="let link of navLinks">
+                <a [routerLink]="link.href" [routerLinkActive]="['text-primary']"
+                    [routerLinkActiveOptions]="{exact: true}" (click)="closeMobile()"
+                    class="text-foreground/70 hover:text-foreground font-medium py-2 transition-colors">
+                    {{ link.label }}
+                </a>
+            </ng-container>
+            <button appButton variant="gold" class="mt-2" w-full>
+                ابدأ الآن
+            </button>
+        </div>
+    </div>
+</header>

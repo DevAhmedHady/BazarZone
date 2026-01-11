@@ -1,0 +1,127 @@
+@if (brand(); as brand) {
+<div class="min-h-screen">
+    <!-- Brand Header -->
+    <section class="pt-24 pb-12 px-4">
+        <div class="container mx-auto">
+            <!-- Back Button -->
+            <a routerLink="/"
+                class="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8">
+                <lucide-icon [name]="ArrowRight" class="w-4 h-4"></lucide-icon>
+                العودة إلى قاعة المعارض
+            </a>
+
+            <!-- Brand Hero -->
+            <div class="booth-card p-8 md:p-12 relative overflow-hidden">
+                <!-- Brand Accent Bar -->
+                <div class="absolute top-0 left-0 right-0 h-2"
+                    [style.background]="'linear-gradient(270deg, hsl(' + brand.color + ') 0%, hsl(' + brand.color + ' / 0.4) 100%)'">
+                </div>
+
+                <div class="flex flex-col md:flex-row items-start gap-8">
+                    <!-- Brand Logo -->
+                    <div class="w-28 h-28 rounded-2xl overflow-hidden border-4 flex-shrink-0"
+                        [style.borderColor]="'hsl(' + brand.color + ')'">
+                        <img [src]="brand.logo" [alt]="brand.name" class="w-full h-full object-cover" />
+                    </div>
+
+                    <!-- Brand Info -->
+                    <div class="flex-1">
+                        <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground mb-3">
+                            {{ brand.name }}
+                        </h1>
+                        <p class="text-xl text-muted-foreground mb-4">
+                            {{ brand.tagline }}
+                        </p>
+                        @if (brand.description) {
+                        <p class="text-muted-foreground mb-4">
+                            {{ brand.description }}
+                        </p>
+                        }
+                        @if (brand.founded) {
+                        <p class="text-sm text-muted-foreground mb-6">
+                            تأسست في عام {{ brand.founded }}
+                        </p>
+                        }
+                        <div class="flex flex-wrap gap-3">
+                            <button appButton variant="gold"
+                                [style.background]="'linear-gradient(135deg, hsl(' + brand.color + ') 0%, hsl(' + brand.color + ' / 0.8) 100%)'">
+                                زيارة الموقع
+                                <lucide-icon [name]="ExternalLink" class="w-4 h-4"></lucide-icon>
+                            </button>
+                            <button appButton variant="glass">
+                                <lucide-icon [name]="Share2" class="w-4 h-4"></lucide-icon>
+                                مشاركة الجناح
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decorative Elements -->
+                <div class="absolute bottom-0 left-0 w-64 h-64 opacity-10"
+                    [style.background]="'radial-gradient(circle at bottom left, hsl(' + brand.color + '), transparent)'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="font-display text-2xl md:text-3xl font-bold text-foreground">
+                    المنتجات ({{ brand.products.length }})
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @for (product of brand.products; track product.id; let index = $index) {
+                <div class="animate-fade-in" [style.animationDelay]="(index * 50) + 'ms'">
+                    <a [routerLink]="['/product', product.id]" class="product-card block group overflow-hidden">
+                        <div class="aspect-square overflow-hidden">
+                            <img [src]="product.image" [alt]="product.name"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy" />
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-foreground mb-1">
+                                {{ product.name }}
+                            </h3>
+                            @if (product.description) {
+                            <p class="text-muted-foreground text-sm">
+                                {{ product.description }}
+                            </p>
+                            }
+                        </div>
+                        <div class="h-1 w-0 transition-all duration-300 group-hover:w-full"
+                            [style.background]="'hsl(' + brand.color + ')'"></div>
+                    </a>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Hall CTA -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto text-center">
+            <a routerLink="/">
+                <button appButton variant="outline" size="lg">
+                    <lucide-icon [name]="ArrowRight" class="w-4 h-4"></lucide-icon>
+                    استكشف أجنحة أخرى
+                </button>
+            </a>
+        </div>
+    </section>
+</div>
+} @else {
+<div class="min-h-screen flex items-center justify-center">
+    <div class="text-center">
+        <h1 class="font-display text-2xl font-bold text-foreground mb-4">
+            العلامة التجارية غير موجودة
+        </h1>
+        <a routerLink="/" class="text-primary hover:underline">
+            العودة إلى قاعة المعارض
+        </a>
+    </div>
+</div>
+}

@@ -1,0 +1,45 @@
+<article class="booth-card hover-lift group" [style.animationDelay]="(index * 100) + 'ms'">
+    <!-- Booth Header with Brand Accent -->
+    <div class="relative h-3 rounded-t-2xl"
+        [style.background]="'linear-gradient(270deg, hsl(' + brand.color + ') 0%, hsl(' + brand.color + ' / 0.6) 100%)'">
+    </div>
+
+    <!-- Brand Header -->
+    <div class="p-6 pb-4">
+        <div class="flex items-start gap-4">
+            <div class="w-16 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0"
+                [style.borderColor]="'hsl(' + brand.color + ')'">
+                <img [src]="brand.logo" [alt]="brand.name" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="font-display font-bold text-xl text-foreground truncate">
+                    {{ brand.name }}
+                </h3>
+                <p class="text-muted-foreground text-sm mt-1 line-clamp-2">
+                    {{ brand.tagline }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="px-4 pb-4">
+        <app-product-carousel [products]="brand.products" [brandColor]="brand.color"></app-product-carousel>
+    </div>
+
+    <!-- Booth Footer -->
+    <div class="px-6 py-4 border-t border-border/20">
+        <a [routerLink]="['/brand', brand.id]" class="flex items-center justify-between text-sm font-medium group/link">
+            <span class="transition-colors" [style.color]="'hsl(' + brand.color + ')'">
+                استكشف الجناح
+            </span>
+            <lucide-icon [name]="ArrowLeft"
+                class="w-4 h-4 transform group-hover/link:-translate-x-1 transition-transform"
+                [style.color]="'hsl(' + brand.color + ')'"></lucide-icon>
+        </a>
+    </div>
+
+    <!-- Decorative corner accent -->
+    <div class="absolute top-0 left-0 w-20 h-20 opacity-10"
+        [style.background]="'radial-gradient(circle at top left, hsl(' + brand.color + '), transparent)'"></div>
+</article>

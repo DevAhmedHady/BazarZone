@@ -1,0 +1,138 @@
+<div class="min-h-screen">
+    <!-- Hero -->
+    <section class="pt-32 pb-12 px-4">
+        <div class="container mx-auto">
+            <div class="max-w-2xl">
+                <h1 class="font-display text-5xl md:text-6xl font-bold text-foreground mb-6 animate-fade-in">
+                    لنبدأ <span class="gold-text">محادثة</span>
+                </h1>
+                <p class="text-xl text-muted-foreground animate-fade-in" style="animation-delay: 0.1s">
+                    لديك مشروع في ذهنك؟ نحن نحب أن نسمع عنه. تواصل معنا ولنصنع شيئًا استثنائيًا معًا.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form & Info -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Contact Info -->
+                <div class="space-y-8">
+                    <div class="booth-card p-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <lucide-icon [name]="MapPin" class="w-6 h-6 text-primary"></lucide-icon>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground mb-1">زرنا</h3>
+                                <p class="text-muted-foreground text-sm">
+                                    ١٢٣ شارع الابتكار<br />
+                                    الحي الإبداعي<br />
+                                    الرياض، المملكة العربية السعودية
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booth-card p-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <lucide-icon [name]="Mail" class="w-6 h-6 text-primary"></lucide-icon>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground mb-1">راسلنا</h3>
+                                <p class="text-muted-foreground text-sm">
+                                    hello@adexpo.agency<br />
+                                    careers@adexpo.agency
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booth-card p-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <lucide-icon [name]="Phone" class="w-6 h-6 text-primary"></lucide-icon>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-foreground mb-1">اتصل بنا</h3>
+                                <p class="text-muted-foreground text-sm">
+                                    +٩٦٦ ٥٥ ١٢٣ ٤٥٦٧<br />
+                                    الأحد-الخميس، ٩ص-٦م
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:col-span-2">
+                    <form [formGroup]="contactForm" (ngSubmit)="handleSubmit()" class="booth-card p-8">
+                        <h2 class="font-display text-2xl font-bold text-foreground mb-6">
+                            أرسل لنا رسالة
+                        </h2>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label htmlFor="name" class="block text-sm font-medium text-foreground mb-2">
+                                    اسمك *
+                                </label>
+                                <input id="name" type="text" formControlName="name" placeholder="محمد أحمد"
+                                    class="flex h-10 w-full rounded-md border border-input bg-secondary/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-border/50 focus:border-primary" />
+                            </div>
+                            <div>
+                                <label htmlFor="email" class="block text-sm font-medium text-foreground mb-2">
+                                    البريد الإلكتروني *
+                                </label>
+                                <input id="email" type="email" formControlName="email"
+                                    placeholder="mohammed@company.com"
+                                    class="flex h-10 w-full rounded-md border border-input bg-secondary/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-border/50 focus:border-primary" />
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label htmlFor="company" class="block text-sm font-medium text-foreground mb-2">
+                                الشركة
+                            </label>
+                            <input id="company" type="text" formControlName="company" placeholder="اسم شركتك"
+                                class="flex h-10 w-full rounded-md border border-input bg-secondary/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-border/50 focus:border-primary" />
+                        </div>
+
+                        <div class="mb-8">
+                            <label htmlFor="message" class="block text-sm font-medium text-foreground mb-2">
+                                رسالتك *
+                            </label>
+                            <textarea id="message" formControlName="message" rows="6"
+                                placeholder="أخبرنا عن مشروعك أو استفسارك..."
+                                class="flex min-h-[80px] w-full rounded-md border border-input bg-secondary/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-border/50 focus:border-primary resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" appButton variant="gold" size="lg" [disabled]="!contactForm.valid"
+                            class="w-full md:w-auto">
+                            إرسال الرسالة
+                            <lucide-icon [name]="Send" class="w-5 h-5"></lucide-icon>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="py-12 px-4">
+        <div class="container mx-auto">
+            <div class="booth-card overflow-hidden h-80">
+                <div class="w-full h-full bg-secondary/50 flex items-center justify-center">
+                    <div class="text-center">
+                        <lucide-icon [name]="MapPin" class="w-12 h-12 text-primary mx-auto mb-4"></lucide-icon>
+                        <p class="text-muted-foreground">الخريطة التفاعلية قريبًا</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

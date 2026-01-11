@@ -1,0 +1,88 @@
+<footer class="border-t border-border/20 bg-card/50 backdrop-blur-sm">
+    <div class="container mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <!-- Brand -->
+            <div class="md:col-span-2">
+                <a routerLink="/" class="flex items-center gap-3 mb-4">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        <span class="text-primary-foreground font-display font-bold text-lg">BZ</span>
+                    </div>
+                    <span class="font-display font-bold text-xl text-foreground">بازار زون</span>
+                </a>
+                <p class="text-muted-foreground max-w-sm mb-6">
+                    قاعة معارض رقمية حيث تنبض العلامات التجارية بالحياة. نعرض أكثر المنتجات ابتكارًا في العالم في تجربة
+                    غامرة.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-all">
+                        <lucide-icon [name]="Instagram" class="w-5 h-5"></lucide-icon>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-all">
+                        <lucide-icon [name]="Twitter" class="w-5 h-5"></lucide-icon>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-all">
+                        <lucide-icon [name]="Linkedin" class="w-5 h-5"></lucide-icon>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="font-display font-semibold text-foreground mb-4">استكشف</h4>
+                <ul class="space-y-3">
+                    <li>
+                        <a routerLink="/"
+                            class="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group">
+                            قاعة المعارض
+                            <lucide-icon [name]="ArrowUpLeft"
+                                class="w-3 h-3 opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"></lucide-icon>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/about"
+                            class="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group">
+                            من نحن
+                            <lucide-icon [name]="ArrowUpLeft"
+                                class="w-3 h-3 opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"></lucide-icon>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/contact"
+                            class="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 group">
+                            تواصل معنا
+                            <lucide-icon [name]="ArrowUpLeft"
+                                class="w-3 h-3 opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"></lucide-icon>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h4 class="font-display font-semibold text-foreground mb-4">تواصل معنا</h4>
+                <ul class="space-y-3 text-muted-foreground">
+                    <li class="flex items-center gap-2">
+                        <lucide-icon [name]="Mail" class="w-4 h-4 text-primary"></lucide-icon>
+                        hello@adexpo.agency
+                    </li>
+                    <li>١٢٣ شارع الابتكار</li>
+                    <li>الحي الإبداعي، الرياض</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-border/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-muted-foreground text-sm">
+                © ٢٠٢٤ بازار زون. جميع الحقوق محفوظة.
+            </p>
+            <div class="flex gap-6 text-sm text-muted-foreground">
+                <a href="#" class="hover:text-foreground transition-colors">سياسة الخصوصية</a>
+                <a href="#" class="hover:text-foreground transition-colors">شروط الخدمة</a>
+            </div>
+        </div>
+    </div>
+</footer>

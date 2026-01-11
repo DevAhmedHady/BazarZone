@@ -1,0 +1,147 @@
+@if (product() && brand()) {
+<!-- Note: Angular templates don't support destructuring in @if alias easily across multiple variables.
+       We'll access brand() directly or via aliasing inner block.
+       Actually, let's just use signals in view. -->
+
+<div class="min-h-screen">
+    <section class="pt-24 pb-20 px-4">
+        <div class="container mx-auto">
+            <!-- Breadcrumb -->
+            <nav class="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+                <a routerLink="/" class="hover:text-foreground transition-colors">
+                    قاعة المعارض
+                </a>
+                <span>/</span>
+                <a [routerLink]="['/brand', brand()!.id]" class="hover:text-foreground transition-colors">
+                    {{ brand()!.name }}
+                </a>
+                <span>/</span>
+                <span class="text-foreground">{{ product()!.name }}</span>
+            </nav>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Product Image -->
+                <div class="booth-card overflow-hidden">
+                    <div class="h-2"
+                        [style.background]="'linear-gradient(270deg, hsl(' + brand()!.color + ') 0%, hsl(' + brand()!.color + ' / 0.4) 100%)'">
+                    </div>
+                    <div class="aspect-square overflow-hidden">
+                        <img [src]="product()!.image" [alt]="product()!.name" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="flex flex-col justify-center">
+                    <a [routerLink]="['/brand', brand()!.id]"
+                        class="inline-flex items-center gap-2 text-sm font-medium mb-4 group"
+                        [style.color]="'hsl(' + brand()!.color + ')'">
+                        <img [src]="brand()!.logo" [alt]="brand()!.name" class="w-6 h-6 rounded object-cover" />
+                        {{ brand()!.name }}
+                        <lucide-icon [name]="ArrowRight"
+                            class="w-3 h-3 group-hover:-translate-x-1 transition-transform"></lucide-icon>
+                    </a>
+
+                    <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
+                        {{ product()!.name }}
+                    </h1>
+
+                    <p class="text-xl text-muted-foreground mb-8">
+                        {{ product()!.description || "منتج مميز من " + brand()!.name + "." }}
+                    </p>
+
+                    @if (product()!.price) {
+                    <div class="mb-6">
+                        <span class="font-display text-3xl font-bold text-foreground">
+                            {{ product()!.price }}
+                        </span>
+                    </div>
+                    }
+
+                    <div class="prose prose-invert max-w-none mb-8">
+                        <p class="text-muted-foreground">
+                            اختبر الابتكار في أفضل حالاته. يمثل هذا المنتج قمة التزام {{ brand()!.name }} بالجودة
+                            والتصميم. تم النظر في كل تفصيل بعناية لتقديم تجربة استثنائية.
+                        </p>
+                        @if (product()!.features && product()!.features!.length > 0) {
+                        <ul class="mt-4 space-y-2">
+                            @for (feature of product()!.features; track feature) {
+                            <li class="text-muted-foreground">
+                                {{ feature }}
+                            </li>
+                            }
+                        </ul>
+                        }
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <button appButton variant="gold" size="lg"
+                            [style.background]="'linear-gradient(135deg, hsl(' + brand()!.color + ') 0%, hsl(' + brand()!.color + ' / 0.8) 100%)'">
+                            <lucide-icon [name]="ShoppingBag" class="w-5 h-5"></lucide-icon>
+                            عرض المنتج
+                        </button>
+                        <button appButton variant="glass" size="lg">
+                            <lucide-icon [name]="Heart" class="w-5 h-5"></lucide-icon>
+                            حفظ
+                        </button>
+                        <button appButton variant="glass" size="lg">
+                            <lucide-icon [name]="Share2" class="w-5 h-5"></lucide-icon>
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-4 inline-flex items-center gap-3">
+                        <div
+                            [class]="'w-10 h-10 rounded-full flex items-center justify-center ' + (product()!.inStock ? 'bg-primary/10' : 'bg-muted-foreground/10')">
+                            <span
+                                [class]="(product()!.inStock ? 'text-primary' : 'text-muted-foreground') + ' text-lg'">
+                                {{ product()!.inStock ? '✓' : '×' }}
+                            </span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-foreground">
+                                {{ product()!.inStock !== false ? 'متوفر الآن' : 'غير متوفر' }}
+                            </p>
+                            @if (product()!.inStock !== false) {
+                            <p class="text-xs text-muted-foreground">يشحن خلال ٢-٣ أيام عمل</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More from Brand -->
+            <div class="mt-20">
+                <h2 class="font-display text-2xl font-bold text-foreground mb-8">
+                    المزيد من {{ brand()!.name }}
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    @for (p of relatedProducts(); track p.id) {
+                    <a [routerLink]="['/product', p.id]" class="product-card block group overflow-hidden">
+                        <div class="aspect-square overflow-hidden">
+                            <img [src]="p.image" [alt]="p.name"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy" />
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium text-foreground truncate">
+                                {{ p.name }}
+                            </h3>
+                        </div>
+                    </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+} @else {
+<div class="min-h-screen flex items-center justify-center">
+    <div class="text-center">
+        <h1 class="font-display text-2xl font-bold text-foreground mb-4">
+            المنتج غير موجود
+        </h1>
+        <a routerLink="/" class="text-primary hover:underline">
+            العودة إلى قاعة المعارض
+        </a>
+    </div>
+</div>
+}
