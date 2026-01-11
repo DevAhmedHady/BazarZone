@@ -21,13 +21,16 @@ interface NavItem {
       [class]="getSidebarClasses()"
     >
         <!-- Logo with collapse button -->
-        <div class="flex h-16 items-center justify-between px-4 border-b border-sidebar-border flex-shrink-0">
+        <div class="flex h-30 p-3 items-center justify-between px-4 border-b border-sidebar-border flex-shrink-0">
           <div [class]="cn('flex items-center gap-3', collapsed ? 'justify-center w-full' : '')">
-            <div class="h-9 w-9 rounded-lg admin-gradient flex items-center justify-center flex-shrink-0">
-              <span class="text-primary-foreground font-bold text-lg">A</span>
-            </div>
+            @if (collapsed) {
+              <div class='h-30 w-30 bg-sidebar-accent rounded-xl flex items-center justify-center'>
+                <img src="logo-icon.png" alt="BazarZone" class="h-26 w-auto object-contain" />
+              </div>
+            } @else {
+              <img src="logo.png" alt="BazarZone" class="h-26 w-auto object-contain" />
+            }
             @if (!collapsed) {
-              <span class="text-sidebar-foreground font-semibold text-lg">{{ lang.t("admin") }}</span>
               <button
                 (click)="onToggle.emit()"
                 class="h-7 w-7 rounded-lg bg-sidebar-accent hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors text-sidebar-foreground"
@@ -168,9 +171,7 @@ interface NavItem {
     >
        <div class="flex h-16 items-center justify-between px-4 border-b border-sidebar-border bg-sidebar">
           <div class="flex items-center gap-3">
-             <div class="h-9 w-9 rounded-lg admin-gradient flex items-center justify-center">
-               <span class="text-primary-foreground font-bold text-lg">A</span>
-             </div>
+             <img src="logo.png" alt="BazarZone" class="h-10 w-auto object-contain" />
              <span class="text-sidebar-foreground font-semibold text-lg">{{ lang.t("admin") }}</span>
           </div>
           <button (click)="onMobileClose.emit()" class="p-2 -mr-2 text-sidebar-foreground hover:bg-sidebar-accent rounded-md">

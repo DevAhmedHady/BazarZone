@@ -1,13 +1,12 @@
 <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-border/20">
-    <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
+    <nav class="container mx-auto px-4 h-20 flex items-center justify-between">
         <!-- Logo -->
         <a routerLink="/" class="flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <span class="text-primary-foreground font-display font-bold text-lg">BZ</span>
-            </div>
-            <span class="font-display font-bold text-xl text-foreground group-hover:text-primary transition-colors">
-                بازار زون
-            </span>
+            @if (theme() === 'dark') {
+            <img src="logo-dark.png" alt="BazarZone" class="h-32 w-auto object-contain" />
+            } @else {
+            <img src="logo.png" alt="BazarZone" class="h-32 w-auto object-contain" />
+            }
         </a>
 
         <!-- Desktop Nav -->

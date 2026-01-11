@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ThemeService } from '@/app/services/theme.service';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, ArrowUpLeft, Instagram, Twitter, Linkedin, Mail } from 'lucide-angular';
 
@@ -14,4 +15,7 @@ export class FooterComponent {
     readonly Twitter = Twitter;
     readonly Linkedin = Linkedin;
     readonly Mail = Mail;
+
+    private themeService = inject(ThemeService);
+    theme = this.themeService.currentTheme;
 }

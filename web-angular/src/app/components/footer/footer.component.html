@@ -4,11 +4,11 @@
             <!-- Brand -->
             <div class="md:col-span-2">
                 <a routerLink="/" class="flex items-center gap-3 mb-4">
-                    <div
-                        class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                        <span class="text-primary-foreground font-display font-bold text-lg">BZ</span>
-                    </div>
-                    <span class="font-display font-bold text-xl text-foreground">بازار زون</span>
+                    @if (theme() === 'dark') {
+                    <img src="logo-dark.png" alt="BazarZone" class="h-32 w-auto object-contain" />
+                    } @else {
+                    <img src="logo.png" alt="BazarZone" class="h-32 w-auto object-contain" />
+                    }
                 </a>
                 <p class="text-muted-foreground max-w-sm mb-6">
                     قاعة معارض رقمية حيث تنبض العلامات التجارية بالحياة. نعرض أكثر المنتجات ابتكارًا في العالم في تجربة
@@ -77,7 +77,7 @@
 
         <div class="border-t border-border/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-muted-foreground text-sm">
-                © ٢٠٢٤ بازار زون. جميع الحقوق محفوظة.
+                © ٢٠٢٦ بازار زون. جميع الحقوق محفوظة.
             </p>
             <div class="flex gap-6 text-sm text-muted-foreground">
                 <a href="#" class="hover:text-foreground transition-colors">سياسة الخصوصية</a>

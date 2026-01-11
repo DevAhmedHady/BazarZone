@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Menu, X } from 'lucide-angular';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
+import { ThemeService } from '../../services/theme.service';
 import { ButtonComponent } from '../ui/button/button.component';
 import { cn } from '@/lib/utils';
 
@@ -13,6 +14,8 @@ import { cn } from '@/lib/utils';
     templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
+    private themeService = inject(ThemeService);
+    theme = this.themeService.currentTheme;
     mobileOpen = signal(false);
     readonly Menu = Menu;
     readonly X = X;
