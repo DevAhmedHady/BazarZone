@@ -2,10 +2,14 @@ import { Component, signal, OnInit, NgZone, Inject, PLATFORM_ID, OnDestroy } fro
 import { isPlatformBrowser } from '@angular/common';
 import Lenis from 'lenis';
 import { RouterOutlet } from '@angular/router';
+import { Toast } from 'primeng/toast';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Toast, ConfirmDialog],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
