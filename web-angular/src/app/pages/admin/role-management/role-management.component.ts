@@ -17,6 +17,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-role-management',
@@ -32,8 +34,10 @@ import { InputIconModule } from 'primeng/inputicon';
     TooltipModule,
     TagModule,
     IconFieldModule,
-    InputIconModule
+    InputIconModule,
+    DialogModule
   ],
+  providers: [ConfirmationService],
   template: `
     <div class="role-management">
       <!-- Header -->
@@ -121,71 +125,47 @@ import { InputIconModule } from 'primeng/inputicon';
         </p-table>
       </div>
 
-      <!-- Create/Edit Modal -->
-      @if (showModal()) {
-        <div class="modal-overlay" (click)="closeModal()">
-          <div class="modal max-w-md bg-card border border-border rounded-xl shadow-xl overflow-hidden" (click)="$event.stopPropagation()">
-            <div class="modal-header flex items-center justify-between p-4 border-b border-border">
-              <h2 class="text-lg font-bold">{{ isEditMode() ? 'تعديل الدور' : 'إضافة دور جديد' }}</h2>
-              <p-button icon="pi pi-times" [text]="true" [rounded]="true" severity="secondary" (onClick)="closeModal()"></p-button>
-            </div>
-            <div class="modal-body p-4">
-              <form (ngSubmit)="saveRole()">
-                <div class="flex flex-col gap-4">
-                  <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium">اسم الدور *</label>
-                    <input pInputText type="text" [(ngModel)]="formData.name" name="name" required class="w-full" placeholder="مثال: Admin, Editor, Viewer"/>
-                  </div>
-                  <div class="flex flex-col gap-3">
-                    <div class="flex items-center gap-2">
-                      <p-checkbox [(ngModel)]="formData.isDefault" name="isDefault" [binary]="true" inputId="isDefault"></p-checkbox>
-                      <div class="flex flex-col">
-                        <label for="isDefault" class="text-sm font-medium cursor-pointer">دور افتراضي</label>
-                        <small class="text-muted-foreground text-[10px]">سيتم تعيينه تلقائياً للمستخدمين الجدد</small>
-                      </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <p-checkbox [(ngModel)]="formData.isPublic" name="isPublic" [binary]="true" inputId="isPublic"></p-checkbox>
-                      <div class="flex flex-col">
-                        <label for="isPublic" class="text-sm font-medium cursor-pointer">دور عام</label>
-                        <small class="text-muted-foreground text-[10px]">يمكن للمستخدمين اختياره بأنفسهم</small>
-                      </div>
-                    </div>
+      <!-- Create/Edit Dialog -->
+      <p-dialog 
+        [header]="isEditMode() ? 'تعديل الدور' : 'إضافة دور جديد'" 
+        [(visible)]="showModal" 
+        [modal]="true" 
+        [style]="{ width: '30rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+        [draggable]="false" 
+        [resizable]="false"
+      >
+        <div class="p-4 pt-0">
+          <form (ngSubmit)="saveRole()">
+            <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium">اسم الدور *</label>
+                <input pInputText type="text" [(ngModel)]="formData.name" name="name" required class="w-full" placeholder="مثال: Admin, Editor, Viewer"/>
+              </div>
+              <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-2">
+                  <p-checkbox [(ngModel)]="formData.isDefault" name="isDefault" [binary]="true" inputId="isDefault"></p-checkbox>
+                  <div class="flex flex-col">
+                    <label for="isDefault" class="text-sm font-medium cursor-pointer">دور افتراضي</label>
+                    <small class="text-muted-foreground text-[10px]">سيتم تعيينه تلقائياً للمستخدمين الجدد</small>
                   </div>
                 </div>
-              </form>
+                <div class="flex items-center gap-2">
+                  <p-checkbox [(ngModel)]="formData.isPublic" name="isPublic" [binary]="true" inputId="isPublic"></p-checkbox>
+                  <div class="flex flex-col">
+                    <label for="isPublic" class="text-sm font-medium cursor-pointer">دور عام</label>
+                    <small class="text-muted-foreground text-[10px]">يمكن للمستخدمين اختياره بأنفسهم</small>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="modal-footer flex justify-end gap-2 p-4 border-t border-border">
-              <p-button label="إلغاء" severity="secondary" (onClick)="closeModal()"></p-button>
-              <p-button [label]="isEditMode() ? 'حفظ التغييرات' : 'إضافة الدور'" [loading]="isSaving()" (onClick)="saveRole()" [disabled]="!formData.name"></p-button>
-            </div>
-          </div>
+          </form>
         </div>
-      }
-
-      <!-- Delete Confirmation Modal -->
-      @if (showDeleteModal()) {
-        <div class="modal-overlay" (click)="closeDeleteModal()">
-          <div class="modal max-w-md bg-card border border-border rounded-xl shadow-xl p-6" (click)="$event.stopPropagation()">
-            <div class="flex flex-col items-center text-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-danger/10 flex items-center justify-center">
-                <i class="pi pi-exclamation-triangle text-danger text-2xl"></i>
-              </div>
-              <div>
-                <h2 class="text-xl font-bold">تأكيد الحذف</h2>
-                <p class="text-muted-foreground mt-2">
-                  هل أنت متأكد من حذف الدور <strong>{{ roleToDelete()?.name }}</strong>؟
-                  <br/>سيتم إزالة هذا الدور من جميع المستخدمين المرتبطين به.
-                </p>
-              </div>
-              <div class="flex gap-3 mt-4 w-full">
-                <p-button label="إلغاء" severity="secondary" (onClick)="closeDeleteModal()" class="flex-1"></p-button>
-                <p-button label="حذف الدور" severity="danger" [loading]="isDeleting()" (onClick)="deleteRole()" class="flex-1"></p-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      }
+        <ng-template pTemplate="footer">
+          <p-button label="إلغاء" severity="secondary" (onClick)="closeModal()" [text]="true"></p-button>
+          <p-button [label]="isEditMode() ? 'حفظ التغييرات' : 'إضافة الدور'" [loading]="isSaving()" (onClick)="saveRole()" [disabled]="!formData.name"></p-button>
+        </ng-template>
+      </p-dialog>
     </div>
   `,
   styles: [`
@@ -194,10 +174,6 @@ import { InputIconModule } from 'primeng/inputicon';
     .page-title { display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; font-weight: 600; color: hsl(var(--foreground)); margin: 0; }
     .title-icon { width: 1.5rem; height: 1.5rem; color: hsl(var(--primary)); }
     .page-description { color: hsl(var(--muted-foreground)); margin: 0.25rem 0 0 0; font-size: 0.8rem; }
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
-    }
     :host ::v-deep {
       .p-datatable .p-datatable-thead > tr > th {
         background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); font-size: 0.75rem; padding: 0.75rem;
@@ -209,6 +185,7 @@ import { InputIconModule } from 'primeng/inputicon';
 })
 export class RoleManagementComponent implements OnInit {
   private roleService = inject(IdentityRoleService);
+  private confirmationService = inject(ConfirmationService);
 
   roles = signal<IdentityRoleDto[]>([]);
   isLoading = signal(false);
@@ -219,7 +196,7 @@ export class RoleManagementComponent implements OnInit {
   searchFilter = '';
   pagination = { skipCount: 0, maxResultCount: 20, totalCount: 0 };
 
-  showModal = signal(false);
+  showModal = false;
   isEditMode = signal(false);
   showDeleteModal = signal(false);
   roleToDelete = signal<IdentityRoleDto | null>(null);
@@ -257,42 +234,53 @@ export class RoleManagementComponent implements OnInit {
     this.isEditMode.set(false);
     this.editingRole.set(null);
     this.formData = { name: '', isDefault: false, isPublic: true };
-    this.showModal.set(true);
+    this.showModal = true;
   }
 
   openEditModal(role: IdentityRoleDto): void {
     this.isEditMode.set(true);
     this.editingRole.set(role);
     this.formData = { name: role.name, isDefault: role.isDefault, isPublic: role.isPublic };
-    this.showModal.set(true);
+    this.showModal = true;
   }
 
-  closeModal(): void { this.showModal.set(false); }
+  closeModal(): void { this.showModal = false; }
 
   saveRole(): void {
     this.isSaving.set(true);
     if (this.isEditMode()) {
       const role = this.editingRole()!;
       this.roleService.update(role.id, { ...this.formData, concurrencyStamp: role.concurrencyStamp }).subscribe({
-        next: () => { this.isSaving.set(false); this.showModal.set(false); this.loadRoles(); },
-        error: () => this.isSaving.set(false)
+        next: () => { this.isSaving.set(false); this.showModal = false; this.loadRoles(); },
+        error: () => { this.isSaving.set(false); }
       });
     } else {
       this.roleService.create(this.formData).subscribe({
-        next: () => { this.isSaving.set(false); this.showModal.set(false); this.loadRoles(); },
-        error: () => this.isSaving.set(false)
+        next: () => { this.isSaving.set(false); this.showModal = false; this.loadRoles(); },
+        error: () => { this.isSaving.set(false); }
       });
     }
   }
 
-  confirmDelete(role: IdentityRoleDto): void { this.roleToDelete.set(role); this.showDeleteModal.set(true); }
-  closeDeleteModal(): void { this.showDeleteModal.set(false); }
-  deleteRole(): void {
-    const role = this.roleToDelete();
-    if (!role) return;
+  confirmDelete(role: IdentityRoleDto): void {
+    this.confirmationService.confirm({
+      message: `هل أنت متأكد من حذف الدور <strong>${role.name}</strong>؟`,
+      header: 'تأكيد الحذف',
+      icon: 'pi pi-exclamation-triangle',
+      rejectLabel: 'إلغاء',
+      acceptLabel: 'حذف',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-secondary p-button-text',
+      accept: () => {
+        this.deleteRole(role.id);
+      }
+    });
+  }
+
+  deleteRole(id: string): void {
     this.isDeleting.set(true);
-    this.roleService.delete(role.id).subscribe({
-      next: () => { this.isDeleting.set(false); this.showDeleteModal.set(false); this.loadRoles(); },
+    this.roleService.delete(id).subscribe({
+      next: () => { this.isDeleting.set(false); this.loadRoles(); },
       error: () => this.isDeleting.set(false)
     });
   }

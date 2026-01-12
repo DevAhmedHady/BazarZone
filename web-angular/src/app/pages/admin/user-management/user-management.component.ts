@@ -19,6 +19,9 @@ import { TooltipModule } from 'primeng/tooltip';
 import { SelectModule } from 'primeng/select';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 interface PaginationState {
   skipCount: number;
@@ -41,8 +44,11 @@ interface PaginationState {
     TooltipModule,
     SelectModule,
     IconFieldModule,
-    InputIconModule
+    InputIconModule,
+    DialogModule,
+    ConfirmDialogModule
   ],
+  providers: [ConfirmationService],
   template: `
     <div class="user-management">
       <!-- Header with Stats -->
@@ -243,106 +249,82 @@ interface PaginationState {
         </p-table>
       </div>
 
-      <!-- Create/Edit Modal -->
-      @if (showModal()) {
-        <div class="modal-overlay" (click)="closeModal()">
-          <div class="modal max-w-2xl bg-card border border-border rounded-xl shadow-xl overflow-hidden" (click)="$event.stopPropagation()">
-            <div class="modal-header flex items-center justify-between p-4 border-b border-border">
-              <h2 class="text-lg font-bold">{{ isEditMode() ? 'تعديل المستخدم' : 'إضافة مستخدم جديد' }}</h2>
-              <p-button icon="pi pi-times" [text]="true" [rounded]="true" severity="secondary" (onClick)="closeModal()"></p-button>
+      <!-- Create/Edit Dialog -->
+      <p-dialog 
+        [header]="isEditMode() ? 'تعديل المستخدم' : 'إضافة مستخدم جديد'" 
+        [(visible)]="showModal" 
+        [modal]="true" 
+        [style]="{ width: '45rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+        [draggable]="false" 
+        [resizable]="false"
+      >
+        <div class="p-4 pt-0">
+          <form (ngSubmit)="saveUser()" #userForm="ngForm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium">اسم المستخدم *</label>
+                <input pInputText type="text" [(ngModel)]="formData.userName" name="userName" required class="w-full"/>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium">البريد الإلكتروني *</label>
+                <input pInputText type="email" [(ngModel)]="formData.email" name="email" required class="w-full"/>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium">الاسم الأول</label>
+                <input pInputText type="text" [(ngModel)]="formData.name" name="name" class="w-full"/>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium">اسم العائلة</label>
+                <input pInputText type="text" [(ngModel)]="formData.surname" name="surname" class="w-full"/>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium">رقم الهاتف</label>
+                <input pInputText type="tel" [(ngModel)]="formData.phoneNumber" name="phoneNumber" class="w-full"/>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label class="text-sm font-medium">{{ isEditMode() ? 'كلمة المرور (اتركها فارغة لعدم التغيير)' : 'كلمة المرور *' }}</label>
+                <input pInputText type="password" [(ngModel)]="formData.password" name="password" [required]="!isEditMode()" class="w-full"/>
+              </div>
             </div>
-            <div class="modal-body p-4">
-              <form (ngSubmit)="saveUser()" #userForm="ngForm">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium">اسم المستخدم *</label>
-                    <input pInputText type="text" [(ngModel)]="formData.userName" name="userName" required class="w-full"/>
-                  </div>
-                  <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium">البريد الإلكتروني *</label>
-                    <input pInputText type="email" [(ngModel)]="formData.email" name="email" required class="w-full"/>
-                  </div>
-                  <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium">الاسم الأول</label>
-                    <input pInputText type="text" [(ngModel)]="formData.name" name="name" class="w-full"/>
-                  </div>
-                  <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium">اسم العائلة</label>
-                    <input pInputText type="text" [(ngModel)]="formData.surname" name="surname" class="w-full"/>
-                  </div>
-                  <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium">رقم الهاتف</label>
-                    <input pInputText type="tel" [(ngModel)]="formData.phoneNumber" name="phoneNumber" class="w-full"/>
-                  </div>
-                  <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium">{{ isEditMode() ? 'كلمة المرور (اتركها فارغة لعدم التغيير)' : 'كلمة المرور *' }}</label>
-                    <input pInputText type="password" [(ngModel)]="formData.password" name="password" [required]="!isEditMode()" class="w-full"/>
-                  </div>
-                </div>
-                
-                <div class="flex flex-col gap-3 mt-4">
-                  <div class="flex items-center gap-2">
-                    <p-checkbox [(ngModel)]="formData.isActive" name="isActive" [binary]="true" inputId="isActive"></p-checkbox>
-                    <label for="isActive" class="text-sm cursor-pointer">مستخدم نشط</label>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <p-checkbox [(ngModel)]="formData.lockoutEnabled" name="lockoutEnabled" [binary]="true" inputId="lockoutEnabled"></p-checkbox>
-                    <label for="lockoutEnabled" class="text-sm cursor-pointer">تفعيل القفل</label>
-                  </div>
-                </div>
-                
-                @if (availableRoles().length > 0) {
-                  <div class="mt-4 pt-4 border-t border-border">
-                    <label class="text-sm font-bold block mb-2">الأدوار</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      @for (role of availableRoles(); track role.id) {
-                        <div class="flex items-center gap-2">
-                          <p-checkbox 
-                            [binary]="true"
-                            [ngModel]="isRoleSelected(role.name)"
-                            (onChange)="toggleRole(role.name)"
-                            [name]="'role_' + role.id"
-                            [inputId]="'role_' + role.id"
-                          ></p-checkbox>
-                          <label [for]="'role_' + role.id" class="text-sm cursor-pointer">{{ role.name }}</label>
-                        </div>
-                      }
+            
+            <div class="flex flex-col gap-3 mt-4">
+              <div class="flex items-center gap-2">
+                <p-checkbox [(ngModel)]="formData.isActive" name="isActive" [binary]="true" inputId="isActive"></p-checkbox>
+                <label for="isActive" class="text-sm cursor-pointer">مستخدم نشط</label>
+              </div>
+              <div class="flex items-center gap-2">
+                <p-checkbox [(ngModel)]="formData.lockoutEnabled" name="lockoutEnabled" [binary]="true" inputId="lockoutEnabled"></p-checkbox>
+                <label for="lockoutEnabled" class="text-sm cursor-pointer">تفعيل القفل</label>
+              </div>
+            </div>
+            
+            @if (availableRoles().length > 0) {
+              <div class="mt-4 pt-4 border-t border-border">
+                <label class="text-sm font-bold block mb-2">الأدوار</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  @for (role of availableRoles(); track role.id) {
+                    <div class="flex items-center gap-2">
+                      <p-checkbox 
+                        [binary]="true"
+                        [ngModel]="isRoleSelected(role.name)"
+                        (onChange)="toggleRole(role.name)"
+                        [name]="'role_' + role.id"
+                        [inputId]="'role_' + role.id"
+                      ></p-checkbox>
+                      <label [for]="'role_' + role.id" class="text-sm cursor-pointer">{{ role.name }}</label>
                     </div>
-                  </div>
-                }
-              </form>
-            </div>
-            <div class="modal-footer flex justify-end gap-2 p-4 border-t border-border">
-              <p-button label="إلغاء" severity="secondary" (onClick)="closeModal()"></p-button>
-              <p-button [label]="isEditMode() ? 'حفظ التغييرات' : 'إضافة المستخدم'" [loading]="isSaving()" (onClick)="saveUser()" [disabled]="!userForm.form.valid"></p-button>
-            </div>
-          </div>
+                  }
+                </div>
+              </div>
+            }
+          </form>
         </div>
-      }
-
-      <!-- Delete Confirmation Modal -->
-      @if (showDeleteModal()) {
-        <div class="modal-overlay" (click)="closeDeleteModal()">
-          <div class="modal max-w-md bg-card border border-border rounded-xl shadow-xl p-6" (click)="$event.stopPropagation()">
-            <div class="flex flex-col items-center text-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-danger/10 flex items-center justify-center">
-                <i class="pi pi-exclamation-triangle text-danger text-2xl"></i>
-              </div>
-              <div>
-                <h2 class="text-xl font-bold">تأكيد الحذف</h2>
-                <p class="text-muted-foreground mt-2">
-                  هل أنت متأكد من حذف المستخدم <strong>{{ userToDelete()?.userName }}</strong>؟
-                  <br/>لا يمكن التراجع عن هذا الإجراء.
-                </p>
-              </div>
-              <div class="flex gap-3 mt-4 w-full">
-                <p-button label="إلغاء" severity="secondary" (onClick)="closeDeleteModal()" class="flex-1"></p-button>
-                <p-button label="حذف المستخدم" severity="danger" [loading]="isDeleting()" (onClick)="deleteUser()" class="flex-1"></p-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      }
+        <ng-template pTemplate="footer">
+          <p-button label="إلغاء" severity="secondary" (onClick)="closeModal()" [text]="true"></p-button>
+          <p-button [label]="isEditMode() ? 'حفظ التغييرات' : 'إضافة المستخدم'" [loading]="isSaving()" (onClick)="saveUser()" [disabled]="!userForm.form.valid"></p-button>
+        </ng-template>
+      </p-dialog>
     </div>
   `,
   styles: [`
@@ -363,11 +345,6 @@ interface PaginationState {
     .stat-value { font-size: 1.25rem; font-weight: 700; color: hsl(var(--foreground)); }
     .stat-label { font-size: 0.7rem; color: hsl(var(--muted-foreground)); }
     
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem;
-    }
-
     :host ::v-deep {
       .p-datatable .p-datatable-thead > tr > th {
         background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); font-size: 0.75rem; padding: 0.75rem;
@@ -380,6 +357,7 @@ interface PaginationState {
 export class UserManagementComponent implements OnInit {
   private userService = inject(IdentityUserService);
   private roleService = inject(IdentityRoleService);
+  private confirmationService = inject(ConfirmationService);
 
   users = signal<IdentityUserDto[]>([]);
   availableRoles = signal<IdentityRoleDto[]>([]);
@@ -399,7 +377,7 @@ export class UserManagementComponent implements OnInit {
   pagination: PaginationState = { skipCount: 0, maxResultCount: 10, totalCount: 0 };
   selection: IdentityUserDto[] = [];
 
-  showModal = signal(false);
+  showModal = false;
   isEditMode = signal(false);
   showDeleteModal = signal(false);
   userToDelete = signal<IdentityUserDto | null>(null);
@@ -480,7 +458,7 @@ export class UserManagementComponent implements OnInit {
     this.isEditMode.set(false);
     this.editingUser.set(null);
     this.resetForm();
-    this.showModal.set(true);
+    this.showModal = true;
   }
 
   openEditModal(user: IdentityUserDto): void {
@@ -494,13 +472,13 @@ export class UserManagementComponent implements OnInit {
           password: '', isActive: user.isActive, lockoutEnabled: user.lockoutEnabled,
           roleNames: result.items.map(r => r.name)
         };
-        this.showModal.set(true);
+        this.showModal = true;
       }
     });
   }
 
   openRolesModal(user: IdentityUserDto): void { this.openEditModal(user); }
-  closeModal(): void { this.showModal.set(false); this.resetForm(); }
+  closeModal(): void { this.showModal = false; this.resetForm(); }
   resetForm(): void {
     this.formData = {
       userName: '', email: '', name: '', surname: '', phoneNumber: '',
@@ -521,14 +499,14 @@ export class UserManagementComponent implements OnInit {
       const user = this.editingUser()!;
       const dto: IdentityUserUpdateDto = { ...this.formData, concurrencyStamp: user.concurrencyStamp };
       this.userService.update(user.id, dto).subscribe({
-        next: () => { this.isSaving.set(false); this.closeModal(); this.loadUsers(); },
-        error: () => this.isSaving.set(false)
+        next: () => { this.isSaving.set(false); this.showModal = false; this.loadUsers(); },
+        error: () => { this.isSaving.set(false); }
       });
     } else {
       const dto: IdentityUserCreateDto = { ...this.formData };
       this.userService.create(dto).subscribe({
-        next: () => { this.isSaving.set(false); this.closeModal(); this.loadUsers(); },
-        error: () => this.isSaving.set(false)
+        next: () => { this.isSaving.set(false); this.showModal = false; this.loadUsers(); },
+        error: () => { this.isSaving.set(false); }
       });
     }
   }
@@ -541,14 +519,25 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  confirmDelete(user: IdentityUserDto): void { this.userToDelete.set(user); this.showDeleteModal.set(true); }
-  closeDeleteModal(): void { this.showDeleteModal.set(false); }
-  deleteUser(): void {
-    const user = this.userToDelete();
-    if (!user) return;
+  confirmDelete(user: IdentityUserDto): void {
+    this.confirmationService.confirm({
+      message: `هل أنت متأكد من حذف المستخدم <strong>${user.userName}</strong>؟`,
+      header: 'تأكيد الحذف',
+      icon: 'pi pi-exclamation-triangle',
+      rejectLabel: 'إلغاء',
+      acceptLabel: 'حذف',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-secondary p-button-text',
+      accept: () => {
+        this.deleteUser(user.id);
+      }
+    });
+  }
+
+  deleteUser(id: string): void {
     this.isDeleting.set(true);
-    this.userService.delete(user.id).subscribe({
-      next: () => { this.isDeleting.set(false); this.closeDeleteModal(); this.loadUsers(); },
+    this.userService.delete(id).subscribe({
+      next: () => { this.isDeleting.set(false); this.loadUsers(); },
       error: () => this.isDeleting.set(false)
     });
   }
