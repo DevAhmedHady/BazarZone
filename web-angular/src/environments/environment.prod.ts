@@ -4,6 +4,6 @@ export const environment = {
     oAuthConfig: {
         issuer: 'https://api.bazar-zone.com',
         clientId: 'BazarZone_App',
-        scope: 'BazarZone offline_access',
+        scope: 'openid email phone profile roles BazarZone offline_access',
     },
 };

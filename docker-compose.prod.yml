@@ -34,7 +34,9 @@ services:
       - App__SelfUrl=https://api.bazar-zone.com
       - App__HealthUiCheckUrl=http://localhost:8080/health-status
       - App__CorsOrigins=https://bazar-zone.com,https://www.bazar-zone.com
+      - App__RedirectAllowedUrls=https://bazar-zone.com,https://www.bazar-zone.com
       - AuthServer__Authority=https://api.bazar-zone.com
+      - AuthServer__SwaggerClientId=BazarZone_Swagger
       # Use host.docker.internal to reach PostgreSQL on the VPS host
       - ConnectionStrings__Default=Host=host.docker.internal;Port=5432;Database=bazarZoneDb;User ID=postgres;Password=NN66LVNxf70unh4AMWll6;
     expose:
