@@ -31,11 +31,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
       # App configuration
-      - App__SelfUrl=http://api.bazar-zone.com
+      - App__SelfUrl=https://api.bazar-zone.com
       - App__HealthUiCheckUrl=http://localhost:8080/health-status
-      - App__CorsOrigins=http://bazar-zone.com,http://www.bazar-zone.com
-      - App__RedirectAllowedUrls=http://bazar-zone.com,http://www.bazar-zone.com
-      - AuthServer__Authority=http://api.bazar-zone.com
+      - App__CorsOrigins=https://bazar-zone.com,https://www.bazar-zone.com
+      - App__RedirectAllowedUrls=https://bazar-zone.com,https://www.bazar-zone.com
+      - AuthServer__Authority=https://api.bazar-zone.com
       - AuthServer__SwaggerClientId=BazarZone_Swagger
       # Use host.docker.internal to reach PostgreSQL on the VPS host
       - ConnectionStrings__Default=Host=host.docker.internal;Port=5432;Database=bazarZoneDb;User ID=postgres;Password=NN66LVNxf70unh4AMWll6;
