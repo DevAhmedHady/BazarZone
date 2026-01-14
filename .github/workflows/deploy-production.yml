@@ -6,8 +6,10 @@ on:
     paths:
       - "web-angular/**"
       - "src/**"
+      - "gateway/**"
       - "Dockerfile.backend"
       - "docker-compose.prod.yml"
+      - "init-letsencrypt.sh"
       - ".github/workflows/deploy-production.yml"
   workflow_dispatch:
 
