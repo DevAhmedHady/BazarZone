@@ -6,6 +6,7 @@ on:
     paths:
       - "web-angular/**"
       - "src/**"
+      - "test/**"
       - "gateway/**"
       - "Dockerfile.backend"
       - "docker-compose.prod.yml"
