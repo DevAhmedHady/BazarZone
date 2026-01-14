@@ -12,6 +12,10 @@ using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
+using BazarZone.ServiceProviders;
+using BazarZone.Services;
+using BazarZone.Products;
+using BazarZone.Content;
 
 namespace BazarZone.EntityFrameworkCore;
 
@@ -22,6 +26,10 @@ public class BazarZoneDbContext :
     IIdentityDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
+    public DbSet<ServiceProvider> ServiceProviders { get; set; }
+    public DbSet<Service> Services { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<PageContent> PageContents { get; set; }
 
 
     #region Entities from the modules
@@ -72,11 +80,36 @@ public class BazarZoneDbContext :
         
         /* Configure your own tables/entities inside here */
 
-        //builder.Entity<YourEntity>(b =>
-        //{
-        //    b.ToTable(BazarZoneConsts.DbTablePrefix + "YourEntities", BazarZoneConsts.DbSchema);
-        //    b.ConfigureByConvention(); //auto configure for the base class props
-        //    //...
-        //});
+        builder.Entity<ServiceProvider>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "ServiceProviders", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Description).HasMaxLength(2048);
+        });
+
+        builder.Entity<Service>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "Services", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Price).HasColumnType("decimal(18,2)");
+        });
+
+        builder.Entity<Product>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "Products", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Price).HasColumnType("decimal(18,2)");
+        });
+
+        builder.Entity<PageContent>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "PageContents", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Key).IsRequired().HasMaxLength(64);
+            b.HasIndex(x => x.Key).IsUnique();
+        });
     }
 }

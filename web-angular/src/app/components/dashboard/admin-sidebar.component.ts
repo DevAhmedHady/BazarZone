@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LucideAngularModule, LayoutDashboard, Users, ShoppingCart, BarChart3, Settings, Bell, MessageSquare, FileText, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages, Shield } from 'lucide-angular';
+import { LucideAngularModule, LayoutDashboard, Users, ShoppingCart, BarChart3, Settings, Bell, MessageSquare, FileText, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages, Shield, Package, Layers, Briefcase, FileEdit, FolderOpen } from 'lucide-angular';
 import { cn } from '../../lib/utils';
 import { LanguageService } from '../../services/language.service';
 import { ThemeService } from '../../services/theme.service';
@@ -259,6 +259,10 @@ export class AdminSidebarComponent {
     { icon: LayoutDashboard, labelKey: "dashboard", path: "/admin" },
     { icon: Users, labelKey: "users", path: "/admin/users" },
     { icon: Shield, labelKey: "roles", path: "/admin/roles" },
+    { icon: Briefcase, labelKey: "providers", path: "/admin/catalog/providers" },
+    { icon: Layers, labelKey: "services", path: "/admin/catalog/services" },
+    { icon: Package, labelKey: "products", path: "/admin/catalog/products" },
+    { icon: FileEdit, labelKey: "content", path: "/admin/content" },
     { icon: ShoppingCart, labelKey: "orders", path: "/admin/orders" },
     { icon: BarChart3, labelKey: "analytics", path: "/admin/analytics" },
     { icon: FileText, labelKey: "reports", path: "/admin/reports" },

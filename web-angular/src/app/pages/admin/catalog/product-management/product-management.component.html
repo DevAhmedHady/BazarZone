@@ -1,0 +1,189 @@
+<div class="admin-page">
+    <p-toast position="top-center"></p-toast>
+
+    <!-- Page Header -->
+    <div class="page-header mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1
+                    class="text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent">
+                    Products
+                </h1>
+                <p class="text-muted-foreground mt-1">Manage your product catalog</p>
+            </div>
+            <p-button label="Add Product" icon="pi pi-plus" (click)="openNew()"
+                styleClass="p-button-lg shadow-lg hover:shadow-xl transition-shadow">
+            </p-button>
+        </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="card rounded-2xl shadow-lg border border-border/50 overflow-hidden">
+        <p-table [value]="products" [loading]="loading" [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[5, 10, 25, 50]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            styleClass="p-datatable-striped p-datatable-gridlines" responsiveLayout="scroll">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 35%">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-box text-primary"></i>
+                            Product
+                        </div>
+                    </th>
+                    <th style="width: 25%">Provider</th>
+                    <th style="width: 15%">Price</th>
+                    <th style="width: 25%">Actions</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+                <tr class="hover:bg-accent/30 transition-colors">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            @if (item.imageUrl) {
+                            <img [src]="item.imageUrl" alt="Product"
+                                class="w-12 h-12 rounded-xl object-cover shadow-sm">
+                            } @else {
+                            <div
+                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center">
+                                <i class="pi pi-box text-orange-600"></i>
+                            </div>
+                            }
+                            <div>
+                                <span class="font-semibold">{{item.name}}</span>
+                                @if (item.description) {
+                                <div class="text-xs text-muted-foreground truncate max-w-xs">{{item.description}}</div>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-accent">
+                            {{getProviderName(item.serviceProviderId)}}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-lg font-bold text-orange-600">{{item.price | currency}}</span>
+                    </td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="success"
+                                (click)="editProduct(item)" pTooltip="Edit">
+                            </p-button>
+                            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+                                (click)="deleteProduct(item)" pTooltip="Delete">
+                            </p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4" class="text-center py-12">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="w-20 h-20 rounded-full bg-accent flex items-center justify-center">
+                                <i class="pi pi-box text-4xl text-muted-foreground"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg font-semibold">No products found</p>
+                                <p class="text-muted-foreground">Start by adding your first product</p>
+                            </div>
+                            <p-button label="Add Product" icon="pi pi-plus" (click)="openNew()"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Premium Dialog -->
+    <p-dialog [(visible)]="dialogVisible" [style]="{width: '550px', maxWidth: '95vw'}"
+        [header]="isEdit ? 'Edit Product' : 'New Product'" [modal]="true" [draggable]="false" [resizable]="false"
+        styleClass="premium-dialog">
+
+        <ng-template pTemplate="header">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
+                    <i class="pi pi-box text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold">{{isEdit ? 'Edit Product' : 'New Product'}}</h3>
+                    <p class="text-sm text-muted-foreground">{{isEdit ? 'Update product details' : 'Add a new product to
+                        the catalog'}}</p>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="space-y-6 py-4">
+            <!-- Provider Selection -->
+            <div class="form-field">
+                <label for="provider" class="form-label">
+                    <i class="pi pi-building mr-2 text-primary"></i>Provider *
+                </label>
+                <p-select [options]="providers" [(ngModel)]="product.serviceProviderId" optionLabel="name"
+                    optionValue="id" id="provider" placeholder="Select a Provider" [style]="{width: '100%'}"
+                    styleClass="w-full">
+                </p-select>
+            </div>
+
+            <!-- Product Name -->
+            <div class="form-field">
+                <label for="name" class="form-label">
+                    <i class="pi pi-tag mr-2 text-primary"></i>Product Name *
+                </label>
+                <input type="text" pInputText id="name" [(ngModel)]="product.name" class="w-full"
+                    placeholder="Enter product name" required />
+            </div>
+
+            <!-- Description -->
+            <div class="form-field">
+                <label for="description" class="form-label">
+                    <i class="pi pi-align-left mr-2 text-primary"></i>Description
+                </label>
+                <textarea id="description" pInputTextarea [(ngModel)]="product.description" rows="3" class="w-full"
+                    placeholder="Describe the product features...">
+                </textarea>
+            </div>
+
+            <!-- Image URL with Preview -->
+            <div class="form-field">
+                <label for="imageUrl" class="form-label">
+                    <i class="pi pi-image mr-2 text-primary"></i>Image URL
+                </label>
+                <input type="url" pInputText id="imageUrl" [(ngModel)]="product.imageUrl" class="w-full"
+                    placeholder="https://example.com/product-image.jpg" />
+                @if (product.imageUrl) {
+                <div class="mt-3 p-3 rounded-xl bg-accent/50 border border-border">
+                    <p class="text-xs text-muted-foreground mb-2">Image Preview</p>
+                    <img [src]="product.imageUrl" alt="Preview" class="h-24 rounded-lg object-cover">
+                </div>
+                }
+            </div>
+
+            <!-- Price -->
+            <div class="form-field">
+                <label for="price" class="form-label">
+                    <i class="pi pi-dollar mr-2 text-primary"></i>Price
+                </label>
+                <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"
+                    [style]="{width: '100%'}" inputStyleClass="w-full">
+                </p-inputNumber>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div class="flex justify-end gap-3 pt-4 border-t border-border">
+                <p-button label="Cancel" icon="pi pi-times" (click)="dialogVisible = false" [text]="true"
+                    severity="secondary">
+                </p-button>
+                <p-button [label]="isEdit ? 'Update Product' : 'Create Product'" icon="pi pi-check"
+                    (click)="saveProduct()" styleClass="shadow-lg">
+                </p-button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>

@@ -1,0 +1,45 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4" [appContent]="'catalog_home_title'"
+            defaultContent="Find the Best Service Providers">Find the Best Service Providers</h1>
+        <p class="text-lg text-gray-600" [appContent]="'catalog_home_subtitle'"
+            defaultContent="Browse our catalog of professionals and businesses">Browse our catalog of professionals and
+            businesses</p>
+    </div>
+
+    <div class="mb-8 flex justify-center">
+        <div class="flex gap-2 w-full max-w-lg">
+            <input type="text" [(ngModel)]="filter" (keyup.enter)="onSearch()" placeholder="Search providers..."
+                class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button (click)="onSearch()"
+                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Search</button>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="text-center py-12">
+        <p class="text-gray-500">Loading providers...</p>
+    </div>
+
+    <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a *ngFor="let provider of providers" [routerLink]="['/catalog', provider.id]"
+            class="block transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden h-full border border-gray-100">
+                <div class="h-48 bg-gray-200 flex items-center justify-center overflow-hidden">
+                    <img *ngIf="provider.logoUrl" [src]="provider.logoUrl" alt="{{provider.name}}"
+                        class="w-full h-full object-cover">
+                    <span *ngIf="!provider.logoUrl"
+                        class="text-4xl text-gray-400 font-bold">{{provider.name.charAt(0)}}</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{provider.name}}</h3>
+                    <p class="text-sm text-blue-600 font-medium mb-3">{{provider.category || 'Service Provider'}}</p>
+                    <p class="text-gray-600 line-clamp-3">{{provider.description || 'No description available.'}}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div *ngIf="!loading && providers.length === 0" class="text-center py-12">
+        <p class="text-gray-500">No providers found matching your search.</p>
+    </div>
+</div>

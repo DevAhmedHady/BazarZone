@@ -20,6 +20,16 @@
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
+        },
+        {
+            "name": "Run API (Antigravity)",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "dotnet run --project ${workspaceFolder}/src/BazarZone.HttpApi.Host/BazarZone.HttpApi.Host.csproj",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
         }
     ]
 }

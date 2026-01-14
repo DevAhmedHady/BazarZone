@@ -16,9 +16,13 @@ namespace BazarZone;
     typeof(AbpFeatureManagementApplicationModule),
     typeof(AbpIdentityApplicationModule),
     typeof(AbpAccountApplicationModule),
-    typeof(AbpSettingManagementApplicationModule)
+    typeof(AbpSettingManagementApplicationModule),
+    typeof(AbpMapperlyModule)
     )]
 public class BazarZoneApplicationModule : AbpModule
 {
+    public override void ConfigureServices(ServiceConfigurationContext context)
+    {
 
+    }
 }

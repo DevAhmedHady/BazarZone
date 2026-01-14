@@ -59,6 +59,11 @@ export const translations: Translations = {
     forgotPassword: { en: "Forgot password?", ar: "نسيت كلمة المرور؟" },
     userManagement: { en: "User Management", ar: "إدارة المستخدمين" },
     roleManagement: { en: "Role Management", ar: "إدارة الأدوار" },
+    catalog: { en: "Catalog", ar: "الكتالوج" },
+    providers: { en: "Providers", ar: "مقدمي الخدمات" },
+    services: { en: "Services", ar: "الخدمات" },
+    products: { en: "Products", ar: "المنتجات" },
+    content: { en: "Content", ar: "المحتوى" },
 };
 
 @Injectable({

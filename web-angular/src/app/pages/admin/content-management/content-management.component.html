@@ -1,0 +1,173 @@
+<div class="admin-page">
+    <p-toast position="top-center"></p-toast>
+
+    <!-- Page Header -->
+    <div class="page-header mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1
+                    class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    Content Management
+                </h1>
+                <p class="text-muted-foreground mt-1">Manage website content and text elements</p>
+            </div>
+            <p-button label="Add Content" icon="pi pi-plus" (click)="openNew()"
+                styleClass="p-button-lg shadow-lg hover:shadow-xl transition-shadow">
+            </p-button>
+        </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="card rounded-2xl shadow-lg border border-border/50 overflow-hidden">
+        <p-table [value]="contents" [loading]="loading" [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[5, 10, 25, 50]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} items"
+            styleClass="p-datatable-striped p-datatable-gridlines" responsiveLayout="scroll">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 20%">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-key text-primary"></i>
+                            Key
+                        </div>
+                    </th>
+                    <th style="width: 15%">Section</th>
+                    <th style="width: 10%">Type</th>
+                    <th style="width: 35%">Value</th>
+                    <th style="width: 20%">Actions</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+                <tr class="hover:bg-accent/30 transition-colors">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                                <i class="pi pi-file-edit text-indigo-600"></i>
+                            </div>
+                            <code class="text-sm font-mono bg-accent px-2 py-1 rounded">{{item.key}}</code>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-accent">
+                            {{item.section || 'General'}}
+                        </span>
+                    </td>
+                    <td>
+                        <span
+                            [class]="'inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ' + getTypeBadgeClass(item.type)">
+                            <i [class]="getTypeIcon(item.type)"></i>
+                            {{getTypeLabel(item.type)}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="truncate max-w-xs text-muted-foreground" [title]="item.value">
+                            {{item.value}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="success"
+                                (click)="editContent(item)" pTooltip="Edit">
+                            </p-button>
+                            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+                                (click)="deleteContent(item)" pTooltip="Delete">
+                            </p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5" class="text-center py-12">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="w-20 h-20 rounded-full bg-accent flex items-center justify-center">
+                                <i class="pi pi-file-edit text-4xl text-muted-foreground"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg font-semibold">No content found</p>
+                                <p class="text-muted-foreground">Start by adding your first content item</p>
+                            </div>
+                            <p-button label="Add Content" icon="pi pi-plus" (click)="openNew()"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Premium Dialog -->
+    <p-dialog [(visible)]="dialogVisible" [style]="{width: '550px', maxWidth: '95vw'}"
+        [header]="isEdit ? 'Edit Content' : 'New Content'" [modal]="true" [draggable]="false" [resizable]="false"
+        styleClass="premium-dialog">
+
+        <ng-template pTemplate="header">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <i class="pi pi-file-edit text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold">{{isEdit ? 'Edit Content' : 'New Content'}}</h3>
+                    <p class="text-sm text-muted-foreground">{{isEdit ? 'Update content details' : 'Add new content to
+                        your website'}}</p>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="space-y-6 py-4">
+            <!-- Key Field -->
+            <div class="form-field">
+                <label for="key" class="form-label">
+                    <i class="pi pi-key mr-2 text-primary"></i>Content Key *
+                </label>
+                <input type="text" pInputText id="key" [(ngModel)]="content.key" class="w-full font-mono"
+                    placeholder="home_hero_title" required />
+                <small class="text-muted-foreground">Unique identifier used to reference this content in code</small>
+            </div>
+
+            <!-- Section Field -->
+            <div class="form-field">
+                <label for="section" class="form-label">
+                    <i class="pi pi-folder mr-2 text-primary"></i>Section
+                </label>
+                <input type="text" pInputText id="section" [(ngModel)]="content.section" class="w-full"
+                    placeholder="e.g. Home, About, Footer" />
+            </div>
+
+            <!-- Type Selection -->
+            <div class="form-field">
+                <label for="type" class="form-label">
+                    <i class="pi pi-tag mr-2 text-primary"></i>Content Type
+                </label>
+                <p-select [options]="types" [(ngModel)]="content.type" optionLabel="label" optionValue="value" id="type"
+                    [style]="{width: '100%'}" styleClass="w-full">
+                </p-select>
+            </div>
+
+            <!-- Value Field -->
+            <div class="form-field">
+                <label for="value" class="form-label">
+                    <i class="pi pi-align-left mr-2 text-primary"></i>Value
+                </label>
+                <textarea id="value" pInputTextarea [(ngModel)]="content.value" rows="5" class="w-full"
+                    placeholder="Enter the content value...">
+                </textarea>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div class="flex justify-end gap-3 pt-4 border-t border-border">
+                <p-button label="Cancel" icon="pi pi-times" (click)="dialogVisible = false" [text]="true"
+                    severity="secondary">
+                </p-button>
+                <p-button [label]="isEdit ? 'Update Content' : 'Create Content'" icon="pi pi-check"
+                    (click)="saveContent()" styleClass="shadow-lg">
+                </p-button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>

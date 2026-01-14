@@ -204,22 +204,42 @@ public class BazarZoneHttpApiHostModule : AbpModule
 
     private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
     {
+        var hostingEnvironment = context.Services.GetHostingEnvironment();
+        
         context.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder
-                    .WithOrigins(
-                        configuration["App:CorsOrigins"]?
-                            .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                            .Select(o => o.Trim().RemovePostFix("/"))
-                            .ToArray() ?? Array.Empty<string>()
-                    )
-                    .WithAbpExposedHeaders()
-                    .SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
+                if (hostingEnvironment.IsDevelopment())
+                {
+                    // In development, allow all localhost origins (any port)
+                    builder
+                        .SetIsOriginAllowed(origin =>
+                        {
+                            var uri = new Uri(origin);
+                            return uri.Host == "localhost" || uri.Host == "127.0.0.1";
+                        })
+                        .WithAbpExposedHeaders()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+                else
+                {
+                    // In production, use configured origins
+                    builder
+                        .WithOrigins(
+                            configuration["App:CorsOrigins"]?
+                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                                .Select(o => o.Trim().RemovePostFix("/"))
+                                .ToArray() ?? Array.Empty<string>()
+                        )
+                        .WithAbpExposedHeaders()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
             });
         });
     }

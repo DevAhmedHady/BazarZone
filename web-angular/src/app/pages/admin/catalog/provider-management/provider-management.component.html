@@ -1,0 +1,225 @@
+<div class="admin-page">
+    <p-toast position="top-center"></p-toast>
+    <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+    <!-- Page Header -->
+    <div class="page-header mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1
+                    class="text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                    Service Providers
+                </h1>
+                <p class="text-muted-foreground mt-1">Manage your service providers and their details</p>
+            </div>
+            <p-button label="Add Provider" icon="pi pi-plus" (click)="openNew()"
+                styleClass="p-button-lg shadow-lg hover:shadow-xl transition-shadow">
+            </p-button>
+        </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="card rounded-2xl shadow-lg border border-border/50 overflow-hidden">
+        <p-table [value]="providers" [loading]="loading" [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[5, 10, 25, 50]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} providers"
+            [globalFilterFields]="['name', 'category', 'contactEmail']"
+            styleClass="p-datatable-striped p-datatable-gridlines" responsiveLayout="scroll">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 25%">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-building text-primary"></i>
+                            Name
+                        </div>
+                    </th>
+                    <th style="width: 15%">Category</th>
+                    <th style="width: 20%">Email</th>
+                    <th style="width: 15%">Phone</th>
+                    <th style="width: 10%">Status</th>
+                    <th style="width: 15%">Actions</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-provider>
+                <tr class="hover:bg-accent/30 transition-colors">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
+                                <i class="pi pi-building text-primary"></i>
+                            </div>
+                            <div>
+                                <span class="font-semibold">{{provider.name}}</span>
+                                @if (provider.websiteUrl) {
+                                <div class="text-xs text-muted-foreground">{{provider.websiteUrl}}</div>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-accent">
+                            {{provider.category || 'Uncategorized'}}
+                        </span>
+                    </td>
+                    <td class="text-muted-foreground">{{provider.contactEmail || '-'}}</td>
+                    <td class="text-muted-foreground">{{provider.contactPhone || '-'}}</td>
+                    <td>
+                        <span [class]="'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold ' + 
+                            (provider.isActive ? 'bg-green-500/10 text-green-600' : 'bg-red-500/10 text-red-600')">
+                            <span
+                                [class]="'w-2 h-2 rounded-full ' + (provider.isActive ? 'bg-green-500' : 'bg-red-500')"></span>
+                            {{provider.isActive ? 'Active' : 'Inactive'}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="success"
+                                (click)="editProvider(provider)" pTooltip="Edit">
+                            </p-button>
+                            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+                                (click)="deleteProvider(provider)" pTooltip="Delete">
+                            </p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="6" class="text-center py-12">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="w-20 h-20 rounded-full bg-accent flex items-center justify-center">
+                                <i class="pi pi-building text-4xl text-muted-foreground"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg font-semibold">No providers found</p>
+                                <p class="text-muted-foreground">Get started by adding your first provider</p>
+                            </div>
+                            <p-button label="Add Provider" icon="pi pi-plus" (click)="openNew()"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Premium Dialog -->
+    <p-dialog [(visible)]="dialogVisible" [style]="{width: '600px', maxWidth: '95vw'}"
+        [header]="isEdit ? 'Edit Provider' : 'New Provider'" [modal]="true" [draggable]="false" [resizable]="false"
+        styleClass="premium-dialog">
+
+        <ng-template pTemplate="header">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
+                    <i class="pi pi-building text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold">{{isEdit ? 'Edit Provider' : 'New Provider'}}</h3>
+                    <p class="text-sm text-muted-foreground">{{isEdit ? 'Update provider information' : 'Add a new
+                        service provider'}}</p>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="space-y-6 py-4">
+            <!-- Name Field -->
+            <div class="form-field">
+                <label for="name" class="form-label">
+                    <i class="pi pi-user mr-2 text-primary"></i>Provider Name *
+                </label>
+                <input type="text" pInputText id="name" [(ngModel)]="provider.name" class="w-full"
+                    placeholder="Enter provider name" required />
+            </div>
+
+            <!-- Category Field -->
+            <div class="form-field">
+                <label for="category" class="form-label">
+                    <i class="pi pi-tag mr-2 text-primary"></i>Category
+                </label>
+                <input type="text" pInputText id="category" [(ngModel)]="provider.category" class="w-full"
+                    placeholder="e.g. Technology, Healthcare" />
+            </div>
+
+            <!-- Description Field -->
+            <div class="form-field">
+                <label for="description" class="form-label">
+                    <i class="pi pi-align-left mr-2 text-primary"></i>Description
+                </label>
+                <textarea id="description" pInputTextarea [(ngModel)]="provider.description" rows="3" class="w-full"
+                    placeholder="Describe the provider's services...">
+                </textarea>
+            </div>
+
+            <!-- Logo URL Field -->
+            <div class="form-field">
+                <label for="logoUrl" class="form-label">
+                    <i class="pi pi-image mr-2 text-primary"></i>Logo URL
+                </label>
+                <input type="url" pInputText id="logoUrl" [(ngModel)]="provider.logoUrl" class="w-full"
+                    placeholder="https://example.com/logo.png" />
+            </div>
+
+            <!-- Contact Info Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-field">
+                    <label for="contactEmail" class="form-label">
+                        <i class="pi pi-envelope mr-2 text-primary"></i>Email
+                    </label>
+                    <input type="email" pInputText id="contactEmail" [(ngModel)]="provider.contactEmail" class="w-full"
+                        placeholder="contact@example.com" />
+                </div>
+                <div class="form-field">
+                    <label for="contactPhone" class="form-label">
+                        <i class="pi pi-phone mr-2 text-primary"></i>Phone
+                    </label>
+                    <input type="tel" pInputText id="contactPhone" [(ngModel)]="provider.contactPhone" class="w-full"
+                        placeholder="+1 234 567 890" />
+                </div>
+            </div>
+
+            <!-- Address Field -->
+            <div class="form-field">
+                <label for="address" class="form-label">
+                    <i class="pi pi-map-marker mr-2 text-primary"></i>Address
+                </label>
+                <input type="text" pInputText id="address" [(ngModel)]="provider.address" class="w-full"
+                    placeholder="123 Main St, City, Country" />
+            </div>
+
+            <!-- Website Field -->
+            <div class="form-field">
+                <label for="websiteUrl" class="form-label">
+                    <i class="pi pi-globe mr-2 text-primary"></i>Website
+                </label>
+                <input type="url" pInputText id="websiteUrl" [(ngModel)]="provider.websiteUrl" class="w-full"
+                    placeholder="https://www.example.com" />
+            </div>
+
+            <!-- Status Toggle -->
+            <div class="form-field">
+                <div class="flex items-center gap-3 p-4 rounded-xl bg-accent/50 border border-border">
+                    <p-checkbox [(ngModel)]="provider.isActive" [binary]="true" inputId="isActive">
+                    </p-checkbox>
+                    <label for="isActive" class="cursor-pointer">
+                        <span class="font-medium">Active Status</span>
+                        <p class="text-sm text-muted-foreground">Enable this provider to be visible in the catalog</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div class="flex justify-end gap-3 pt-4 border-t border-border">
+                <p-button label="Cancel" icon="pi pi-times" (click)="dialogVisible = false" [text]="true"
+                    severity="secondary">
+                </p-button>
+                <p-button [label]="isEdit ? 'Update Provider' : 'Create Provider'" icon="pi pi-check"
+                    (click)="saveProvider()" styleClass="shadow-lg">
+                </p-button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>

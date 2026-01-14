@@ -1,0 +1,182 @@
+<div class="admin-page">
+    <p-toast position="top-center"></p-toast>
+
+    <!-- Page Header -->
+    <div class="page-header mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                    Services
+                </h1>
+                <p class="text-muted-foreground mt-1">Manage services offered by your providers</p>
+            </div>
+            <p-button label="Add Service" icon="pi pi-plus" (click)="openNew()"
+                styleClass="p-button-lg shadow-lg hover:shadow-xl transition-shadow">
+            </p-button>
+        </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="card rounded-2xl shadow-lg border border-border/50 overflow-hidden">
+        <p-table [value]="services" [loading]="loading" [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[5, 10, 25, 50]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} services"
+            styleClass="p-datatable-striped p-datatable-gridlines" responsiveLayout="scroll">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 30%">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-cog text-primary"></i>
+                            Service Name
+                        </div>
+                    </th>
+                    <th style="width: 25%">Provider</th>
+                    <th style="width: 20%">Price</th>
+                    <th style="width: 25%">Actions</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+                <tr class="hover:bg-accent/30 transition-colors">
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+                                <i class="pi pi-cog text-blue-600"></i>
+                            </div>
+                            <div>
+                                <span class="font-semibold">{{item.name}}</span>
+                                @if (item.description) {
+                                <div class="text-xs text-muted-foreground truncate max-w-xs">{{item.description}}</div>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-accent">
+                            {{getProviderName(item.serviceProviderId)}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg font-bold text-primary">{{item.price | currency}}</span>
+                            @if (item.priceUnit) {
+                            <span class="text-sm text-muted-foreground">/ {{item.priceUnit}}</span>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="success"
+                                (click)="editService(item)" pTooltip="Edit">
+                            </p-button>
+                            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+                                (click)="deleteService(item)" pTooltip="Delete">
+                            </p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4" class="text-center py-12">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="w-20 h-20 rounded-full bg-accent flex items-center justify-center">
+                                <i class="pi pi-cog text-4xl text-muted-foreground"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg font-semibold">No services found</p>
+                                <p class="text-muted-foreground">Start by adding your first service</p>
+                            </div>
+                            <p-button label="Add Service" icon="pi pi-plus" (click)="openNew()"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Premium Dialog -->
+    <p-dialog [(visible)]="dialogVisible" [style]="{width: '550px', maxWidth: '95vw'}"
+        [header]="isEdit ? 'Edit Service' : 'New Service'" [modal]="true" [draggable]="false" [resizable]="false"
+        styleClass="premium-dialog">
+
+        <ng-template pTemplate="header">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
+                    <i class="pi pi-cog text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold">{{isEdit ? 'Edit Service' : 'New Service'}}</h3>
+                    <p class="text-sm text-muted-foreground">{{isEdit ? 'Update service details' : 'Create a new service
+                        offering'}}</p>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="space-y-6 py-4">
+            <!-- Provider Selection -->
+            <div class="form-field">
+                <label for="provider" class="form-label">
+                    <i class="pi pi-building mr-2 text-primary"></i>Provider *
+                </label>
+                <p-select [options]="providers" [(ngModel)]="service.serviceProviderId" optionLabel="name"
+                    optionValue="id" id="provider" placeholder="Select a Provider" [style]="{width: '100%'}"
+                    styleClass="w-full">
+                </p-select>
+            </div>
+
+            <!-- Service Name -->
+            <div class="form-field">
+                <label for="name" class="form-label">
+                    <i class="pi pi-pencil mr-2 text-primary"></i>Service Name *
+                </label>
+                <input type="text" pInputText id="name" [(ngModel)]="service.name" class="w-full"
+                    placeholder="Enter service name" required />
+            </div>
+
+            <!-- Description -->
+            <div class="form-field">
+                <label for="description" class="form-label">
+                    <i class="pi pi-align-left mr-2 text-primary"></i>Description
+                </label>
+                <textarea id="description" pInputTextarea [(ngModel)]="service.description" rows="3" class="w-full"
+                    placeholder="Describe what this service includes...">
+                </textarea>
+            </div>
+
+            <!-- Price Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-field">
+                    <label for="price" class="form-label">
+                        <i class="pi pi-dollar mr-2 text-primary"></i>Price
+                    </label>
+                    <p-inputNumber id="price" [(ngModel)]="service.price" mode="currency" currency="USD" locale="en-US"
+                        [style]="{width: '100%'}" inputStyleClass="w-full">
+                    </p-inputNumber>
+                </div>
+                <div class="form-field">
+                    <label for="priceUnit" class="form-label">
+                        <i class="pi pi-clock mr-2 text-primary"></i>Price Unit
+                    </label>
+                    <input type="text" pInputText id="priceUnit" [(ngModel)]="service.priceUnit" class="w-full"
+                        placeholder="e.g. per hour, per session" />
+                </div>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div class="flex justify-end gap-3 pt-4 border-t border-border">
+                <p-button label="Cancel" icon="pi pi-times" (click)="dialogVisible = false" [text]="true"
+                    severity="secondary">
+                </p-button>
+                <p-button [label]="isEdit ? 'Update Service' : 'Create Service'" icon="pi pi-check"
+                    (click)="saveService()" styleClass="shadow-lg">
+                </p-button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>

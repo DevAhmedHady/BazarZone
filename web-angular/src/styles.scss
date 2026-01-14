@@ -385,3 +385,140 @@
     @apply backdrop-blur-[4px] bg-black/40 !important;
   }
 }
+
+/* Premium Form Styles */
+.form-field {
+  @apply flex flex-col gap-2;
+}
+
+.form-label {
+  @apply text-sm font-medium text-foreground flex items-center;
+}
+
+.admin-page {
+  @apply p-6;
+}
+
+/* Enhanced PrimeNG Dialog Styling */
+.premium-dialog {
+  .p-dialog-header {
+    @apply border-b border-border pb-4;
+  }
+  
+  .p-dialog-content {
+    @apply pt-2;
+  }
+
+  .p-dialog-footer {
+    @apply pt-0 pb-4 px-6;
+  }
+}
+
+/* PrimeNG Input Enhancements */
+.p-inputtext {
+  @apply rounded-lg border-border bg-background text-foreground;
+  
+  &:focus {
+    @apply ring-2 ring-primary/30 border-primary;
+  }
+}
+
+.p-select {
+  @apply rounded-lg;
+  
+  .p-select-label {
+    @apply text-foreground;
+  }
+}
+
+.p-inputtextarea {
+  @apply rounded-lg border-border bg-background text-foreground resize-none;
+  
+  &:focus {
+    @apply ring-2 ring-primary/30 border-primary;
+  }
+}
+
+.p-checkbox {
+  .p-checkbox-box {
+    @apply rounded-md;
+  }
+  
+  &.p-checkbox-checked .p-checkbox-box {
+    @apply bg-primary border-primary;
+  }
+}
+
+/* PrimeNG Table Enhancements */
+.p-datatable {
+  .p-datatable-header {
+    @apply bg-transparent border-none;
+  }
+  
+  .p-datatable-thead > tr > th {
+    @apply bg-accent/50 text-foreground font-semibold border-b border-border;
+  }
+  
+  .p-datatable-tbody > tr {
+    @apply border-b border-border/50;
+    
+    &:hover {
+      @apply bg-accent/30;
+    }
+  }
+  
+  .p-datatable-tbody > tr > td {
+    @apply py-4;
+  }
+}
+
+/* PrimeNG Button Enhancements */
+.p-button {
+  @apply rounded-lg font-medium transition-all duration-200;
+  
+  &:not(.p-button-text):not(.p-button-outlined) {
+    @apply shadow-sm hover:shadow-md;
+  }
+}
+
+.p-button-success {
+  @apply bg-green-600 hover:bg-green-700;
+}
+
+.p-button-danger,
+.p-button-warning {
+  &.p-button-text {
+    @apply hover:bg-red-500/10;
+  }
+}
+
+/* Toast Styling */
+.p-toast {
+  .p-toast-message-success {
+    @apply bg-green-50 border-green-200;
+    
+    .p-toast-message-icon,
+    .p-toast-icon-close {
+      @apply text-green-600;
+    }
+  }
+  
+  .p-toast-message-error {
+    @apply bg-red-50 border-red-200;
+    
+    .p-toast-message-icon,
+    .p-toast-icon-close {
+      @apply text-red-600;
+    }
+  }
+}
+
+.dark {
+  .p-toast-message-success {
+    @apply bg-green-900/30 border-green-800;
+  }
+  
+  .p-toast-message-error {
+    @apply bg-red-900/30 border-red-800;
+  }
+}
