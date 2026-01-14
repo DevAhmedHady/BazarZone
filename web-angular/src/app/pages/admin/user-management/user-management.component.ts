@@ -325,6 +325,9 @@ interface PaginationState {
           <p-button [label]="isEditMode() ? 'حفظ التغييرات' : 'إضافة المستخدم'" [loading]="isSaving()" (onClick)="saveUser()" [disabled]="!userForm.form.valid"></p-button>
         </ng-template>
       </p-dialog>
+
+      <!-- Confirm Dialog -->
+      <p-confirmDialog></p-confirmDialog>
     </div>
   `,
   styles: [`

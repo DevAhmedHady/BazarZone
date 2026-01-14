@@ -21,7 +21,7 @@ import { finalize } from 'rxjs/operators';
         CommonModule, FormsModule, TableModule, ButtonModule, DialogModule,
         InputTextModule, TextareaModule, ConfirmDialogModule, ToastModule, CheckboxModule, TooltipModule
     ],
-    providers: [ConfirmationService],
+    providers: [ConfirmationService, MessageService],
     templateUrl: './provider-management.component.html'
 })
 export class ProviderManagementComponent implements OnInit {

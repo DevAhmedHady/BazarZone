@@ -18,6 +18,7 @@ import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -35,7 +36,8 @@ import { ConfirmationService } from 'primeng/api';
     TagModule,
     IconFieldModule,
     InputIconModule,
-    DialogModule
+    DialogModule,
+    ConfirmDialogModule
   ],
   providers: [ConfirmationService],
   template: `
@@ -166,6 +168,9 @@ import { ConfirmationService } from 'primeng/api';
           <p-button [label]="isEditMode() ? 'حفظ التغييرات' : 'إضافة الدور'" [loading]="isSaving()" (onClick)="saveRole()" [disabled]="!formData.name"></p-button>
         </ng-template>
       </p-dialog>
+
+      <!-- Confirm Dialog -->
+      <p-confirmDialog></p-confirmDialog>
     </div>
   `,
   styles: [`

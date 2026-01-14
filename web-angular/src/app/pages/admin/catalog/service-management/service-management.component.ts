@@ -22,6 +22,7 @@ import { finalize } from 'rxjs/operators';
         CommonModule, FormsModule, TableModule, ButtonModule, DialogModule,
         InputTextModule, TextareaModule, SelectModule, ToastModule, InputNumberModule, TooltipModule
     ],
+    providers: [MessageService],
     templateUrl: './service-management.component.html'
 })
 export class ServiceManagementComponent implements OnInit {

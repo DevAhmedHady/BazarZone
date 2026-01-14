@@ -20,6 +20,7 @@ import { finalize } from 'rxjs/operators';
         CommonModule, FormsModule, TableModule, ButtonModule, DialogModule,
         InputTextModule, TextareaModule, ToastModule, SelectModule, TooltipModule
     ],
+    providers: [MessageService],
     templateUrl: './content-management.component.html'
 })
 export class ContentManagementComponent implements OnInit {
