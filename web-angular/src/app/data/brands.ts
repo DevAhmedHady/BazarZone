@@ -194,12 +194,12 @@ export const brands: Brand[] = [
         description: "معدات لياقة بدنية منزلية متطورة",
         founded: "2016",
         products: [
-            { id: "pf-1", name: "دراجة تمرين ذكية", description: "دراجة متصلة بالتطبيق", image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=400&h=300&fit=crop", brandId: "pulse-fitness", price: "3,499 ريال", inStock: true },
+            { id: "pf-1", name: "دراجة تمرين ذكية", description: "دراجة متصلة بالتطبيق", image: "", brandId: "pulse-fitness", price: "3,499 ريال", inStock: true },
             { id: "pf-2", name: "أوزان قابلة للتعديل", description: "دمبل ذكي قابل للتعديل", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop", brandId: "pulse-fitness", price: "1,299 ريال", inStock: true },
             { id: "pf-3", name: "سجادة تمرين ذكية", description: "سجادة يوغا بمستشعرات", image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=300&fit=crop", brandId: "pulse-fitness", price: "599 ريال", inStock: true },
             { id: "pf-4", name: "أشرطة مقاومة", description: "مجموعة أشرطة تمرين", image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=400&h=300&fit=crop", brandId: "pulse-fitness", price: "199 ريال", inStock: true },
             { id: "pf-5", name: "ساعة لياقة بدنية", description: "ساعة ذكية رياضية", image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400&h=300&fit=crop", brandId: "pulse-fitness", price: "899 ريال", inStock: true },
-            { id: "pf-6", name: "جهاز مشي مدمج", description: "جهاز مشي قابل للطي", image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=400&h=300&fit=crop", brandId: "pulse-fitness", price: "4,999 ريال", inStock: true },
+            { id: "pf-6", name: "جهاز مشي مدمج", description: "جهاز مشي قابل للطي", image: "", brandId: "pulse-fitness", price: "4,999 ريال", inStock: true },
         ],
     },
     {
