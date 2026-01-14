@@ -40,15 +40,6 @@ jobs:
           tags: bazarzone-api:latest
           outputs: type=docker,dest=/tmp/bazarzone-api.tar
 
-      - name: Build Migrator Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile.migrator
-          push: false
-          tags: bazarzone-migrator:latest
-          outputs: type=docker,dest=/tmp/bazarzone-migrator.tar
-
       - name: Copy Images to VPS
         env:
           SSHPASS: ${{ secrets.VPS_PASSWORD }}
@@ -64,9 +55,6 @@ jobs:
           # Copy backend image
           sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-api.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
           
-          # Copy migrator image
-          sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-migrator.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
-
           # Copy the gateway configuration folder
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "rm -rf ~/bazarzone/gateway"
           sshpass -e scp -o StrictHostKeyChecking=no -r ./gateway ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
@@ -89,13 +77,8 @@ jobs:
             # Load images
             docker load -i images/bazarzone-frontend.tar
             docker load -i images/bazarzone-api.tar
-            docker load -i images/bazarzone-migrator.tar
             
             # Restart services
-            # We run migrator first
-            docker compose -f docker-compose.prod.yml up migrator
-            
-            # Then start the rest in detached mode
             docker compose -f docker-compose.prod.yml up -d
             
             # Cleanup
