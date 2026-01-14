@@ -1,0 +1,27 @@
+FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
+WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+
+COPY ["src/BazarZone.DbMigrator/BazarZone.DbMigrator.csproj", "src/BazarZone.DbMigrator/"]
+COPY ["src/BazarZone.Application.Contracts/BazarZone.Application.Contracts.csproj", "src/BazarZone.Application.Contracts/"]
+COPY ["src/BazarZone.Domain/BazarZone.Domain.csproj", "src/BazarZone.Domain/"]
+COPY ["src/BazarZone.Domain.Shared/BazarZone.Domain.Shared.csproj", "src/BazarZone.Domain.Shared/"]
+COPY ["src/BazarZone.EntityFrameworkCore/BazarZone.EntityFrameworkCore.csproj", "src/BazarZone.EntityFrameworkCore/"]
+
+RUN dotnet restore "src/BazarZone.DbMigrator/BazarZone.DbMigrator.csproj"
+
+COPY . .
+WORKDIR "/src/src/BazarZone.DbMigrator"
+RUN dotnet build "BazarZone.DbMigrator.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "BazarZone.DbMigrator.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "BazarZone.DbMigrator.dll"]

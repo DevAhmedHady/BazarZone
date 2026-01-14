@@ -21,6 +21,16 @@ services:
     expose:
       - "80"
 
+  migrator:
+    image: bazarzone-migrator:latest
+    container_name: bazarzone-migrator
+    restart: "no"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - gateway # waiting for network, or strictly database if we had one in compose. 
+      # Since DB is likely external or managed, we just run it.
+
   api:
     image: bazarzone-api:latest
     container_name: bazarzone-api
