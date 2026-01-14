@@ -1,0 +1,36 @@
+services:
+  gateway:
+    image: nginx:alpine
+    container_name: bazarzone-gateway
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./gateway/ssl:/etc/nginx/ssl
+      - ./gateway/certbot/conf:/etc/letsencrypt
+      - ./gateway/certbot/www:/var/www/certbot
+    depends_on:
+      - frontend
+
+  frontend:
+    image: bazarzone-frontend:latest
+    container_name: bazarzone-frontend
+    restart: always
+    expose:
+      - "80"
+
+  # api:
+  #   image: bazarzone-api:latest
+  #   container_name: bazarzone-api
+  #   restart: always
+  #   expose:
+  #     - "8080" # Adjust based on your API port
+
+  certbot:
+    image: certbot/certbot
+    container_name: bazarzone-certbot
+    volumes:
+      - ./gateway/certbot/conf:/etc/letsencrypt
+      - ./gateway/certbot/www:/var/www/certbot

@@ -13,7 +13,6 @@ RUN npm ci
 COPY . .
 
 # Build the application for production
-# Verify the output path in angular.json or defaults
 RUN npm run build -- --configuration production
 
 # Stage 2: Serve the application with Nginx
@@ -23,8 +22,7 @@ FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the built artifacts from the build stage
-# Note: The output path depends on the builder. 
-# For @angular/build:application, it is typically dist/project-name/browser
+# Ensure this path matches your angular.json output definition
 COPY --from=build /app/dist/web-angular/browser /usr/share/nginx/html
 
 # Expose port 80

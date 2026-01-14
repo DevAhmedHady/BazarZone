@@ -1,0 +1,63 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "web-angular/**"
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./web-angular
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./web-angular
+          file: ./web-angular/Dockerfile
+          push: false
+          tags: bazarzone-frontend:latest
+          outputs: type=docker,dest=/tmp/bazarzone-frontend.tar
+
+      - name: Copy Image to VPS
+        env:
+          SSHPASS: ${{ secrets.VPS_PASSWORD }}
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+          
+          # Create remote directory if it doesn't exist
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p ~/bazarzone/images"
+          
+          # Copy the tar file
+          sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-frontend.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
+
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            cd ~/bazarzone
+            
+            # Load the new image
+            docker load -i images/bazarzone-frontend.tar
+            
+            # Restart the service (assuming docker-compose setup)
+            docker compose up -d frontend
+            
+            # Cleanup
+            rm images/bazarzone-frontend.tar
+            docker image prune -f
