@@ -44,7 +44,7 @@ jobs:
           sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-frontend.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
           
           # Copy the docker-compose file (essential for the next step)
-          sshpass -e scp -o StrictHostKeyChecking=no ./docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
+          sshpass -e scp -o StrictHostKeyChecking=no ../docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
 
       - name: Deploy on VPS
         uses: appleboy/ssh-action@v1.0.3
