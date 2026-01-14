@@ -30,6 +30,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
+      # App configuration
+      - App__SelfUrl=http://api:8080
       # Use host.docker.internal to reach PostgreSQL on the VPS host
       - ConnectionStrings__Default=Host=host.docker.internal;Port=5432;Database=bazarZoneDb;User ID=postgres;Password=NN66LVNxf70unh4AMWll6;
     expose:
