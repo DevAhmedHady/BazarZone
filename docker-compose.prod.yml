@@ -21,12 +21,15 @@ services:
     expose:
       - "80"
 
-  # api:
-  #   image: bazarzone-api:latest
-  #   container_name: bazarzone-api
-  #   restart: always
-  #   expose:
-  #     - "8080" # Adjust based on your API port
+  api:
+    image: bazarzone-api:latest
+    container_name: bazarzone-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - "8080"
 
   certbot:
     image: certbot/certbot

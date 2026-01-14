@@ -1,21 +1,19 @@
-name: Deploy Frontend
+name: Deploy Production
 
 on:
   push:
     branches: ["main"]
     paths:
       - "web-angular/**"
+      - "src/**"
+      - "Dockerfile.backend"
       - "docker-compose.prod.yml"
-      - ".github/workflows/deploy-frontend.yml"
+      - ".github/workflows/deploy-production.yml"
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: ./web-angular
 
     steps:
       - name: Checkout code
@@ -24,7 +22,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker Image
+      - name: Build Frontend Image
         uses: docker/build-push-action@v5
         with:
           context: ./web-angular
@@ -33,7 +31,16 @@ jobs:
           tags: bazarzone-frontend:latest
           outputs: type=docker,dest=/tmp/bazarzone-frontend.tar
 
-      - name: Copy Image to VPS
+      - name: Build Backend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.backend
+          push: false
+          tags: bazarzone-api:latest
+          outputs: type=docker,dest=/tmp/bazarzone-api.tar
+
+      - name: Copy Images to VPS
         env:
           SSHPASS: ${{ secrets.VPS_PASSWORD }}
         run: |
@@ -42,11 +49,14 @@ jobs:
           # Create remote directory if it doesn't exist
           sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "mkdir -p ~/bazarzone/images"
           
-          # Copy the tar file
+          # Copy frontend image
           sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-frontend.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
           
-          # Copy the docker-compose file (essential for the next step)
-          sshpass -e scp -o StrictHostKeyChecking=no ../docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
+          # Copy backend image
+          sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-api.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
+          
+          # Copy the docker-compose file
+          sshpass -e scp -o StrictHostKeyChecking=no ./docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
 
       - name: Deploy on VPS
         uses: appleboy/ssh-action@v1.0.3
@@ -57,12 +67,13 @@ jobs:
           script: |
             cd ~/bazarzone
             
-            # Load the new image
+            # Load images
             docker load -i images/bazarzone-frontend.tar
+            docker load -i images/bazarzone-api.tar
             
-            # Restart the service (assuming docker-compose setup)
-            docker compose -f docker-compose.prod.yml up -d frontend
+            # Restart services
+            docker compose -f docker-compose.prod.yml up -d
             
             # Cleanup
-            rm images/bazarzone-frontend.tar
+            rm images/*.tar
             docker image prune -f
