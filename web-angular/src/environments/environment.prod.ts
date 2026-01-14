@@ -1,8 +1,8 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://localhost:5000',
+    apiUrl: 'https://api.bazar-zone.com',
     oAuthConfig: {
-        issuer: 'https://localhost:5000',
+        issuer: 'https://api.bazar-zone.com',
         clientId: 'BazarZone_App',
         scope: 'BazarZone offline_access',
     },
