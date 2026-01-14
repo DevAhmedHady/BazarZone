@@ -1,8 +1,8 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://api.bazar-zone.com',
+    apiUrl: 'http://api.bazar-zone.com',
     oAuthConfig: {
-        issuer: 'https://api.bazar-zone.com',
+        issuer: 'http://api.bazar-zone.com',
         clientId: 'BazarZone_App',
         scope: 'openid email phone profile roles BazarZone offline_access',
     },
