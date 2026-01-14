@@ -55,6 +55,9 @@ jobs:
           # Copy backend image
           sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-api.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
           
+          # Copy the gateway configuration folder
+          sshpass -e scp -o StrictHostKeyChecking=no -r ./gateway ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
+          
           # Copy the docker-compose file
           sshpass -e scp -o StrictHostKeyChecking=no ./docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
 
