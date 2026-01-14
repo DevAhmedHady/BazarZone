@@ -84,6 +84,12 @@ jobs:
             # Restart services
             docker compose -f docker-compose.prod.yml up -d
             
+            # Restart gateway and run SSL script
+            echo "--> Restarting gateway and initializing SSL..."
+            docker restart bazarzone-gateway
+            chmod +x init-letsencrypt.sh
+            ./init-letsencrypt.sh
+            
             # Cleanup
             rm images/*.tar
             docker image prune -f

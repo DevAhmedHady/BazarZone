@@ -39,6 +39,9 @@ services:
       - AuthServer__SwaggerClientId=BazarZone_Swagger
       # Use host.docker.internal to reach PostgreSQL on the VPS host
       - ConnectionStrings__Default=Host=host.docker.internal;Port=5432;Database=bazarZoneDb;User ID=postgres;Password=NN66LVNxf70unh4AMWll6;
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/app/bazarzone
     expose:
       - "8080"
 
