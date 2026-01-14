@@ -29,7 +29,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
       # Override the connection string - Use the actual DB host IP or hostname
-      - ConnectionStrings__Default=Host=localhost;Port=5432;Database=bazarZoneDb;User ID=postgres;Password=NN66LVNxf70unh4AMWll6;
+      - ConnectionStrings__Default=Host=172.17.0.2;Port=5432;Database=bazarZoneDb;User ID=postgres;Password=NN66LVNxf70unh4AMWll6;
     expose:
       - "8080"
 
