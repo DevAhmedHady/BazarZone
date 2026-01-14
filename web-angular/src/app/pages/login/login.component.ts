@@ -16,7 +16,7 @@ import { AuthService } from '../../services/auth.service';
         <div class="logo-section">
           <a routerLink="/" class="logo-link">
             <img 
-              src="/assets/images/logo-dark.png" 
+              src="/logo-dark.png" 
               alt="BazarZone" 
               class="logo"
               onerror="this.style.display='none'"
