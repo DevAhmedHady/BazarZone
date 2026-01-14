@@ -56,7 +56,11 @@ jobs:
           sshpass -e scp -o StrictHostKeyChecking=no /tmp/bazarzone-api.tar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/images/
           
           # Copy the gateway configuration folder
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "rm -rf ~/bazarzone/gateway"
           sshpass -e scp -o StrictHostKeyChecking=no -r ./gateway ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
+          
+          # Copy the init script
+          sshpass -e scp -o StrictHostKeyChecking=no ./init-letsencrypt.sh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
           
           # Copy the docker-compose file
           sshpass -e scp -o StrictHostKeyChecking=no ./docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:~/bazarzone/
