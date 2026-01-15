@@ -113,28 +113,55 @@ export class ProviderManagementComponent implements OnInit {
             return;
         }
 
+        const payload = this.normalizeProviderInput(this.provider);
+
         if (this.isEdit && this.editingId) {
-            this.providerService.update(this.editingId, this.provider).subscribe({
+            this.providerService.update(this.editingId, payload).subscribe({
                 next: () => {
                     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Provider Updated', life: 3000 });
                     this.dialogVisible = false;
                     this.loadProviders();
                 },
-                error: () => {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update provider' });
+                error: (error) => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: this.getErrorMessage(error, 'Failed to update provider') });
                 }
             });
         } else {
-            this.providerService.create(this.provider).subscribe({
+            this.providerService.create(payload).subscribe({
                 next: () => {
                     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Provider Created', life: 3000 });
                     this.dialogVisible = false;
                     this.loadProviders();
                 },
-                error: () => {
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to create provider' });
+                error: (error) => {
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: this.getErrorMessage(error, 'Failed to create provider') });
                 }
             });
         }
+    }
+
+    private normalizeProviderInput(input: CreateUpdateServiceProviderDto): CreateUpdateServiceProviderDto {
+        const trimOrUndefined = (value?: string) => {
+            if (value === undefined || value === null) return undefined;
+            const trimmed = value.trim();
+            return trimmed.length ? trimmed : undefined;
+        };
+
+        return {
+            name: input.name.trim(),
+            description: trimOrUndefined(input.description),
+            logoUrl: trimOrUndefined(input.logoUrl),
+            contactEmail: trimOrUndefined(input.contactEmail),
+            contactPhone: trimOrUndefined(input.contactPhone),
+            websiteUrl: trimOrUndefined(input.websiteUrl),
+            address: trimOrUndefined(input.address),
+            category: trimOrUndefined(input.category),
+            isActive: input.isActive ?? true
+        };
+    }
+
+    private getErrorMessage(error: any, fallback: string): string {
+        const message = error?.error?.error?.message || error?.error?.message || error?.message;
+        return message || fallback;
     }
 }

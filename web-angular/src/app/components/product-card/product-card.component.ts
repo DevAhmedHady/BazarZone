@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Product } from '@/app/data/brands';
+import { PublicProduct } from '@/app/models/public-catalog';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,6 +10,6 @@ import { CommonModule } from '@angular/common';
     templateUrl: './product-card.component.html',
 })
 export class ProductCardComponent {
-    @Input({ required: true }) product!: Product;
+    @Input({ required: true }) product!: PublicProduct;
     @Input({ required: true }) brandColor!: string;
 }

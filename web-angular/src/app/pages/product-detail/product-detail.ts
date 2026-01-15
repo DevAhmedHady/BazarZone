@@ -1,10 +1,13 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { LucideAngularModule, ArrowRight, ShoppingBag, Heart, Share2 } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
-import { getBrandById, getProductById } from '@/app/data/brands';
+import { ServiceProviderService, ServiceProviderDto } from '@/app/services/service-provider.service';
+import { ProductService, ProductDto } from '@/app/services/product.service';
+import { PublicProduct } from '@/app/models/public-catalog';
+import { getProviderColor } from '@/app/lib/color';
+import { forkJoin, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-product-detail',
@@ -12,18 +15,19 @@ import { getBrandById, getProductById } from '@/app/data/brands';
   imports: [CommonModule, RouterLink, LucideAngularModule, ButtonComponent],
   templateUrl: './product-detail.html',
 })
-export class ProductDetailComponent {
-  privateroute = inject(ActivatedRoute);
-  private params = toSignal(this.privateroute.params);
+export class ProductDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private providerService = inject(ServiceProviderService);
+  private productService = inject(ProductService);
 
-  product = computed(() => {
-    const id = this.params()?.['id'];
-    return getProductById(id || '');
-  });
+  product = signal<PublicProduct | null>(null);
+  provider = signal<ServiceProviderDto | null>(null);
+  relatedProducts = signal<PublicProduct[]>([]);
+  loading = signal<boolean>(false);
 
-  brand = computed(() => {
-    const p = this.product();
-    return p ? getBrandById(p.brandId) : undefined;
+  brandColor = computed(() => {
+    const provider = this.provider();
+    return provider ? getProviderColor(provider.id) : '220, 80%, 50%';
   });
 
   readonly ArrowRight = ArrowRight;
@@ -31,11 +35,50 @@ export class ProductDetailComponent {
   readonly Heart = Heart;
   readonly Share2 = Share2;
 
-  // Helper for related products (More from Brand)
-  relatedProducts = computed(() => {
-    const b = this.brand();
-    const p = this.product();
-    if (!b || !p) return [];
-    return b.products.filter(prod => prod.id !== p.id).slice(0, 4);
-  });
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadProduct(id);
+    }
+  }
+
+  private loadProduct(id: string): void {
+    this.loading.set(true);
+    this.productService.get(id).pipe(
+      switchMap((product) => {
+        return forkJoin({
+          provider: this.providerService.get(product.serviceProviderId),
+          products: this.productService.getList({ maxResultCount: 2000 })
+        }).pipe(
+          map(({ provider, products }) => ({ product, provider, products }))
+        );
+      })
+    ).subscribe({
+      next: ({ product, provider, products }) => {
+        const mappedProduct = this.mapProduct(product);
+        this.product.set(mappedProduct);
+        this.provider.set(provider);
+        const related = products.items
+          .filter(p => p.serviceProviderId === provider.id && p.id !== product.id)
+          .map(p => this.mapProduct(p))
+          .slice(0, 4);
+        this.relatedProducts.set(related);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      }
+    });
+  }
+
+  private mapProduct(product: ProductDto): PublicProduct {
+    return {
+      id: product.id,
+      serviceProviderId: product.serviceProviderId,
+      name: product.name,
+      description: product.description,
+      imageUrl: product.imageUrl,
+      price: product.price
+    };
+  }
 }

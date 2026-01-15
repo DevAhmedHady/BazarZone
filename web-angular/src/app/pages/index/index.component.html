@@ -78,8 +78,15 @@
                 }
             </div>
 
+            <!-- Loading state -->
+            @if (loading()) {
+            <div class="text-center py-12">
+                <p class="text-muted-foreground text-lg">جاري تحميل البيانات...</p>
+            </div>
+            }
+
             <!-- Show message when no brands match filter -->
-            @if (filteredBrands().length === 0) {
+            @if (!loading() && filteredBrands().length === 0) {
             <div class="text-center py-12">
                 <p class="text-muted-foreground text-lg">لا توجد علامات تجارية في هذه الفئة</p>
             </div>
@@ -93,7 +100,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="text-center animate-fade-in" style="animation-delay: 0s">
                     <div class="font-display text-4xl md:text-5xl font-bold gold-text mb-2">
-                        +{{ brandsCount }}
+                        +{{ brandsCount() }}
                     </div>
                     <div class="text-muted-foreground">شريك علامة تجارية</div>
                 </div>

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, ArrowLeft } from 'lucide-angular';
-import { Brand } from '@/app/data/brands';
+import { PublicProvider } from '@/app/models/public-catalog';
 import { ProductCarouselComponent } from '../product-carousel/product-carousel.component';
 import { CommonModule } from '@angular/common';
 
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
     templateUrl: './booth-card.component.html',
 })
 export class BoothCardComponent {
-    @Input({ required: true }) brand!: Brand;
+    @Input({ required: true }) brand!: PublicProvider;
     @Input({ required: true }) index!: number;
 
     readonly ArrowLeft = ArrowLeft;

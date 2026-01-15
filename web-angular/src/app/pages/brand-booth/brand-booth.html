@@ -21,7 +21,13 @@
                     <!-- Brand Logo -->
                     <div class="w-28 h-28 rounded-2xl overflow-hidden border-4 flex-shrink-0"
                         [style.borderColor]="'hsl(' + brand.color + ')'">
-                        <img [src]="brand.logo" [alt]="brand.name" class="w-full h-full object-cover" />
+                        @if (brand.logoUrl) {
+                        <img [src]="brand.logoUrl" [alt]="brand.name" class="w-full h-full object-cover" />
+                        } @else {
+                        <div class="w-full h-full flex items-center justify-center bg-accent text-foreground text-3xl font-bold">
+                            {{ brand.name.charAt(0) }}
+                        </div>
+                        }
                     </div>
 
                     <!-- Brand Info -->
@@ -30,24 +36,22 @@
                             {{ brand.name }}
                         </h1>
                         <p class="text-xl text-muted-foreground mb-4">
-                            {{ brand.tagline }}
+                            {{ brand.tagline || brand.description || 'علامة تجارية مميزة' }}
                         </p>
                         @if (brand.description) {
                         <p class="text-muted-foreground mb-4">
                             {{ brand.description }}
                         </p>
                         }
-                        @if (brand.founded) {
-                        <p class="text-sm text-muted-foreground mb-6">
-                            تأسست في عام {{ brand.founded }}
-                        </p>
-                        }
                         <div class="flex flex-wrap gap-3">
-                            <button appButton variant="gold"
+                            @if (brand.websiteUrl) {
+                            <a appButton variant="gold"
+                                [href]="brand.websiteUrl" target="_blank" rel="noopener noreferrer"
                                 [style.background]="'linear-gradient(135deg, hsl(' + brand.color + ') 0%, hsl(' + brand.color + ' / 0.8) 100%)'">
                                 زيارة الموقع
                                 <lucide-icon [name]="ExternalLink" class="w-4 h-4"></lucide-icon>
-                            </button>
+                            </a>
+                            }
                             <button appButton variant="glass">
                                 <lucide-icon [name]="Share2" class="w-4 h-4"></lucide-icon>
                                 مشاركة الجناح
@@ -78,9 +82,15 @@
                 <div class="animate-fade-in" [style.animationDelay]="(index * 50) + 'ms'">
                     <a [routerLink]="['/product', product.id]" class="product-card block group overflow-hidden">
                         <div class="aspect-square overflow-hidden">
-                            <img [src]="product.image" [alt]="product.name"
+                            @if (product.imageUrl) {
+                            <img [src]="product.imageUrl" [alt]="product.name"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 loading="lazy" />
+                            } @else {
+                            <div class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-2xl">
+                                {{ product.name.charAt(0) }}
+                            </div>
+                            }
                         </div>
                         <div class="p-4">
                             <h3 class="font-semibold text-foreground mb-1">

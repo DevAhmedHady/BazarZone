@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, ElementRef, signal, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
-import { Product } from '@/app/data/brands';
+import { PublicProduct } from '@/app/models/public-catalog';
 import { ProductCardComponent } from '../product-card/product-card.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
     templateUrl: './product-carousel.component.html',
 })
 export class ProductCarouselComponent implements AfterViewInit {
-    @Input({ required: true }) products!: Product[];
+    @Input({ required: true }) products!: PublicProduct[];
     @Input({ required: true }) brandColor!: string;
 
     @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;

@@ -1,4 +1,4 @@
-@if (product() && brand()) {
+@if (product() && provider()) {
 <!-- Note: Angular templates don't support destructuring in @if alias easily across multiple variables.
        We'll access brand() directly or via aliasing inner block.
        Actually, let's just use signals in view. -->
@@ -12,8 +12,8 @@
                     قاعة المعارض
                 </a>
                 <span>/</span>
-                <a [routerLink]="['/brand', brand()!.id]" class="hover:text-foreground transition-colors">
-                    {{ brand()!.name }}
+                <a [routerLink]="['/brand', provider()!.id]" class="hover:text-foreground transition-colors">
+                    {{ provider()!.name }}
                 </a>
                 <span>/</span>
                 <span class="text-foreground">{{ product()!.name }}</span>
@@ -23,20 +23,28 @@
                 <!-- Product Image -->
                 <div class="booth-card overflow-hidden">
                     <div class="h-2"
-                        [style.background]="'linear-gradient(270deg, hsl(' + brand()!.color + ') 0%, hsl(' + brand()!.color + ' / 0.4) 100%)'">
+                        [style.background]="'linear-gradient(270deg, hsl(' + brandColor() + ') 0%, hsl(' + brandColor() + ' / 0.4) 100%)'">
                     </div>
                     <div class="aspect-square overflow-hidden">
-                        <img [src]="product()!.image" [alt]="product()!.name" class="w-full h-full object-cover" />
+                        @if (product()!.imageUrl) {
+                        <img [src]="product()!.imageUrl" [alt]="product()!.name" class="w-full h-full object-cover" />
+                        } @else {
+                        <div class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-4xl">
+                            {{ product()!.name.charAt(0) }}
+                        </div>
+                        }
                     </div>
                 </div>
 
                 <!-- Product Info -->
                 <div class="flex flex-col justify-center">
-                    <a [routerLink]="['/brand', brand()!.id]"
+                    <a [routerLink]="['/brand', provider()!.id]"
                         class="inline-flex items-center gap-2 text-sm font-medium mb-4 group"
-                        [style.color]="'hsl(' + brand()!.color + ')'">
-                        <img [src]="brand()!.logo" [alt]="brand()!.name" class="w-6 h-6 rounded object-cover" />
-                        {{ brand()!.name }}
+                        [style.color]="'hsl(' + brandColor() + ')'">
+                        @if (provider()!.logoUrl) {
+                        <img [src]="provider()!.logoUrl" [alt]="provider()!.name" class="w-6 h-6 rounded object-cover" />
+                        }
+                        {{ provider()!.name }}
                         <lucide-icon [name]="ArrowRight"
                             class="w-3 h-3 group-hover:-translate-x-1 transition-transform"></lucide-icon>
                     </a>
@@ -46,36 +54,27 @@
                     </h1>
 
                     <p class="text-xl text-muted-foreground mb-8">
-                        {{ product()!.description || "منتج مميز من " + brand()!.name + "." }}
+                        {{ product()!.description || "منتج مميز من " + provider()!.name + "." }}
                     </p>
 
-                    @if (product()!.price) {
+                    @if (product()!.price !== undefined && product()!.price !== null) {
                     <div class="mb-6">
                         <span class="font-display text-3xl font-bold text-foreground">
-                            {{ product()!.price }}
+                            {{ product()!.price | currency:'SAR' }}
                         </span>
                     </div>
                     }
 
                     <div class="prose prose-invert max-w-none mb-8">
                         <p class="text-muted-foreground">
-                            اختبر الابتكار في أفضل حالاته. يمثل هذا المنتج قمة التزام {{ brand()!.name }} بالجودة
+                            اختبر الابتكار في أفضل حالاته. يمثل هذا المنتج قمة التزام {{ provider()!.name }} بالجودة
                             والتصميم. تم النظر في كل تفصيل بعناية لتقديم تجربة استثنائية.
                         </p>
-                        @if (product()!.features && product()!.features!.length > 0) {
-                        <ul class="mt-4 space-y-2">
-                            @for (feature of product()!.features; track feature) {
-                            <li class="text-muted-foreground">
-                                {{ feature }}
-                            </li>
-                            }
-                        </ul>
-                        }
                     </div>
 
                     <div class="flex flex-wrap gap-4 mb-8">
                         <button appButton variant="gold" size="lg"
-                            [style.background]="'linear-gradient(135deg, hsl(' + brand()!.color + ') 0%, hsl(' + brand()!.color + ' / 0.8) 100%)'">
+                            [style.background]="'linear-gradient(135deg, hsl(' + brandColor() + ') 0%, hsl(' + brandColor() + ' / 0.8) 100%)'">
                             <lucide-icon [name]="ShoppingBag" class="w-5 h-5"></lucide-icon>
                             عرض المنتج
                         </button>
@@ -89,20 +88,12 @@
                     </div>
 
                     <div class="glass-panel p-4 inline-flex items-center gap-3">
-                        <div
-                            [class]="'w-10 h-10 rounded-full flex items-center justify-center ' + (product()!.inStock ? 'bg-primary/10' : 'bg-muted-foreground/10')">
-                            <span
-                                [class]="(product()!.inStock ? 'text-primary' : 'text-muted-foreground') + ' text-lg'">
-                                {{ product()!.inStock ? '✓' : '×' }}
-                            </span>
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10">
+                            <span class="text-primary text-lg">✓</span>
                         </div>
                         <div>
-                            <p class="text-sm font-medium text-foreground">
-                                {{ product()!.inStock !== false ? 'متوفر الآن' : 'غير متوفر' }}
-                            </p>
-                            @if (product()!.inStock !== false) {
+                            <p class="text-sm font-medium text-foreground">متوفر الآن</p>
                             <p class="text-xs text-muted-foreground">يشحن خلال ٢-٣ أيام عمل</p>
-                            }
                         </div>
                     </div>
                 </div>
@@ -111,15 +102,21 @@
             <!-- More from Brand -->
             <div class="mt-20">
                 <h2 class="font-display text-2xl font-bold text-foreground mb-8">
-                    المزيد من {{ brand()!.name }}
+                    المزيد من {{ provider()!.name }}
                 </h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                     @for (p of relatedProducts(); track p.id) {
                     <a [routerLink]="['/product', p.id]" class="product-card block group overflow-hidden">
                         <div class="aspect-square overflow-hidden">
-                            <img [src]="p.image" [alt]="p.name"
+                            @if (p.imageUrl) {
+                            <img [src]="p.imageUrl" [alt]="p.name"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 loading="lazy" />
+                            } @else {
+                            <div class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground">
+                                {{ p.name.charAt(0) }}
+                            </div>
+                            }
                         </div>
                         <div class="p-4">
                             <h3 class="font-medium text-foreground truncate">

@@ -40,6 +40,7 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.AspNetCore.Mvc.Libs;
+using Volo.Abp.AspNetCore.ExceptionHandling;
 
 namespace BazarZone;
 
@@ -121,6 +122,16 @@ public class BazarZoneHttpApiHostModule : AbpModule
         ConfigureSwagger(context, configuration);
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
+        
+        // Send detailed exceptions to clients in development
+        if (hostingEnvironment.IsDevelopment())
+        {
+            Configure<AbpExceptionHandlingOptions>(options =>
+            {
+                options.SendExceptionsDetailsToClients = true;
+                options.SendStackTraceToClients = true;
+            });
+        }
         
         // Disable client-side libs check for API host
         Configure<AbpMvcLibsOptions>(options =>
