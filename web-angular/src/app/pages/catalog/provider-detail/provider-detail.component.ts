@@ -54,9 +54,12 @@ export class ProviderDetailComponent implements OnInit {
     }
 
     loadProducts(providerId: string): void {
-        this.productService.getList({ maxResultCount: 100 }).subscribe({
+        this.productService.getList({
+            serviceProviderId: providerId,
+            maxResultCount: 100
+        }).subscribe({
             next: (res) => {
-                this.products = res.items.filter(x => x.serviceProviderId === providerId);
+                this.products = res.items;
                 this.loading = false;
             }
         });

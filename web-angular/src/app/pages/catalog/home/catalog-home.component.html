@@ -16,6 +16,21 @@
         </div>
     </div>
 
+    <!-- Categories -->
+    <div class="mb-8 overflow-x-auto pb-2">
+        <div class="flex justify-center gap-2 min-w-max px-4">
+            <button (click)="onCategorySelect('')" class="px-4 py-2 rounded-full border transition whitespace-nowrap"
+                [ngClass]="selectedCategory === '' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'">
+                All Categories
+            </button>
+            <button *ngFor="let cat of categories" (click)="onCategorySelect(cat)"
+                class="px-4 py-2 rounded-full border transition whitespace-nowrap"
+                [ngClass]="selectedCategory === cat ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'">
+                {{cat}}
+            </button>
+        </div>
+    </div>
+
     <div *ngIf="loading" class="text-center py-12">
         <p class="text-gray-500">Loading providers...</p>
     </div>

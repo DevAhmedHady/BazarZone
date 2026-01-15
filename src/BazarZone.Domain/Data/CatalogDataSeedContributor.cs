@@ -41,10 +41,47 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
 
         var existingProviders = await _providerRepository.GetListAsync();
 
-        if (!await _productRepository.AnyAsync() && existingProviders.Any())
+        if (existingProviders.Any())
         {
-            var products = BuildProducts(existingProviders);
-            await _productRepository.InsertManyAsync(products, autoSave: true);
+            var newProducts = new List<Product>();
+            var productNames = new[] { "مجموعة أساسية", "باقة احترافية", "نسخة مطورة", "إصدار محدود", "خيار ذكي", "حل متكامل" };
+            var imageUrls = new[]
+            {
+                "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1503602642458-232111445657?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=600&fit=crop",
+                "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=600&h=600&fit=crop"
+            };
+
+            foreach (var provider in existingProviders)
+            {
+                var count = await _productRepository.CountAsync(x => x.ServiceProviderId == provider.Id);
+                if (count < 8)
+                {
+                    for (var i = count; i < 8; i++)
+                    {
+                        newProducts.Add(new Product(
+                            Guid.NewGuid(),
+                            provider.Id,
+                            $"{provider.Name} - {productNames[i % productNames.Length]} - {i + 1}",
+                            $"منتج مميز من {provider.Name} يناسب احتياجاتك اليومية.",
+                            99 + (i * 75),
+                            imageUrls[(new Random().Next(0, imageUrls.Length))]
+                        ));
+                    }
+                }
+            }
+
+            if (newProducts.Any())
+            {
+                await _productRepository.InsertManyAsync(newProducts, autoSave: true);
+            }
         }
 
         if (!await _serviceRepository.AnyAsync() && existingProviders.Any())

@@ -13,18 +13,30 @@ import { ContentDirective } from '../../../directives/content.directive';
 })
 export class CatalogHomeComponent implements OnInit {
     providers: ServiceProviderDto[] = [];
+    categories: string[] = [];
     filter: string = '';
+    selectedCategory: string = '';
     loading: boolean = false;
 
     constructor(private providerService: ServiceProviderService) { }
 
     ngOnInit(): void {
+        this.loadCategories();
         this.loadProviders();
+    }
+
+    loadCategories(): void {
+        this.providerService.getCategories().subscribe(cats => {
+            this.categories = cats;
+        });
     }
 
     loadProviders(): void {
         this.loading = true;
-        this.providerService.getList({ filter: this.filter }).subscribe({
+        this.providerService.getList({
+            filter: this.filter,
+            category: this.selectedCategory !== 'All' ? this.selectedCategory : undefined
+        }).subscribe({
             next: (res) => {
                 this.providers = res.items;
                 this.loading = false;
@@ -36,6 +48,11 @@ export class CatalogHomeComponent implements OnInit {
     }
 
     onSearch(): void {
+        this.loadProviders();
+    }
+
+    onCategorySelect(category: string): void {
+        this.selectedCategory = category;
         this.loadProviders();
     }
 }

@@ -36,6 +36,7 @@ export interface CreateUpdateServiceProviderDto {
 
 export interface GetServiceProviderInput {
     filter?: string;
+    category?: string;
     sorting?: string;
     skipCount?: number;
     maxResultCount?: number;
@@ -53,6 +54,7 @@ export class ServiceProviderService {
         let params = new HttpParams();
         if (input) {
             if (input.filter) params = params.set('Filter', input.filter);
+            if (input.category) params = params.set('Category', input.category);
             if (input.sorting) params = params.set('Sorting', input.sorting);
             if (input.skipCount !== undefined) params = params.set('SkipCount', input.skipCount.toString());
             if (input.maxResultCount !== undefined) params = params.set('MaxResultCount', input.maxResultCount.toString());
@@ -74,5 +76,9 @@ export class ServiceProviderService {
 
     delete(id: string): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    }
+
+    getCategories(): Observable<string[]> {
+        return this.http.get<string[]>(`${this.baseUrl}/categories`);
     }
 }

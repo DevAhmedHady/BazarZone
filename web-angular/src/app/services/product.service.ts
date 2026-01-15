@@ -24,6 +24,7 @@ export interface CreateUpdateProductDto {
 
 export interface GetProductInput {
     filter?: string;
+    serviceProviderId?: string;
     sorting?: string;
     skipCount?: number;
     maxResultCount?: number;
@@ -41,6 +42,7 @@ export class ProductService {
         let params = new HttpParams();
         if (input) {
             if (input.filter) params = params.set('Filter', input.filter);
+            if (input.serviceProviderId) params = params.set('ServiceProviderId', input.serviceProviderId);
             if (input.sorting) params = params.set('Sorting', input.sorting);
             if (input.skipCount !== undefined) params = params.set('SkipCount', input.skipCount.toString());
             if (input.maxResultCount !== undefined) params = params.set('MaxResultCount', input.maxResultCount.toString());

@@ -7,7 +7,8 @@ import { ServiceProviderService, ServiceProviderDto } from '@/app/services/servi
 import { ProductService, ProductDto } from '@/app/services/product.service';
 import { PublicProvider, PublicProduct } from '@/app/models/public-catalog';
 import { getProviderColor } from '@/app/lib/color';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
     selector: 'app-index',
@@ -61,8 +62,12 @@ export class IndexComponent implements OnInit {
     private loadData(): void {
         this.loading.set(true);
         forkJoin({
-            providers: this.providerService.getList({ maxResultCount: 1000 }),
-            products: this.productService.getList({ maxResultCount: 2000 })
+            providers: this.providerService.getList({ maxResultCount: 1000 }).pipe(
+                catchError(() => of({ items: [], totalCount: 0 }))
+            ),
+            products: this.productService.getList({ maxResultCount: 2000 }).pipe(
+                catchError(() => of({ items: [], totalCount: 0 }))
+            )
         }).subscribe({
             next: ({ providers, products }) => {
                 const activeProviders = providers.items.filter(p => p.isActive);
