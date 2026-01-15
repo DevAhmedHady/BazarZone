@@ -105,10 +105,10 @@ interface NavItem {
                 <lucide-icon [name]="'chevron-down'" class="h-4 w-4 text-sidebar-muted flex-shrink-0"></lucide-icon>
               }
             </button>
-            
+
             <!-- Popover Menu -->
             @if (userMenuOpen()) {
-                <div 
+                <div
                     [class]="getPopoverClasses()"
                 >
                   <div class="space-y-1">
@@ -183,7 +183,7 @@ interface NavItem {
              <lucide-icon [name]="'x'" class="h-5 w-5"></lucide-icon>
           </button>
        </div>
-       
+
        <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           @for (item of navItems; track item.labelKey) {
              <a
@@ -221,7 +221,7 @@ interface NavItem {
                   <p class="text-xs text-sidebar-muted">{{ authService.isAdmin() ? lang.t("administrator") : lang.t("user") }}</p>
               </div>
             </button>
-            
+
             <!-- Logout button for mobile -->
             <button (click)="logout()" class="w-full flex items-center gap-3 px-3 py-2 mt-2 rounded-lg hover:bg-destructive/10 text-destructive">
               <lucide-icon [img]="LogOutIcon" class="h-4 w-4"></lucide-icon>

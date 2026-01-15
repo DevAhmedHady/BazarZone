@@ -51,7 +51,7 @@ export class ProductCarouselComponent implements AfterViewInit {
 
             // Wait, in RTL:
             // Start is rightmost (scrollLeft 0 or max depending on browser).
-            // React code: 
+            // React code:
             // setCanScrollLeft(scrollLeft < -10); // Means we moved LEFT from 0? 0 is start?
             // If 0 is start (Right), and we scroll Left, scrollLeft becomes negative?
             // Yes, modern Chrome uses negative values for RTL scrolling left.
@@ -70,7 +70,7 @@ export class ProductCarouselComponent implements AfterViewInit {
             // React code says: left -> positive scrollAmount? That would mean scrolling RIGHT visually if start is 0?
             // Wait, "scroll(left)" usually means "click left arrow to go left".
             // Visually moving content to right? No, viewport moves left.
-            // Let's stick to the React logic: 
+            // Let's stick to the React logic:
             // direction === "left" ? scrollAmount : -scrollAmount.
 
             this.scrollContainer.nativeElement.scrollBy({
