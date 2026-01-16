@@ -451,24 +451,81 @@
 
 /* PrimeNG Table Enhancements */
 .p-datatable {
+  .p-datatable-wrapper {
+    @apply rounded-xl border border-border/50 overflow-hidden;
+  }
+
   .p-datatable-header {
-    @apply bg-transparent border-none;
+    @apply bg-transparent border-none p-4;
   }
   
   .p-datatable-thead > tr > th {
-    @apply bg-accent/50 text-foreground font-semibold border-b border-border;
+    @apply bg-accent/20 text-muted-foreground text-xs font-semibold uppercase tracking-wider py-3 px-4 border-b border-border/50 transition-colors;
+    
+    &:first-child {
+      @apply pl-6;
+    }
+    
+    &:last-child {
+      @apply pr-6;
+    }
+
+    &.p-sortable-column:hover {
+      @apply bg-accent/30 text-foreground;
+    }
+
+    .p-sortable-column-icon {
+      @apply ml-2 w-3 h-3 text-muted-foreground/70;
+    }
   }
   
   .p-datatable-tbody > tr {
-    @apply border-b border-border/50;
+    @apply border-b border-border/40 transition-colors duration-150 ease-in-out bg-card/50;
     
     &:hover {
-      @apply bg-accent/30;
+      @apply bg-accent/10;
+    }
+    
+    &:last-child {
+      @apply border-b-0;
+    }
+
+    &.p-highlight {
+      @apply bg-primary/10 text-primary;
     }
   }
   
   .p-datatable-tbody > tr > td {
-    @apply py-4;
+    @apply py-3 px-4 text-sm text-foreground/90 align-middle;
+
+    &:first-child {
+      @apply pl-6;
+    }
+    
+    &:last-child {
+      @apply pr-6;
+    }
+  }
+
+  /* Footer/Paginator Styling */
+  .p-paginator {
+    @apply bg-transparent border-t border-border/50 py-3;
+
+    .p-paginator-current {
+      @apply text-sm text-muted-foreground mr-auto;
+    }
+
+    .p-paginator-first,
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-last,
+    .p-paginator-pages .p-paginator-page {
+      @apply h-8 w-8 min-w-[2rem] rounded-lg text-sm text-muted-foreground hover:bg-accent hover:text-foreground transition-colors mx-0.5;
+      
+      &.p-highlight {
+        @apply bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground font-medium;
+      }
+    }
   }
 }
 

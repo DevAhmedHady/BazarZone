@@ -347,14 +347,6 @@ interface PaginationState {
     .stat-content { display: flex; flex-direction: column; }
     .stat-value { font-size: 1.25rem; font-weight: 700; color: hsl(var(--foreground)); }
     .stat-label { font-size: 0.7rem; color: hsl(var(--muted-foreground)); }
-    
-    :host ::v-deep {
-      .p-datatable .p-datatable-thead > tr > th {
-        background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); font-size: 0.75rem; padding: 0.75rem;
-      }
-      .p-datatable .p-datatable-tbody > tr { background: transparent; color: hsl(var(--foreground)); transition: background-color 0.2s; }
-      .p-datatable .p-datatable-tbody > tr:hover { background: hsl(var(--accent) / 0.5); }
-    }
   `]
 })
 export class UserManagementComponent implements OnInit {

@@ -179,13 +179,6 @@ import { ConfirmationService } from 'primeng/api';
     .page-title { display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; font-weight: 600; color: hsl(var(--foreground)); margin: 0; }
     .title-icon { width: 1.5rem; height: 1.5rem; color: hsl(var(--primary)); }
     .page-description { color: hsl(var(--muted-foreground)); margin: 0.25rem 0 0 0; font-size: 0.8rem; }
-    :host ::v-deep {
-      .p-datatable .p-datatable-thead > tr > th {
-        background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); font-size: 0.75rem; padding: 0.75rem;
-      }
-      .p-datatable .p-datatable-tbody > tr { background: transparent; color: hsl(var(--foreground)); transition: background-color 0.2s; }
-      .p-datatable .p-datatable-tbody > tr:hover { background: hsl(var(--accent) / 0.5); }
-    }
   `]
 })
 export class RoleManagementComponent implements OnInit {
