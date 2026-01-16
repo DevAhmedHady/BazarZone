@@ -32,6 +32,7 @@ public class BazarZoneDbContext :
     public DbSet<Product> Products { get; set; }
     public DbSet<PageContent> PageContents { get; set; }
     public DbSet<SliderBanner> SliderBanners { get; set; }
+    public DbSet<Media.AppImage> AppImages { get; set; }
 
 
     #region Entities from the modules
@@ -123,6 +124,15 @@ public class BazarZoneDbContext :
             b.Property(x => x.Description).HasMaxLength(512);
             b.Property(x => x.LinkUrl).HasMaxLength(1024);
             b.HasIndex(x => new { x.Position, x.SortOrder });
+        });
+
+        builder.Entity<Media.AppImage>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "AppImages", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.FileName).IsRequired().HasMaxLength(255);
+            b.Property(x => x.MimeType).IsRequired().HasMaxLength(128);
+            // Content matches byte[] by default to varbinary(max) or bytea
         });
     }
 }

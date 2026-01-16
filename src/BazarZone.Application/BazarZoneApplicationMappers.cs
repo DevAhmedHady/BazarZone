@@ -82,3 +82,11 @@ public partial class CreateUpdateSliderBannerDtoToSliderBannerMapper : MapperBas
     public override partial void Map(Sliders.CreateUpdateSliderBannerDto source, Sliders.SliderBanner destination);
 }
 
+// AppImage mappers
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class AppImageToAppImageDtoMapper : MapperBase<Media.AppImage, Media.AppImageDto>
+{
+    public override partial Media.AppImageDto Map(Media.AppImage source);
+    public override partial void Map(Media.AppImage source, Media.AppImageDto destination);
+}
+

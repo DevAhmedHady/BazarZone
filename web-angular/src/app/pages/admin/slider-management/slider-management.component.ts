@@ -17,6 +17,8 @@ import { TagModule } from 'primeng/tag';
 import { finalize } from 'rxjs/operators';
 import { SliderBannerService, SliderBannerDto, CreateUpdateSliderBannerDto, SliderPosition } from '../../../services/slider-banner.service';
 import { LanguageService } from '../../../services/language.service';
+import { ImageUploaderComponent } from '../../../components/image-uploader/image-uploader.component';
+import { ImageService } from '../../../services/image.service';
 
 @Component({
     selector: 'app-slider-management',
@@ -24,7 +26,8 @@ import { LanguageService } from '../../../services/language.service';
     imports: [
         CommonModule, FormsModule, TableModule, ButtonModule, DialogModule,
         InputTextModule, TextareaModule, ToastModule, SelectModule, TooltipModule,
-        InputNumberModule, ToggleSwitchModule, ConfirmDialogModule, TagModule
+        InputNumberModule, ToggleSwitchModule, ConfirmDialogModule, TagModule,
+        ImageUploaderComponent
     ],
     providers: [MessageService, ConfirmationService],
     template: `
@@ -171,23 +174,14 @@ import { LanguageService } from '../../../services/language.service';
                     ></textarea>
                 </div>
 
-                <!-- Image URL -->
+                <!-- Image Upload -->
                 <div>
-                    <label class="block text-sm font-medium text-foreground mb-2">رابط الصورة *</label>
-                    <input 
-                        type="text" 
-                        pInputText 
-                        [(ngModel)]="slider.imageUrl"
-                        class="w-full"
-                        placeholder="https://example.com/image.jpg"
-                    >
-                    @if (slider.imageUrl) {
-                        <img 
-                            [src]="slider.imageUrl" 
-                            class="mt-2 max-h-32 rounded-lg border border-border"
-                            onerror="this.style.display='none'"
-                        >
-                    }
+                    <label class="block text-sm font-medium text-foreground mb-2">صورة البانر *</label>
+                    <app-image-uploader
+                        [imageUrl]="slider.imageUrl"
+                        [label]="'اختر صورة'"
+                        (imageUploaded)="onImageUploaded($event)">
+                    </app-image-uploader>
                 </div>
 
                 <!-- Link URL -->
@@ -273,8 +267,13 @@ export class SliderManagementComponent implements OnInit {
         private sliderService: SliderBannerService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private imageService: ImageService
     ) { }
+
+    onImageUploaded(imageId: string) {
+        this.slider.imageUrl = this.imageService.getImageUrl(imageId);
+    }
 
     ngOnInit(): void {
         this.loadSliders();
