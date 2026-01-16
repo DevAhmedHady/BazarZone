@@ -13,12 +13,15 @@ import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
 import { finalize } from 'rxjs/operators';
 
+import { ImageUploaderComponent } from '../../../components/image-uploader/image-uploader.component';
+
 @Component({
     selector: 'app-content-management',
     standalone: true,
     imports: [
         CommonModule, FormsModule, TableModule, ButtonModule, DialogModule,
-        InputTextModule, TextareaModule, ToastModule, SelectModule, TooltipModule
+        InputTextModule, TextareaModule, ToastModule, SelectModule, TooltipModule,
+        ImageUploaderComponent
     ],
     providers: [MessageService],
     templateUrl: './content-management.component.html'
@@ -150,4 +153,5 @@ export class ContentManagementComponent implements OnInit {
         };
         return icons[type] || 'pi pi-file';
     }
+    // Refreshed
 }

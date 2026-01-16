@@ -11,7 +11,7 @@ import { cn } from '../../lib/utils';
   standalone: true,
   imports: [CommonModule, RouterOutlet, AdminSidebarComponent, AdminHeaderComponent],
   template: `
-    <div class="admin-root min-h-screen bg-background text-foreground font-english">
+    <div class="admin-root min-h-screen bg-background text-foreground" [dir]="isRTL() ? 'rtl' : 'ltr'" [ngClass]="isRTL() ? 'font-arabic' : 'font-english'">
       <app-admin-sidebar
         [collapsed]="sidebarCollapsed()"
         [mobileOpen]="mobileSidebarOpen()"
@@ -40,7 +40,7 @@ import { cn } from '../../lib/utils';
   `,
   styles: [`
     .admin-content {
-      zoom: 0.9;
+      zoom: 0.85; /* Scaled down view as requested */
       padding: 1rem;
     }
 
@@ -73,3 +73,4 @@ export class AdminLayoutComponent {
     }
   }
 }
+// Refreshed

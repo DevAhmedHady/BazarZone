@@ -14,12 +14,15 @@ import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
 import { finalize } from 'rxjs/operators';
 
+import { ImageUploaderComponent } from '../../../../components/image-uploader/image-uploader.component';
+
 @Component({
     selector: 'app-provider-management',
     standalone: true,
     imports: [
         CommonModule, FormsModule, TableModule, ButtonModule, DialogModule,
-        InputTextModule, TextareaModule, ConfirmDialogModule, ToastModule, CheckboxModule, TooltipModule
+        InputTextModule, TextareaModule, ConfirmDialogModule, ToastModule, CheckboxModule, TooltipModule,
+        ImageUploaderComponent
     ],
     providers: [ConfirmationService, MessageService],
     templateUrl: './provider-management.component.html'
@@ -164,4 +167,5 @@ export class ProviderManagementComponent implements OnInit {
         const message = error?.error?.error?.message || error?.error?.message || error?.message;
         return message || fallback;
     }
+    // Refreshed
 }

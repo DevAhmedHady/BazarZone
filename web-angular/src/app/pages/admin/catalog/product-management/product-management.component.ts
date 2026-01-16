@@ -15,12 +15,16 @@ import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
 import { finalize } from 'rxjs/operators';
 
+import { ImageUploaderComponent } from '../../../../components/image-uploader/image-uploader.component';
+import { ImageService } from '../../../../services/image.service';
+
 @Component({
     selector: 'app-product-management',
     standalone: true,
     imports: [
         CommonModule, FormsModule, TableModule, ButtonModule, DialogModule,
-        InputTextModule, TextareaModule, SelectModule, ToastModule, InputNumberModule, TooltipModule
+        InputTextModule, TextareaModule, SelectModule, ToastModule, InputNumberModule, TooltipModule,
+        ImageUploaderComponent
     ],
     providers: [MessageService],
     templateUrl: './product-management.component.html'

@@ -5,27 +5,39 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-image-uploader',
     standalone: true,
-    imports: [CommonModule, ButtonModule, ToastModule, FileUploadModule],
+    imports: [CommonModule, ButtonModule, ToastModule, FileUploadModule, SelectButtonModule, InputTextModule, FormsModule],
     providers: [MessageService],
     templateUrl: './image-uploader.component.html',
     styleUrls: ['./image-uploader.component.scss']
 })
 export class ImageUploaderComponent implements OnInit, OnChanges {
     @Input() currentImageId?: string;
-    @Input() imageUrl?: string; // Option to pass full URL if already resolved
+    @Input() imageUrl?: string;
     @Input() referenceType?: string;
     @Input() referenceId?: string;
     @Input() label: string = 'Upload Image';
     @Input() showPreview: boolean = true;
 
+    // Emits the full absolute URL (whether from upload or external link)
     @Output() imageUploaded = new EventEmitter<string>();
 
     previewUrl: string | null = null;
     isUploading = false;
+
+    uploadMode: 'upload' | 'link' = 'upload';
+    externalLink: string = '';
+
+    uploadModes = [
+        { label: 'Upload File', value: 'upload', icon: 'pi pi-upload' },
+        { label: 'External Link', value: 'link', icon: 'pi pi-link' }
+    ];
 
     constructor(
         private imageService: ImageService,
@@ -45,6 +57,11 @@ export class ImageUploaderComponent implements OnInit, OnChanges {
     private resolvePreview() {
         if (this.imageUrl) {
             this.previewUrl = this.imageUrl;
+            // If it's an external URL, set the mode to link and prefill
+            if (this.imageUrl.startsWith('http') && !this.imageUrl.includes('/api/app/image/content/')) {
+                this.uploadMode = 'link';
+                this.externalLink = this.imageUrl;
+            }
         } else if (this.currentImageId) {
             this.previewUrl = this.imageService.getImageUrl(this.currentImageId);
         } else {
@@ -52,9 +69,18 @@ export class ImageUploaderComponent implements OnInit, OnChanges {
         }
     }
 
-    // Handle native file input or PrimeNG upload
+    onModeChange() {
+        // Clear preview if switching modes? Maybe not.
+    }
+
+    onLinkChange() {
+        if (this.externalLink) {
+            this.previewUrl = this.externalLink;
+            this.imageUploaded.emit(this.externalLink);
+        }
+    }
+
     onFileSelect(event: any) {
-        // PrimeNG fileupload logic if used in 'basic' mode
         if (event.files && event.files.length > 0) {
             this.uploadFile(event.files[0]);
         }
@@ -64,8 +90,9 @@ export class ImageUploaderComponent implements OnInit, OnChanges {
         this.isUploading = true;
         this.imageService.upload(file, this.referenceType, this.referenceId).subscribe({
             next: (result) => {
-                this.previewUrl = this.imageService.getImageUrl(result.id);
-                this.imageUploaded.emit(result.id);
+                const fullUrl = this.imageService.getImageUrl(result.id);
+                this.previewUrl = fullUrl;
+                this.imageUploaded.emit(fullUrl); // Emit full URL now
                 this.isUploading = false;
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Image uploaded successfully' });
             },

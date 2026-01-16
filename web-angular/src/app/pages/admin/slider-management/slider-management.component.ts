@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -39,7 +39,7 @@ import { ImageService } from '../../../services/image.service';
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-foreground">{{ lang.t('sliders') }}</h1>
-                    <p class="text-muted-foreground mt-1">إدارة شرائح البانر في الصفحة الرئيسية</p>
+                    <p class="text-muted-foreground mt-1">{{ lang.t('manageSlidersSubtitle') }}</p>
                 </div>
                 <button pButton 
                     icon="pi pi-plus" 
@@ -61,12 +61,12 @@ import { ImageService } from '../../../services/image.service';
                 >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th style="width: 80px">صورة</th>
-                            <th>العنوان</th>
-                            <th style="width: 120px">الموضع</th>
-                            <th style="width: 80px">الترتيب</th>
-                            <th style="width: 100px">الحالة</th>
-                            <th style="width: 140px">الإجراءات</th>
+                            <th style="width: 80px">{{ lang.t('bannerImage') }}</th>
+                            <th>{{ lang.t('title') }}</th>
+                            <th style="width: 120px">{{ lang.t('position') }}</th>
+                            <th style="width: 80px">{{ lang.t('sortOrder') }}</th>
+                            <th style="width: 100px">{{ lang.t('status') }}</th>
+                            <th style="width: 140px">{{ lang.t('actions') }}</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-slider>
@@ -100,7 +100,7 @@ import { ImageService } from '../../../services/image.service';
                             </td>
                             <td>
                                 <p-tag 
-                                    [value]="slider.isVisible ? 'ظاهر' : 'مخفي'"
+                                    [value]="slider.isVisible ? lang.t('visible') : lang.t('hidden')"
                                     [severity]="slider.isVisible ? 'success' : 'secondary'"
                                 ></p-tag>
                             </td>
@@ -111,19 +111,19 @@ import { ImageService } from '../../../services/image.service';
                                         class="p-button-rounded p-button-text p-button-sm"
                                         [class.p-button-success]="slider.isVisible"
                                         [class.p-button-secondary]="!slider.isVisible"
-                                        pTooltip="تبديل الظهور"
+                                        [pTooltip]="lang.t('toggleVisibility')"
                                         (click)="toggleVisibility(slider)">
                                     </button>
                                     <button pButton 
                                         icon="pi pi-pencil" 
                                         class="p-button-rounded p-button-text p-button-warning p-button-sm"
-                                        pTooltip="تعديل"
+                                        [pTooltip]="lang.t('edit')"
                                         (click)="editSlider(slider)">
                                     </button>
                                     <button pButton 
                                         icon="pi pi-trash" 
                                         class="p-button-rounded p-button-text p-button-danger p-button-sm"
-                                        pTooltip="حذف"
+                                        [pTooltip]="lang.t('delete')"
                                         (click)="confirmDelete(slider)">
                                     </button>
                                 </div>
@@ -133,7 +133,7 @@ import { ImageService } from '../../../services/image.service';
                     <ng-template pTemplate="emptymessage">
                         <tr>
                             <td colspan="6" class="text-center py-8 text-muted-foreground">
-                                لا توجد شرائح بعد. أضف شريحة جديدة للبدء.
+                                {{ lang.t('noSlidersFound') }}
                             </td>
                         </tr>
                     </ng-template>
@@ -144,7 +144,7 @@ import { ImageService } from '../../../services/image.service';
         <!-- Create/Edit Dialog -->
         <p-dialog 
             [(visible)]="dialogVisible" 
-            [header]="isEdit ? 'تعديل الشريحة' : 'إضافة شريحة جديدة'"
+            [header]="isEdit ? lang.t('editSlider') : lang.t('newSlider')"
             [modal]="true"
             [style]="{ width: '600px' }"
             [closable]="true"
@@ -152,41 +152,41 @@ import { ImageService } from '../../../services/image.service';
             <div class="space-y-4 pt-4">
                 <!-- Title -->
                 <div>
-                    <label class="block text-sm font-medium text-foreground mb-2">العنوان *</label>
+                    <label class="block text-sm font-medium text-foreground mb-2">{{ lang.t('title') }} *</label>
                     <input 
                         type="text" 
                         pInputText 
                         [(ngModel)]="slider.title"
                         class="w-full"
-                        placeholder="عنوان الشريحة"
+                        [placeholder]="lang.t('sliderTitlePlaceholder')"
                     >
                 </div>
 
                 <!-- Description -->
                 <div>
-                    <label class="block text-sm font-medium text-foreground mb-2">الوصف</label>
+                    <label class="block text-sm font-medium text-foreground mb-2">{{ lang.t('description') }}</label>
                     <textarea 
                         pTextarea 
                         [(ngModel)]="slider.description"
                         [rows]="3"
                         class="w-full"
-                        placeholder="وصف اختياري للشريحة"
+                        [placeholder]="lang.t('optionalDescription')"
                     ></textarea>
                 </div>
 
                 <!-- Image Upload -->
                 <div>
-                    <label class="block text-sm font-medium text-foreground mb-2">صورة البانر *</label>
+                    <label class="block text-sm font-medium text-foreground mb-2">{{ lang.t('bannerImage') }} *</label>
                     <app-image-uploader
                         [imageUrl]="slider.imageUrl"
-                        [label]="'اختر صورة'"
+                        [label]="lang.t('chooseImage')"
                         (imageUploaded)="onImageUploaded($event)">
                     </app-image-uploader>
                 </div>
 
                 <!-- Link URL -->
                 <div>
-                    <label class="block text-sm font-medium text-foreground mb-2">رابط النقر</label>
+                    <label class="block text-sm font-medium text-foreground mb-2">{{ lang.t('linkUrl') }}</label>
                     <input 
                         type="text" 
                         pInputText 
@@ -199,18 +199,18 @@ import { ImageService } from '../../../services/image.service';
                 <!-- Position and Sort Order -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-foreground mb-2">الموضع *</label>
+                        <label class="block text-sm font-medium text-foreground mb-2">{{ lang.t('position') }} *</label>
                         <p-select
                             [(ngModel)]="slider.position"
                             [options]="positions"
                             optionLabel="label"
                             optionValue="value"
-                            placeholder="اختر الموضع"
+                            [placeholder]="lang.t('position')"
                             styleClass="w-full"
                         ></p-select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-foreground mb-2">الترتيب</label>
+                        <label class="block text-sm font-medium text-foreground mb-2">{{ lang.t('sortOrder') }}</label>
                         <p-inputNumber
                             [(ngModel)]="slider.sortOrder"
                             [min]="0"
@@ -224,7 +224,7 @@ import { ImageService } from '../../../services/image.service';
                 <div class="flex items-center gap-3">
                     <p-toggleSwitch [(ngModel)]="slider.isVisible"></p-toggleSwitch>
                     <label class="text-sm font-medium text-foreground">
-                        {{ slider.isVisible ? 'ظاهر على الموقع' : 'مخفي من الموقع' }}
+                        {{ slider.isVisible ? lang.t('visibleOnSite') : lang.t('hiddenFromSite') }}
                     </label>
                 </div>
             </div>
@@ -232,12 +232,12 @@ import { ImageService } from '../../../services/image.service';
             <ng-template pTemplate="footer">
                 <div class="flex justify-end gap-2">
                     <button pButton 
-                        label="إلغاء" 
+                        [label]="lang.t('cancel')" 
                         class="p-button-text" 
                         (click)="dialogVisible = false">
                     </button>
                     <button pButton 
-                        [label]="isEdit ? 'حفظ التغييرات' : 'إضافة'"
+                        [label]="isEdit ? lang.t('saveChanges') : lang.t('add')"
                         class="p-button-primary"
                         [loading]="saving"
                         (click)="saveSlider()">
@@ -257,13 +257,15 @@ export class SliderManagementComponent implements OnInit {
 
     slider: CreateUpdateSliderBannerDto = this.getEmptySlider();
 
-    positions = [
-        { label: 'قبل الرئيسي', value: SliderPosition.BeforeHero },
-        { label: 'بعد الرئيسي', value: SliderPosition.AfterHero }
-    ];
+    get positions() {
+        return [
+            { label: this.lang.t('beforeHero'), value: SliderPosition.BeforeHero },
+            { label: this.lang.t('afterHero'), value: SliderPosition.AfterHero }
+        ];
+    }
 
     constructor(
-        public lang: LanguageService,
+        @Inject(LanguageService) public lang: LanguageService,
         private sliderService: SliderBannerService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
@@ -271,8 +273,8 @@ export class SliderManagementComponent implements OnInit {
         private imageService: ImageService
     ) { }
 
-    onImageUploaded(imageId: string) {
-        this.slider.imageUrl = this.imageService.getImageUrl(imageId);
+    onImageUploaded(url: string) {
+        this.slider.imageUrl = url;
     }
 
     ngOnInit(): void {
@@ -306,15 +308,15 @@ export class SliderManagementComponent implements OnInit {
                 error: () => {
                     this.messageService.add({
                         severity: 'error',
-                        summary: 'خطأ',
-                        detail: 'فشل في تحميل الشرائح'
+                        summary: this.lang.t('error'),
+                        detail: this.lang.t('noSlidersFound')
                     });
                 }
             });
     }
 
     getPositionLabel(position: SliderPosition): string {
-        return position === SliderPosition.BeforeHero ? 'قبل الرئيسي' : 'بعد الرئيسي';
+        return position === SliderPosition.BeforeHero ? this.lang.t('beforeHero') : this.lang.t('afterHero');
     }
 
     openNew(): void {
@@ -358,16 +360,16 @@ export class SliderManagementComponent implements OnInit {
             next: () => {
                 this.messageService.add({
                     severity: 'success',
-                    summary: 'تم',
-                    detail: updated.isVisible ? 'تم إظهار الشريحة' : 'تم إخفاء الشريحة'
+                    summary: this.lang.t('success'),
+                    detail: this.lang.t('sliderUpdated')
                 });
                 this.loadSliders();
             },
             error: () => {
                 this.messageService.add({
                     severity: 'error',
-                    summary: 'خطأ',
-                    detail: 'فشل في تحديث الحالة'
+                    summary: this.lang.t('error'),
+                    detail: this.lang.t('failedToUpdateSlider')
                 });
             }
         });
@@ -375,11 +377,11 @@ export class SliderManagementComponent implements OnInit {
 
     confirmDelete(s: SliderBannerDto): void {
         this.confirmationService.confirm({
-            message: `هل أنت متأكد من حذف "${s.title}"؟`,
-            header: 'تأكيد الحذف',
+            message: this.lang.t('deleteConfirmation'),
+            header: this.lang.t('confirmDelete'),
             icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'حذف',
-            rejectLabel: 'إلغاء',
+            acceptLabel: this.lang.t('delete'),
+            rejectLabel: this.lang.t('cancel'),
             acceptButtonStyleClass: 'p-button-danger',
             accept: () => {
                 this.deleteSlider(s);
@@ -392,16 +394,16 @@ export class SliderManagementComponent implements OnInit {
             next: () => {
                 this.messageService.add({
                     severity: 'success',
-                    summary: 'تم',
-                    detail: 'تم حذف الشريحة بنجاح'
+                    summary: this.lang.t('success'),
+                    detail: this.lang.t('sliderDeleted')
                 });
                 this.loadSliders();
             },
             error: () => {
                 this.messageService.add({
                     severity: 'error',
-                    summary: 'خطأ',
-                    detail: 'فشل في حذف الشريحة'
+                    summary: this.lang.t('error'),
+                    detail: this.lang.t('failedToDeleteSlider')
                 });
             }
         });
@@ -411,8 +413,8 @@ export class SliderManagementComponent implements OnInit {
         if (!this.slider.title || !this.slider.imageUrl) {
             this.messageService.add({
                 severity: 'error',
-                summary: 'خطأ',
-                detail: 'العنوان ورابط الصورة مطلوبان'
+                summary: this.lang.t('error'),
+                detail: this.lang.t('validationError')
             });
             return;
         }
@@ -426,8 +428,8 @@ export class SliderManagementComponent implements OnInit {
             next: () => {
                 this.messageService.add({
                     severity: 'success',
-                    summary: 'تم',
-                    detail: this.isEdit ? 'تم تحديث الشريحة بنجاح' : 'تم إضافة الشريحة بنجاح'
+                    summary: this.lang.t('success'),
+                    detail: this.isEdit ? this.lang.t('sliderUpdated') : this.lang.t('sliderAdded')
                 });
                 this.dialogVisible = false;
                 this.loadSliders();
@@ -435,8 +437,8 @@ export class SliderManagementComponent implements OnInit {
             error: () => {
                 this.messageService.add({
                     severity: 'error',
-                    summary: 'خطأ',
-                    detail: this.isEdit ? 'فشل في تحديث الشريحة' : 'فشل في إضافة الشريحة'
+                    summary: this.lang.t('error'),
+                    detail: this.isEdit ? this.lang.t('failedToUpdateSlider') : this.lang.t('failedToAddSlider')
                 });
             }
         });

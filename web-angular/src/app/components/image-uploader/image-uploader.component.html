@@ -1,6 +1,15 @@
 <div class="image-uploader-container flex flex-col items-center gap-4">
     <p-toast></p-toast>
 
+    <!-- Mode Switcher -->
+    <p-selectButton [options]="uploadModes" [(ngModel)]="uploadMode" optionLabel="label" optionValue="value"
+        (onChange)="onModeChange()">
+        <ng-template let-item pTemplate>
+            <i [class]="item.icon" class="mr-2"></i>
+            {{item.label}}
+        </ng-template>
+    </p-selectButton>
+
     <div *ngIf="showPreview && previewUrl"
         class="preview-container relative w-full h-48 border rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
         <img [src]="previewUrl" alt="Preview" class="max-w-full max-h-full object-contain" />
@@ -12,13 +21,27 @@
     </div>
 
     <div class="upload-actions w-full">
-        <!-- Using PrimeNG FileUpload in basic mode for custom handling -->
-        <p-fileUpload mode="basic" name="file" [chooseLabel]="label" accept="image/*" [maxFileSize]="5000000"
-            (onSelect)="onFileSelect($event)" [auto]="true" chooseIcon="pi pi-upload" styleClass="w-full">
-        </p-fileUpload>
+        <!-- File Upload Mode -->
+        <ng-container *ngIf="uploadMode === 'upload'">
+            <p-fileUpload mode="basic" name="file" [chooseLabel]="label" accept="image/*" [maxFileSize]="5000000"
+                (onSelect)="onFileSelect($event)" [auto]="true" chooseIcon="pi pi-upload" styleClass="w-full">
+            </p-fileUpload>
 
-        <div *ngIf="isUploading" class="mt-2 text-sm text-blue-600 text-center">
-            <i class="pi pi-spin pi-spinner mr-2"></i> Uploading...
-        </div>
+            <div *ngIf="isUploading" class="mt-2 text-sm text-blue-600 text-center">
+                <i class="pi pi-spin pi-spinner mr-2"></i> Uploading...
+            </div>
+        </ng-container>
+
+        <!-- External Link Mode -->
+        <ng-container *ngIf="uploadMode === 'link'">
+            <div class="p-inputgroup w-full">
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-link"></i>
+                </span>
+                <input type="text" pInputText placeholder="https://example.com/image.jpg" [(ngModel)]="externalLink"
+                    (change)="onLinkChange()" />
+            </div>
+            <p class="text-xs text-muted-foreground mt-1 ml-1">Paste a valid direct image URL.</p>
+        </ng-container>
     </div>
 </div>

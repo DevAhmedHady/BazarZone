@@ -8,11 +8,12 @@
         <div class="container mx-auto relative z-10">
             <div class="max-w-3xl">
                 <h1 class="font-display text-5xl md:text-6xl font-bold text-foreground mb-6 animate-fade-in">
-                    نصنع تجارب <span class="gold-text">تأسر القلوب</span>
+                    {{ c('about_hero_title', 'نصنع تجارب') }} <span class="gold-text">{{ c('about_hero_highlight', 'تأسر
+                        القلوب') }}</span>
                 </h1>
                 <p class="text-xl text-muted-foreground mb-8 animate-fade-in" style="animation-delay: 0.1s">
-                    بازار زون هي وكالة إعلانية رائدة متخصصة في التجارب الرقمية الغامرة. نحول العلامات التجارية إلى رحلات
-                    لا تُنسى تتردد أصداؤها لدى الجماهير في جميع أنحاء العالم.
+                    {{ c('about_hero_desc', 'بازار زون هي وكالة إعلانية رائدة متخصصة في التجارب الرقمية الغامرة. نحول
+                    العلامات التجارية إلى رحلات لا تُنسى تتردد أصداؤها لدى الجماهير في جميع أنحاء العالم.') }}
                 </p>
             </div>
         </div>
@@ -24,26 +25,26 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                     <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
-                        قصتنا
+                        {{ c('about_story_title', 'قصتنا') }}
                     </h2>
                     <div class="space-y-4 text-muted-foreground">
                         <p>
-                            تأسست بازار زون في عام ٢٠١٨، انطلاقًا من إيمان بسيط: يجب أن يكون الإعلان تجربة وليس مقاطعة.
-                            تصور مؤسسونا، من خبراء الصناعة الإبداعية، نموذجًا جديدًا حيث تتواصل العلامات التجارية
-                            والجماهير من خلال تفاعلات غامرة وذات معنى.
+                            {{ c('about_story_p1', 'تأسست بازار زون في عام ٢٠١٨، انطلاقًا من إيمان بسيط: يجب أن يكون
+                            الإعلان تجربة وليس مقاطعة. تصور مؤسسونا، من خبراء الصناعة الإبداعية، نموذجًا جديدًا حيث
+                            تتواصل العلامات التجارية والجماهير من خلال تفاعلات غامرة وذات معنى.') }}
                         </p>
                         <p>
-                            اليوم، نمونا لنصبح وكالة إبداعية متكاملة الخدمات مع فريق من الاستراتيجيين والمصممين
-                            والمطورين ورواة القصص الذين يشتركون في شغف تخطي الحدود الإبداعية. أصبح مفهوم قاعة المعارض
-                            الرقمية لدينا علامتنا المميزة - طريقة ثورية لعرض العلامات التجارية حظيت بالتقدير في جميع
-                            أنحاء الصناعة.
+                            {{ c('about_story_p2', 'اليوم، نمونا لنصبح وكالة إبداعية متكاملة الخدمات مع فريق من
+                            الاستراتيجيين والمصممين والمطورين ورواة القصص الذين يشتركون في شغف تخطي الحدود الإبداعية.
+                            أصبح مفهوم قاعة المعارض الرقمية لدينا علامتنا المميزة - طريقة ثورية لعرض العلامات التجارية
+                            حظيت بالتقدير في جميع أنحاء الصناعة.') }}
                         </p>
                     </div>
                 </div>
                 <div class="booth-card p-8 relative overflow-hidden">
                     <div class="aspect-video rounded-lg overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=450&fit=crop"
-                            alt="تعاون الفريق" class="w-full h-full object-cover" />
+                        <img [src]="c('about_story_image', 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=450&fit=crop')"
+                            alt="Story Image" class="w-full h-full object-cover" />
                     </div>
                     <div
                         class="absolute top-0 left-0 w-32 h-32 opacity-20 bg-gradient-to-br from-primary to-transparent">
@@ -58,10 +59,10 @@
         <div class="container mx-auto">
             <div class="text-center mb-16">
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                    قيمنا
+                    {{ c('about_values_title', 'قيمنا') }}
                 </h2>
                 <p class="text-muted-foreground max-w-xl mx-auto">
-                    المبادئ التي توجه كل ما نقوم به.
+                    {{ c('about_values_subtitle', 'المبادئ التي توجه كل ما نقوم به.') }}
                 </p>
             </div>
 
@@ -89,10 +90,10 @@
         <div class="container mx-auto">
             <div class="text-center mb-16">
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                    تعرف على فريقنا
+                    {{ c('about_team_title', 'تعرف على فريقنا') }}
                 </h2>
                 <p class="text-muted-foreground max-w-xl mx-auto">
-                    العقول المبدعة وراء كل حملة ناجحة.
+                    {{ c('about_team_subtitle', 'العقول المبدعة وراء كل حملة ناجحة.') }}
                 </p>
             </div>
 
@@ -120,14 +121,14 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5"></div>
                 <div class="relative z-10">
                     <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                        لنصنع شيئًا مذهلاً معًا
+                        {{ c('about_cta_title', 'لنصنع شيئًا مذهلاً معًا') }}
                     </h2>
                     <p class="text-muted-foreground max-w-xl mx-auto mb-8">
-                        هل أنت مستعد لتحويل حضور علامتك التجارية؟ لنبدأ محادثة.
+                        {{ c('about_cta_desc', 'هل أنت مستعد لتحويل حضور علامتك التجارية؟ لنبدأ محادثة.') }}
                     </p>
                     <a routerLink="/contact">
                         <button appButton variant="gold" size="lg">
-                            تواصل معنا
+                            {{ c('about_cta_btn', 'تواصل معنا') }}
                             <lucide-icon [name]="ArrowLeft" class="w-5 h-5"></lucide-icon>
                         </button>
                     </a>

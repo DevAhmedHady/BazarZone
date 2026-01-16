@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ServiceProviderService, ServiceProviderDto } from '../../../services/service-provider.service';
@@ -16,6 +16,8 @@ export class ProviderDetailComponent implements OnInit {
     services: ServiceDto[] = [];
     products: ProductDto[] = [];
     loading: boolean = false;
+
+    private cdr = inject(ChangeDetectorRef);
 
     constructor(
         private route: ActivatedRoute,
@@ -38,9 +40,11 @@ export class ProviderDetailComponent implements OnInit {
                 this.provider = res;
                 this.loadServices(id);
                 this.loadProducts(id);
+                this.cdr.detectChanges();
             },
             error: () => {
                 this.loading = false;
+                this.cdr.detectChanges();
             }
         });
     }
@@ -49,6 +53,7 @@ export class ProviderDetailComponent implements OnInit {
         this.serviceService.getList({ maxResultCount: 100 }).subscribe({
             next: (res) => {
                 this.services = res.items.filter(x => x.serviceProviderId === providerId);
+                this.cdr.detectChanges();
             }
         });
     }
@@ -61,7 +66,9 @@ export class ProviderDetailComponent implements OnInit {
             next: (res) => {
                 this.products = res.items;
                 this.loading = false;
+                this.cdr.detectChanges();
             }
         });
     }
+    // Refreshed
 }

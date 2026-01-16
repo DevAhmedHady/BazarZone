@@ -153,13 +153,14 @@
                 </textarea>
             </div>
 
-            <!-- Logo URL Field -->
+            <!-- Logo Upload -->
             <div class="form-field">
-                <label for="logoUrl" class="form-label">
-                    <i class="pi pi-image mr-2 text-primary"></i>Logo URL
+                <label class="form-label mb-2">
+                    <i class="pi pi-image mr-2 text-primary"></i>Provider Logo
                 </label>
-                <input type="url" pInputText id="logoUrl" [(ngModel)]="provider.logoUrl" class="w-full"
-                    placeholder="https://example.com/logo.png" />
+                <app-image-uploader [imageUrl]="provider.logoUrl" [label]="'Choose Logo'" [referenceType]="'Provider'"
+                    (imageUploaded)="provider.logoUrl = $event">
+                </app-image-uploader>
             </div>
 
             <!-- Contact Info Grid -->

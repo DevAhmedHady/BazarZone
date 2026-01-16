@@ -149,19 +149,14 @@
                 </textarea>
             </div>
 
-            <!-- Image URL with Preview -->
+            <!-- Image Upload -->
             <div class="form-field">
-                <label for="imageUrl" class="form-label">
-                    <i class="pi pi-image mr-2 text-primary"></i>Image URL
+                <label class="form-label mb-2">
+                    <i class="pi pi-image mr-2 text-primary"></i>Product Image
                 </label>
-                <input type="url" pInputText id="imageUrl" [(ngModel)]="product.imageUrl" class="w-full"
-                    placeholder="https://example.com/product-image.jpg" />
-                @if (product.imageUrl) {
-                <div class="mt-3 p-3 rounded-xl bg-accent/50 border border-border">
-                    <p class="text-xs text-muted-foreground mb-2">Image Preview</p>
-                    <img [src]="product.imageUrl" alt="Preview" class="h-24 rounded-lg object-cover">
-                </div>
-                }
+                <app-image-uploader [imageUrl]="product.imageUrl" [label]="'Choose Image'" [referenceType]="'Product'"
+                    (imageUploaded)="product.imageUrl = $event">
+                </app-image-uploader>
             </div>
 
             <!-- Price -->

@@ -153,8 +153,17 @@
                 <label for="value" class="form-label">
                     <i class="pi pi-align-left mr-2 text-primary"></i>Value
                 </label>
-                <textarea id="value" pInputTextarea [(ngModel)]="content.value" rows="5" class="w-full"
-                    placeholder="Enter the content value...">
+
+                <!-- Image Uploader for Type Image (2) -->
+                <ng-container *ngIf="content.type === 2">
+                    <app-image-uploader [imageUrl]="content.value" [label]="'Choose Content Image'"
+                        [referenceType]="'Content'" (imageUploaded)="content.value = $event">
+                    </app-image-uploader>
+                </ng-container>
+
+                <!-- Textarea for others -->
+                <textarea *ngIf="content.type !== 2" id="value" pInputTextarea [(ngModel)]="content.value" rows="5"
+                    class="w-full" placeholder="Enter the content value...">
                 </textarea>
             </div>
         </div>
