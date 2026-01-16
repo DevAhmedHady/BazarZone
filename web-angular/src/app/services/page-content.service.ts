@@ -61,6 +61,10 @@ export class PageContentService {
         return this.http.get(`${this.baseUrl}/content/${key}`, { responseType: 'text' });
     }
 
+    getSectionContent(section: string): Observable<{ [key: string]: string }> {
+        return this.http.get<{ [key: string]: string }>(`${this.baseUrl}/section/${section}`);
+    }
+
     create(input: CreateUpdatePageContentDto): Observable<PageContentDto> {
         return this.http.post<PageContentDto>(this.baseUrl, input);
     }

@@ -4,6 +4,7 @@ import { LucideAngularModule, ArrowLeft, Sparkles } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { BoothCardComponent } from '@/app/components/booth-card/booth-card.component';
 import { ServiceProviderService, ServiceProviderDto } from '@/app/services/service-provider.service';
+import { PageContentService } from '@/app/services/page-content.service';
 import { ProductService, ProductDto } from '@/app/services/product.service';
 import { PublicProvider, PublicProduct } from '@/app/models/public-catalog';
 import { getProviderColor } from '@/app/lib/color';
@@ -19,10 +20,12 @@ import { catchError } from 'rxjs/operators';
 export class IndexComponent implements OnInit {
     private providerService = inject(ServiceProviderService);
     private productService = inject(ProductService);
+    private pageContentService = inject(PageContentService);
 
     selectedCategory = signal<string>('الكل');
     providers = signal<PublicProvider[]>([]);
     loading = signal<boolean>(false);
+    content = signal<{ [key: string]: string }>({});
 
     categories = computed(() => {
         const list = this.providers();
@@ -67,9 +70,19 @@ export class IndexComponent implements OnInit {
             ),
             products: this.productService.getList({ maxResultCount: 2000 }).pipe(
                 catchError(() => of({ items: [], totalCount: 0 }))
+            ),
+            content: this.pageContentService.getSectionContent('Home').pipe(
+                catchError(() => of({}))
             )
         }).subscribe({
-            next: ({ providers, products }) => {
+            next: ({ providers, products, content }) => {
+                // Normalize content keys to lowercase for consistent lookup
+                const normalizedContent: { [key: string]: string } = {};
+                const contentObj = content as { [key: string]: string };
+                for (const key of Object.keys(contentObj)) {
+                    normalizedContent[key.toLowerCase()] = contentObj[key];
+                }
+                this.content.set(normalizedContent);
                 const activeProviders = providers.items.filter(p => p.isActive);
                 const productItems = products.items;
                 const mappedProducts = productItems.map(p => this.mapProduct(p));

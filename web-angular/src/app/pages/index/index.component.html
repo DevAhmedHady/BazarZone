@@ -30,29 +30,31 @@
                 <div
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-fade-in">
                     <lucide-icon [name]="Sparkles" class="w-4 h-4 text-primary"></lucide-icon>
-                    <span class="text-sm font-medium text-primary">تجربة معرض رقمية</span>
+                    <span class="text-sm font-medium text-primary">{{ content()['home_hero_badge_text'] || 'تجربة معرض
+                        رقمية' }}</span>
                 </div>
 
                 <h1 class="font-display text-5xl md:text-7xl font-bold text-foreground mb-6 animate-fade-in"
                     style="animation-delay: 0.1s">
-                    حيث تنبض العلامات <span class="gold-text">بالحياة</span>
+                    {{ content()['home_hero_title_prefix'] || 'حيث تنبض العلامات' }} <span class="gold-text">{{
+                        content()['home_hero_title_highlight'] || 'بالحياة' }}</span>
                 </h1>
 
                 <p class="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in"
                     style="animation-delay: 0.2s">
-                    ادخل إلى قاعة المعارض الرقمية الخاصة بنا. اكتشف منتجات مبتكرة من أكثر العلامات التجارية إبداعًا في
-                    العالم، كلها في مكان واحد غامر.
+                    {{ content()['home_hero_description'] || 'ادخل إلى قاعة المعارض الرقمية الخاصة بنا. اكتشف منتجات
+                    مبتكرة من أكثر العلامات التجارية إبداعًا في العالم، كلها في مكان واحد غامر.' }}
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in"
                     style="animation-delay: 0.3s">
                     <button appButton variant="gold" size="xl" class="group" (click)="scrollToExhibition()">
-                        استكشف الأجنحة
+                        {{ content()['home_hero_button_explore'] || 'استكشف الأجنحة' }}
                         <lucide-icon [name]="ArrowLeft"
                             class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></lucide-icon>
                     </button>
                     <button appButton variant="glass" size="xl">
-                        شاهد العرض
+                        {{ content()['home_hero_button_watch'] || 'شاهد العرض' }}
                     </button>
                 </div>
             </div>
@@ -70,11 +72,11 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
                 <div>
                     <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
-                        قاعة المعارض
+                        {{ content()['home_exhibition_title'] || 'قاعة المعارض' }}
                     </h2>
                     <p class="text-muted-foreground max-w-lg">
-                        تصفح مجموعتنا المختارة من أجنحة العلامات التجارية. يعرض كل جناح منتجات فريدة من علامات تجارية
-                        رائدة.
+                        {{ content()['home_exhibition_description'] || 'تصفح مجموعتنا المختارة من أجنحة العلامات
+                        التجارية. يعرض كل جناح منتجات فريدة من علامات تجارية رائدة.' }}
                     </p>
                 </div>
                 <div class="flex gap-2 flex-wrap">
@@ -119,25 +121,28 @@
                     <div class="font-display text-4xl md:text-5xl font-bold gold-text mb-2">
                         +{{ brandsCount() }}
                     </div>
-                    <div class="text-muted-foreground">شريك علامة تجارية</div>
+                    <div class="text-muted-foreground">{{ content()['home_stats_brandlabel'] || 'شريك علامة تجارية' }}
+                    </div>
                 </div>
                 <div class="text-center animate-fade-in" style="animation-delay: 0.1s">
                     <div class="font-display text-4xl md:text-5xl font-bold gold-text mb-2">
                         +{{ totalProducts() }}
                     </div>
-                    <div class="text-muted-foreground">منتج معروض</div>
+                    <div class="text-muted-foreground">{{ content()['home_stats_productslabel'] || 'منتج معروض' }}</div>
                 </div>
                 <div class="text-center animate-fade-in" style="animation-delay: 0.2s">
                     <div class="font-display text-4xl md:text-5xl font-bold gold-text mb-2">
-                        ٢٥ ألف
+                        {{ content()['home_stats_visitorscount'] || '٢٥ ألف' }}
                     </div>
-                    <div class="text-muted-foreground">زائر شهريًا</div>
+                    <div class="text-muted-foreground">{{ content()['home_stats_visitorslabel'] || 'زائر شهريًا' }}
+                    </div>
                 </div>
                 <div class="text-center animate-fade-in" style="animation-delay: 0.3s">
                     <div class="font-display text-4xl md:text-5xl font-bold gold-text mb-2">
-                        ١٠٠%
+                        {{ content()['home_stats_satisfactioncount'] || '١٠٠%' }}
                     </div>
-                    <div class="text-muted-foreground">رضا العملاء</div>
+                    <div class="text-muted-foreground">{{ content()['home_stats_satisfactionlabel'] || 'رضا العملاء' }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,13 +155,14 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5"></div>
                 <div class="relative z-10">
                     <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                        هل أنت مستعد لعرض علامتك التجارية؟
+                        {{ content()['home_cta_title'] || 'هل أنت مستعد لعرض علامتك التجارية؟' }}
                     </h2>
                     <p class="text-muted-foreground max-w-xl mx-auto mb-8">
-                        انضم إلى قاعة المعارض الحصرية لدينا واعرض منتجاتك أمام آلاف الزوار المهتمين.
+                        {{ content()['home_cta_description'] || 'انضم إلى قاعة المعارض الحصرية لدينا واعرض منتجاتك أمام
+                        آلاف الزوار المهتمين.' }}
                     </p>
                     <button appButton variant="gold" size="lg">
-                        احصل على جناحك
+                        {{ content()['home_cta_button'] || 'احصل على جناحك' }}
                     </button>
                 </div>
             </div>

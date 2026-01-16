@@ -12,6 +12,9 @@ namespace BazarZone.Content
 
         public PageContent()
         {
+            Key = string.Empty;
+            Value = string.Empty;
+            Section = string.Empty;
         }
 
         public PageContent(Guid id, string key, string value, string section, PageContentType type) : base(id)
