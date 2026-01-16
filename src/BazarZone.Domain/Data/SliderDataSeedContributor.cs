@@ -29,7 +29,7 @@ public class SliderDataSeedContributor : IDataSeedContributor, ITransientDepende
         await CreateSliderAsync(
             "عروض الموسم الجديد",
             "اكتشف أحدث المنتجات والعروض الحصرية لهذا الموسم",
-            "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80",
+            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80", // Modern Building Abstract
             "/catalog",
             SliderPosition.BeforeHero,
             0
@@ -38,7 +38,7 @@ public class SliderDataSeedContributor : IDataSeedContributor, ITransientDepende
         await CreateSliderAsync(
             "تسوق من أفضل العلامات التجارية",
             "مئات المنتجات المميزة من علامات تجارية عالمية",
-            "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80",
+            "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1920&q=80", // Clean Office
             null,
             SliderPosition.BeforeHero,
             1
@@ -47,7 +47,7 @@ public class SliderDataSeedContributor : IDataSeedContributor, ITransientDepende
         await CreateSliderAsync(
             "خصومات تصل إلى 50%",
             "لا تفوت فرصة الحصول على أفضل الأسعار",
-            "https://images.unsplash.com/photo-1607082350899-7e105aa886ae?w=1920&q=80",
+            "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=1920&q=80", // Abstract Shapes
             null,
             SliderPosition.BeforeHero,
             2
@@ -57,7 +57,7 @@ public class SliderDataSeedContributor : IDataSeedContributor, ITransientDepende
         await CreateSliderAsync(
             "انضم كشريك تجاري",
             "اعرض منتجاتك في معرضنا الرقمي وتواصل مع آلاف العملاء",
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80",
+            "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=1920&q=80", // Code/Tech Abstract
             "/contact",
             SliderPosition.AfterHero,
             0
@@ -66,10 +66,56 @@ public class SliderDataSeedContributor : IDataSeedContributor, ITransientDepende
         await CreateSliderAsync(
             "خدمة عملاء على مدار الساعة",
             "فريق دعم متخصص لمساعدتك في أي وقت",
-            "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&q=80",
+            "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1920&q=80", // Clean Workspace
             null,
             SliderPosition.AfterHero,
             1
+        );
+
+        /* Provider List Sliders (New) */
+        await CreateSliderAsync(
+            "مزودون مميزون",
+            "تعرف على نخبة من أفضل مزودي الخدمات لدينا",
+            "https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80", // Blue Gradient
+            null,
+            SliderPosition.ProviderList,
+            0
+        );
+
+        await CreateSliderAsync(
+            "الأعلى تقييماً",
+            "خدمات نالت رضا وثقة عملائنا",
+            "https://images.unsplash.com/photo-1614850523060-8da1d56e37def?w=1920&q=80", // Abstract Waves
+            null,
+            SliderPosition.ProviderList,
+            1
+        );
+
+        await CreateSliderAsync(
+            "وصل حديثاً",
+            "اكتشف أحدث المنضمين لمنصتنا",
+            "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&q=80", // Modern Arch
+            null,
+            SliderPosition.ProviderList,
+            2
+        );
+
+        await CreateSliderAsync(
+            "عروض خاصة",
+            "باقات وخصومات حصرية لفترة محدودة",
+            "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=80", // Dark Abstract
+            null,
+            SliderPosition.ProviderList,
+            3
+        );
+
+        await CreateSliderAsync(
+            "محترفون معتمدون",
+            "جودة وموثوقية عالية في الأداء",
+            "https://images.unsplash.com/photo-1507919909716-c82196f534be?w=1920&q=80", // Soft Light
+            null,
+            SliderPosition.ProviderList,
+            4
         );
     }
 

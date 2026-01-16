@@ -52,6 +52,7 @@ export class CatalogHomeComponent implements OnInit {
     }
 
     onCategorySelect(category: string): void {
+        console.log('Category selected:', category);
         this.selectedCategory = category;
         this.loadProviders();
     }
