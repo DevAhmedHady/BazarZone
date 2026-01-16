@@ -17,15 +17,21 @@ echo "=== Step 2: Wait for gateway to be ready ==="
 sleep 5
 
 echo "=== Step 3: Request SSL certificates ==="
-docker compose -f docker-compose.prod.yml run --rm certbot certonly \
-    --webroot \
-    --webroot-path /var/www/certbot \
-    --email $EMAIL \
-    --agree-tos \
-    --no-eff-email \
-    -d $DOMAIN \
-    -d www.$DOMAIN \
-    -d api.$DOMAIN
+
+if [ -d "./gateway/certbot/conf/live/$DOMAIN" ]; then
+    echo "Certificate for $DOMAIN already exists! Skipping request."
+else
+    echo "Requesting new certificate for $DOMAIN..."
+    docker compose -f docker-compose.prod.yml run --rm certbot certonly \
+        --webroot \
+        --webroot-path /var/www/certbot \
+        --email $EMAIL \
+        --agree-tos \
+        --no-eff-email \
+        -d $DOMAIN \
+        -d www.$DOMAIN \
+        -d api.$DOMAIN
+fi
 
 echo "=== Step 4: Switch to SSL-enabled nginx config ==="
 cp ~/bazarzone/gateway/nginx-ssl.conf ~/bazarzone/gateway/nginx.conf

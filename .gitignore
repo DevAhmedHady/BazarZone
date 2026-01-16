@@ -272,3 +272,6 @@ src/BazarZone.Blazor.Server.Tiered/Logs/*
 # IdentityServer temp files
 tempkey.rsa
 tempkey.jwk
+# SSL and Certbot
+gateway/ssl/
+gateway/certbot/
