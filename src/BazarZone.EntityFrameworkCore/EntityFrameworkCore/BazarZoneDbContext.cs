@@ -16,6 +16,7 @@ using BazarZone.ServiceProviders;
 using BazarZone.Services;
 using BazarZone.Products;
 using BazarZone.Content;
+using BazarZone.Sliders;
 
 namespace BazarZone.EntityFrameworkCore;
 
@@ -30,6 +31,7 @@ public class BazarZoneDbContext :
     public DbSet<Service> Services { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<PageContent> PageContents { get; set; }
+    public DbSet<SliderBanner> SliderBanners { get; set; }
 
 
     #region Entities from the modules
@@ -110,6 +112,17 @@ public class BazarZoneDbContext :
             b.ConfigureByConvention();
             b.Property(x => x.Key).IsRequired().HasMaxLength(64);
             b.HasIndex(x => x.Key).IsUnique();
+        });
+
+        builder.Entity<SliderBanner>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "SliderBanners", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Title).IsRequired().HasMaxLength(128);
+            b.Property(x => x.ImageUrl).IsRequired().HasMaxLength(1024);
+            b.Property(x => x.Description).HasMaxLength(512);
+            b.Property(x => x.LinkUrl).HasMaxLength(1024);
+            b.HasIndex(x => new { x.Position, x.SortOrder });
         });
     }
 }

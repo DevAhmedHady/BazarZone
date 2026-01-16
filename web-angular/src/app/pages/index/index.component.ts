@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule, ArrowLeft, Sparkles } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { BoothCardComponent } from '@/app/components/booth-card/booth-card.component';
+import { SliderBannerComponent } from '@/app/components/slider-banner/slider-banner.component';
 import { ServiceProviderService, ServiceProviderDto } from '@/app/services/service-provider.service';
 import { PageContentService } from '@/app/services/page-content.service';
 import { ProductService, ProductDto } from '@/app/services/product.service';
@@ -14,7 +15,7 @@ import { catchError } from 'rxjs/operators';
 @Component({
     selector: 'app-index',
     standalone: true,
-    imports: [CommonModule, LucideAngularModule, ButtonComponent, BoothCardComponent],
+    imports: [CommonModule, LucideAngularModule, ButtonComponent, BoothCardComponent, SliderBannerComponent],
     templateUrl: './index.component.html',
 })
 export class IndexComponent implements OnInit {

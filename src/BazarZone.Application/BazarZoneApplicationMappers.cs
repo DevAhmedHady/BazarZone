@@ -66,3 +66,19 @@ public partial class CreateUpdatePageContentDtoToPageContentMapper : MapperBase<
     public override partial PageContent Map(CreateUpdatePageContentDto source);
     public override partial void Map(CreateUpdatePageContentDto source, PageContent destination);
 }
+
+// SliderBanner mappers
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class SliderBannerToSliderBannerDtoMapper : MapperBase<Sliders.SliderBanner, Sliders.SliderBannerDto>
+{
+    public override partial Sliders.SliderBannerDto Map(Sliders.SliderBanner source);
+    public override partial void Map(Sliders.SliderBanner source, Sliders.SliderBannerDto destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class CreateUpdateSliderBannerDtoToSliderBannerMapper : MapperBase<Sliders.CreateUpdateSliderBannerDto, Sliders.SliderBanner>
+{
+    public override partial Sliders.SliderBanner Map(Sliders.CreateUpdateSliderBannerDto source);
+    public override partial void Map(Sliders.CreateUpdateSliderBannerDto source, Sliders.SliderBanner destination);
+}
+

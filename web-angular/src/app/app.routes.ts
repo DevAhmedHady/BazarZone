@@ -17,6 +17,7 @@ import { ProviderManagementComponent } from './pages/admin/catalog/provider-mana
 import { ServiceManagementComponent } from './pages/admin/catalog/service-management/service-management.component';
 import { ProductManagementComponent } from './pages/admin/catalog/product-management/product-management.component';
 import { ContentManagementComponent } from './pages/admin/content-management/content-management.component';
+import { SliderManagementComponent } from './pages/admin/slider-management/slider-management.component';
 import { authGuard, adminGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -48,7 +49,8 @@ export const routes: Routes = [
             { path: 'catalog/providers', component: ProviderManagementComponent, canActivate: [adminGuard] },
             { path: 'catalog/services', component: ServiceManagementComponent, canActivate: [adminGuard] },
             { path: 'catalog/products', component: ProductManagementComponent, canActivate: [adminGuard] },
-            { path: 'content', component: ContentManagementComponent, canActivate: [adminGuard] }
+            { path: 'content', component: ContentManagementComponent, canActivate: [adminGuard] },
+            { path: 'sliders', component: SliderManagementComponent, canActivate: [adminGuard] }
         ]
     },
     { path: '**', component: NotFoundComponent }

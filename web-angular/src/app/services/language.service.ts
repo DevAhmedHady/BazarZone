@@ -64,6 +64,8 @@ export const translations: Translations = {
     services: { en: "Services", ar: "الخدمات" },
     products: { en: "Products", ar: "المنتجات" },
     content: { en: "Content", ar: "المحتوى" },
+    sliders: { en: "Sliders", ar: "الشرائح" },
+    add: { en: "Add", ar: "إضافة" },
 };
 
 @Injectable({
