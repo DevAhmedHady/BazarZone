@@ -1,4 +1,21 @@
 <div class="min-h-screen pt-24 pb-12">
+    <!-- Loading Overlay -->
+    @if (pageLoading) {
+    <div
+        class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity">
+        <div class="flex flex-col items-center gap-4">
+            <div class="relative w-16 h-16">
+                <div class="absolute inset-0 rounded-full border-4 border-primary/20"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin">
+                </div>
+                <lucide-icon [img]="Sparkles"
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary animate-pulse"></lucide-icon>
+            </div>
+            <p class="text-lg font-medium text-foreground animate-pulse">{{ lang.t('loading') }}</p>
+        </div>
+    </div>
+    }
+
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
             <!-- Header -->

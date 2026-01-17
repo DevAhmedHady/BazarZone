@@ -158,6 +158,9 @@ export const translations: Translations = {
     reject: { en: "Reject", ar: "رفض" },
     providerCreated: { en: "Provider created successfully", ar: "تم إنشاء مزود الخدمة بنجاح" },
     statusUpdated: { en: "Status updated successfully", ar: "تم تحديث الحالة بنجاح" },
+
+    // Loading
+    loading: { en: "Loading...", ar: "جاري التحميل..." },
 };
 
 

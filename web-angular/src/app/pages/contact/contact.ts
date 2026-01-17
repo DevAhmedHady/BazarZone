@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LucideAngularModule, Send, MapPin, Mail, Phone } from 'lucide-angular';
+import { LucideAngularModule, Send, MapPin, Mail, Phone, Sparkles } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { ContactService, CreateContactRequestDto } from '@/app/services/contact.service';
 import { MessageService } from 'primeng/api';
@@ -23,6 +23,7 @@ export class ContactComponent {
   readonly MapPin = MapPin;
   readonly Mail = Mail;
   readonly Phone = Phone;
+  readonly Sparkles = Sparkles;
 
   lang = inject(LanguageService);
   private cdr = inject(ChangeDetectorRef);

@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ServiceProviderService, ServiceProviderDto } from '../../../services/service-provider.service';
 import { ServiceService, ServiceDto } from '../../../services/service.service';
 import { ProductService, ProductDto } from '../../../services/product.service';
+import { LucideAngularModule, Sparkles } from 'lucide-angular';
 
 @Component({
     selector: 'app-provider-detail',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, LucideAngularModule],
     templateUrl: './provider-detail.component.html'
 })
 export class ProviderDetailComponent implements OnInit {
@@ -16,6 +17,8 @@ export class ProviderDetailComponent implements OnInit {
     services: ServiceDto[] = [];
     products: ProductDto[] = [];
     loading: boolean = false;
+
+    readonly Sparkles = Sparkles;
 
     private cdr = inject(ChangeDetectorRef);
 

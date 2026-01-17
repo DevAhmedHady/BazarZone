@@ -1,3 +1,19 @@
+<!-- Loading Overlay -->
+@if (loading()) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity">
+    <div class="flex flex-col items-center gap-4">
+        <div class="relative w-16 h-16">
+            <div class="absolute inset-0 rounded-full border-4 border-primary/20"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin">
+            </div>
+            <lucide-icon [name]="Sparkles"
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary animate-pulse"></lucide-icon>
+        </div>
+        <p class="text-lg font-medium text-foreground animate-pulse">جاري التحميل...</p>
+    </div>
+</div>
+}
+
 @if (brand(); as brand) {
 <div class="min-h-screen">
     <!-- Brand Header -->
@@ -24,7 +40,8 @@
                         @if (brand.logoUrl) {
                         <img [src]="brand.logoUrl" [alt]="brand.name" class="w-full h-full object-cover" />
                         } @else {
-                        <div class="w-full h-full flex items-center justify-center bg-accent text-foreground text-3xl font-bold">
+                        <div
+                            class="w-full h-full flex items-center justify-center bg-accent text-foreground text-3xl font-bold">
                             {{ brand.name.charAt(0) }}
                         </div>
                         }
@@ -45,8 +62,8 @@
                         }
                         <div class="flex flex-wrap gap-3">
                             @if (brand.websiteUrl) {
-                            <a appButton variant="gold"
-                                [href]="brand.websiteUrl" target="_blank" rel="noopener noreferrer"
+                            <a appButton variant="gold" [href]="brand.websiteUrl" target="_blank"
+                                rel="noopener noreferrer"
                                 [style.background]="'linear-gradient(135deg, hsl(' + brand.color + ') 0%, hsl(' + brand.color + ' / 0.8) 100%)'">
                                 زيارة الموقع
                                 <lucide-icon [name]="ExternalLink" class="w-4 h-4"></lucide-icon>
@@ -87,7 +104,8 @@
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 loading="lazy" />
                             } @else {
-                            <div class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-2xl">
+                            <div
+                                class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-2xl">
                                 {{ product.name.charAt(0) }}
                             </div>
                             }

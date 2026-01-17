@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ContentDirective } from '../../../directives/content.directive';
-import { LucideAngularModule, Search, ArrowRight, User } from 'lucide-angular';
+import { LucideAngularModule, Search, ArrowRight, User, Sparkles } from 'lucide-angular';
 import { LanguageService } from '../../../services/language.service';
 
 @Component({
@@ -20,6 +20,7 @@ export class CatalogHomeComponent implements OnInit {
     filter: string = '';
     selectedCategory: string = '';
     loading: boolean = false;
+    pageLoading: boolean = true;
 
     public lang = inject(LanguageService);
     private cdr = inject(ChangeDetectorRef);
@@ -28,6 +29,7 @@ export class CatalogHomeComponent implements OnInit {
     Search = Search;
     ArrowRight = ArrowRight;
     User = User;
+    Sparkles = Sparkles;
 
     constructor(private providerService: ServiceProviderService) { }
 
@@ -53,6 +55,7 @@ export class CatalogHomeComponent implements OnInit {
         })
             .pipe(finalize(() => {
                 this.loading = false;
+                this.pageLoading = false;
                 this.cdr.detectChanges(); // Ensure update is reflected
             }))
             .subscribe({

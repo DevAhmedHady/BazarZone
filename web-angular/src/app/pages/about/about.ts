@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, ArrowLeft, Award, Users, Lightbulb, Target } from 'lucide-angular';
+import { LucideAngularModule, ArrowLeft, Award, Users, Lightbulb, Target, Sparkles } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { PageContentService } from '@/app/services/page-content.service';
 import { LanguageService } from '@/app/services/language.service';
@@ -17,9 +17,11 @@ export class AboutComponent implements OnInit {
     public lang = inject(LanguageService);
 
     readonly ArrowLeft = ArrowLeft;
+    readonly Sparkles = Sparkles;
 
     // Dynamic Content Map
     content = signal<{ [key: string]: string }>({});
+    loading = signal<boolean>(true);
 
     // Defaults
     defaultValues = [
@@ -76,6 +78,7 @@ export class AboutComponent implements OnInit {
     }
 
     loadContent() {
+        this.loading.set(true);
         this.contentService.getSectionContent('About').subscribe({
             next: (data) => {
                 this.content.set(data);
@@ -99,6 +102,10 @@ export class AboutComponent implements OnInit {
                         console.error('Failed to parse team_json');
                     }
                 }
+                this.loading.set(false);
+            },
+            error: () => {
+                this.loading.set(false);
             }
         });
     }

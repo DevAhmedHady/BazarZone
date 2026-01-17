@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LucideAngularModule, Send, Building2, User, Mail, Phone, Globe, MapPin, FileText } from 'lucide-angular';
+import { LucideAngularModule, Send, Building2, User, Mail, Phone, Globe, MapPin, FileText, Sparkles } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { ProviderApplicationService, CreateProviderApplicationDto } from '@/app/services/provider-application.service';
 import { MessageService } from 'primeng/api';
@@ -18,6 +18,7 @@ import { LanguageService } from '@/app/services/language.service';
 export class JoinProviderComponent {
     joinForm: FormGroup;
     loading = false;
+    pageLoading = false;
 
     readonly Send = Send;
     readonly Building2 = Building2;
@@ -27,6 +28,7 @@ export class JoinProviderComponent {
     readonly Globe = Globe;
     readonly MapPin = MapPin;
     readonly FileText = FileText;
+    readonly Sparkles = Sparkles;
 
     lang = inject(LanguageService);
     private cdr = inject(ChangeDetectorRef);

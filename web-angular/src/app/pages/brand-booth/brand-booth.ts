@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, ArrowRight, ExternalLink, Share2 } from 'lucide-angular';
+import { LucideAngularModule, ArrowRight, ExternalLink, Share2, Sparkles } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { ServiceProviderService, ServiceProviderDto } from '@/app/services/service-provider.service';
 import { ProductService, ProductDto } from '@/app/services/product.service';
@@ -33,6 +33,7 @@ export class BrandBoothComponent implements OnInit {
   readonly ArrowRight = ArrowRight;
   readonly ExternalLink = ExternalLink;
   readonly Share2 = Share2;
+  readonly Sparkles = Sparkles;
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

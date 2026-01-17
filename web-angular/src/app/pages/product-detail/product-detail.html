@@ -1,3 +1,19 @@
+<!-- Loading Overlay -->
+@if (loading()) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity">
+    <div class="flex flex-col items-center gap-4">
+        <div class="relative w-16 h-16">
+            <div class="absolute inset-0 rounded-full border-4 border-primary/20"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin">
+            </div>
+            <lucide-icon [name]="Sparkles"
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary animate-pulse"></lucide-icon>
+        </div>
+        <p class="text-lg font-medium text-foreground animate-pulse">جاري التحميل...</p>
+    </div>
+</div>
+}
+
 @if (product() && provider()) {
 <!-- Note: Angular templates don't support destructuring in @if alias easily across multiple variables.
        We'll access brand() directly or via aliasing inner block.
@@ -29,7 +45,8 @@
                         @if (product()!.imageUrl) {
                         <img [src]="product()!.imageUrl" [alt]="product()!.name" class="w-full h-full object-cover" />
                         } @else {
-                        <div class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-4xl">
+                        <div
+                            class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-4xl">
                             {{ product()!.name.charAt(0) }}
                         </div>
                         }
@@ -42,7 +59,8 @@
                         class="inline-flex items-center gap-2 text-sm font-medium mb-4 group"
                         [style.color]="'hsl(' + brandColor() + ')'">
                         @if (provider()!.logoUrl) {
-                        <img [src]="provider()!.logoUrl" [alt]="provider()!.name" class="w-6 h-6 rounded object-cover" />
+                        <img [src]="provider()!.logoUrl" [alt]="provider()!.name"
+                            class="w-6 h-6 rounded object-cover" />
                         }
                         {{ provider()!.name }}
                         <lucide-icon [name]="ArrowRight"
