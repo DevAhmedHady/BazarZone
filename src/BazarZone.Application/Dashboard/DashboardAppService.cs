@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
+using Volo.Abp.SettingManagement;
+using Volo.Abp.Settings;
 using Volo.Abp.Timing;
 using BazarZone.Contact;
 using BazarZone.Products;
@@ -28,6 +31,9 @@ namespace BazarZone.Dashboard
         private readonly IRepository<ContactRequest, Guid> _contactRequestRepository;
         private readonly IRepository<IdentityUser, Guid> _userRepository;
         private readonly IClock _clock;
+        private readonly DashboardOptions _options;
+        private readonly ISettingProvider _settingProvider;
+        private readonly ISettingManager _settingManager;
 
         public DashboardAppService(
             IRepository<VisitLog, Guid> visitLogRepository,
@@ -37,7 +43,10 @@ namespace BazarZone.Dashboard
             IRepository<ProviderApplication, Guid> providerApplicationRepository,
             IRepository<ContactRequest, Guid> contactRequestRepository,
             IRepository<IdentityUser, Guid> userRepository,
-            IClock clock)
+            IClock clock,
+            IOptions<DashboardOptions> options,
+            ISettingProvider settingProvider,
+            ISettingManager settingManager)
         {
             _visitLogRepository = visitLogRepository;
             _serviceProviderRepository = serviceProviderRepository;
@@ -47,19 +56,44 @@ namespace BazarZone.Dashboard
             _contactRequestRepository = contactRequestRepository;
             _userRepository = userRepository;
             _clock = clock;
+            _options = options.Value;
+            _settingProvider = settingProvider;
+            _settingManager = settingManager;
         }
 
         [HttpGet("summary")]
         public async Task<DashboardSummaryDto> GetSummaryAsync()
         {
             var now = _clock.Now;
-            var periodStart = now.Date.AddDays(-30);
-            var previousPeriodStart = periodStart.AddDays(-30);
+            var periodDays = await GetPeriodDaysAsync();
+            var periodStart = now.Date.AddDays(-periodDays);
+            var previousPeriodStart = periodStart.AddDays(-periodDays);
+
+            var visitorCountMode = await GetVisitorCountModeAsync();
 
             var visitQuery = await _visitLogRepository.GetQueryableAsync();
-            var totalVisitors = await AsyncExecuter.LongCountAsync(visitQuery);
-            var visitorsThisPeriod = await AsyncExecuter.LongCountAsync(visitQuery.Where(x => x.CreationTime >= periodStart && x.CreationTime < now));
-            var visitorsPreviousPeriod = await AsyncExecuter.LongCountAsync(visitQuery.Where(x => x.CreationTime >= previousPeriodStart && x.CreationTime < periodStart));
+            
+            long totalVisitors, visitorsThisPeriod, visitorsPreviousPeriod;
+            
+            if (visitorCountMode == VisitorCountMode.UniqueIp)
+            {
+                // Count unique IPs
+                totalVisitors = await AsyncExecuter.LongCountAsync(
+                    visitQuery.Select(x => x.IpAddress).Distinct());
+                visitorsThisPeriod = await AsyncExecuter.LongCountAsync(
+                    visitQuery.Where(x => x.CreationTime >= periodStart && x.CreationTime < now)
+                        .Select(x => x.IpAddress).Distinct());
+                visitorsPreviousPeriod = await AsyncExecuter.LongCountAsync(
+                    visitQuery.Where(x => x.CreationTime >= previousPeriodStart && x.CreationTime < periodStart)
+                        .Select(x => x.IpAddress).Distinct());
+            }
+            else
+            {
+                // Count all hits (default)
+                totalVisitors = await AsyncExecuter.LongCountAsync(visitQuery);
+                visitorsThisPeriod = await AsyncExecuter.LongCountAsync(visitQuery.Where(x => x.CreationTime >= periodStart && x.CreationTime < now));
+                visitorsPreviousPeriod = await AsyncExecuter.LongCountAsync(visitQuery.Where(x => x.CreationTime >= previousPeriodStart && x.CreationTime < periodStart));
+            }
 
             var providerQuery = await _serviceProviderRepository.GetQueryableAsync();
             var totalProviders = await AsyncExecuter.LongCountAsync(providerQuery);
@@ -130,6 +164,7 @@ namespace BazarZone.Dashboard
         {
             var period = (input?.Period ?? "monthly").ToLowerInvariant();
             var now = _clock.Now;
+            var visitorCountMode = await GetVisitorCountModeAsync();
 
             var (startDate, buckets, bucketSelector) = period switch
             {
@@ -143,8 +178,20 @@ namespace BazarZone.Dashboard
             var products = await _productRepository.GetListAsync(x => x.CreationTime >= startDate && x.CreationTime <= now);
             var services = await _serviceRepository.GetListAsync(x => x.CreationTime >= startDate && x.CreationTime <= now);
 
-            var visitGroups = visitLogs.GroupBy(x => bucketSelector(x.CreationTime))
-                .ToDictionary(x => x.Key, x => x.LongCount());
+            Dictionary<DateTime, long> visitGroups;
+            if (visitorCountMode == VisitorCountMode.UniqueIp)
+            {
+                // Count unique IPs per period
+                visitGroups = visitLogs.GroupBy(x => bucketSelector(x.CreationTime))
+                    .ToDictionary(x => x.Key, x => (long)x.Select(v => v.IpAddress).Distinct().Count());
+            }
+            else
+            {
+                // Count all hits (default)
+                visitGroups = visitLogs.GroupBy(x => bucketSelector(x.CreationTime))
+                    .ToDictionary(x => x.Key, x => x.LongCount());
+            }
+
             var providerGroups = providers.GroupBy(x => bucketSelector(x.CreationTime))
                 .ToDictionary(x => x.Key, x => x.LongCount());
             var productGroups = products.GroupBy(x => bucketSelector(x.CreationTime))
@@ -220,6 +267,104 @@ namespace BazarZone.Dashboard
                 .OrderByDescending(x => x.Time)
                 .Take(8)
                 .ToList();
+        }
+
+        [HttpGet("settings")]
+        public Task<DashboardSettingsDto> GetSettingsAsync()
+        {
+            return GetSettingsInternalAsync();
+        }
+
+        [HttpPut("settings")]
+        public Task<DashboardSettingsDto> UpdateSettingsAsync([FromBody] UpdateDashboardSettingsDto input)
+        {
+            return UpdateSettingsInternalAsync(input);
+        }
+
+        private async Task<DashboardSettingsDto> GetSettingsInternalAsync()
+        {
+            var visitorModeValue = await _settingProvider.GetOrNullAsync(DashboardSettingNames.VisitorCountMode);
+            var periodDaysValue = await _settingProvider.GetOrNullAsync(DashboardSettingNames.PeriodDays);
+
+            var visitorMode = ParseVisitorCountMode(visitorModeValue) ?? _options.VisitorCountMode;
+            var periodDays = ParsePeriodDays(periodDaysValue) ?? _options.PeriodDays;
+
+            return new DashboardSettingsDto
+            {
+                VisitorCountMode = visitorMode.ToString(),
+                PeriodDays = periodDays
+            };
+        }
+
+        private async Task<DashboardSettingsDto> UpdateSettingsInternalAsync(UpdateDashboardSettingsDto input)
+        {
+            VisitorCountMode visitorMode;
+            int periodDays;
+
+            // Parse and save visitor count mode
+            if (ParseVisitorCountMode(input.VisitorCountMode) is VisitorCountMode mode)
+            {
+                visitorMode = mode;
+                await _settingManager.SetGlobalAsync(
+                    DashboardSettingNames.VisitorCountMode,
+                    mode.ToString());
+            }
+            else
+            {
+                visitorMode = _options.VisitorCountMode;
+            }
+
+            // Parse and save period days
+            if (input.PeriodDays > 0)
+            {
+                periodDays = input.PeriodDays;
+                await _settingManager.SetGlobalAsync(
+                    DashboardSettingNames.PeriodDays,
+                    input.PeriodDays.ToString());
+            }
+            else
+            {
+                periodDays = _options.PeriodDays;
+            }
+
+            // Return the values we just saved (avoid cache issues)
+            return new DashboardSettingsDto
+            {
+                VisitorCountMode = visitorMode.ToString(),
+                PeriodDays = periodDays
+            };
+        }
+
+        private async Task<VisitorCountMode> GetVisitorCountModeAsync()
+        {
+            var value = await _settingProvider.GetOrNullAsync(DashboardSettingNames.VisitorCountMode);
+            return ParseVisitorCountMode(value) ?? _options.VisitorCountMode;
+        }
+
+        private async Task<int> GetPeriodDaysAsync()
+        {
+            var value = await _settingProvider.GetOrNullAsync(DashboardSettingNames.PeriodDays);
+            return ParsePeriodDays(value) ?? _options.PeriodDays;
+        }
+
+        private static VisitorCountMode? ParseVisitorCountMode(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return Enum.TryParse<VisitorCountMode>(value, true, out var mode) ? mode : null;
+        }
+
+        private static int? ParsePeriodDays(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return int.TryParse(value, out var parsed) && parsed > 0 ? parsed : null;
         }
 
         private static double CalculateGrowthPercentage(long current, long previous)

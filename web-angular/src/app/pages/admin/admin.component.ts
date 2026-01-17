@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, ChangeDetectorRef, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Eye, Briefcase, Package, Layers, Users, Clock } from 'lucide-angular';
+import { LucideAngularModule, Eye, Briefcase, Package, Layers, Users, Clock, Settings } from 'lucide-angular';
 import { StatCardComponent } from '../../components/dashboard/stat-card.component';
 import { RecentActivityComponent } from '../../components/dashboard/recent-activity.component';
 import { QuickActionsComponent } from '../../components/dashboard/quick-actions.component';
 import { AnalyticsChartComponent } from '../../components/dashboard/analytics-chart.component';
+import { DashboardSettingsComponent } from '../../components/dashboard/dashboard-settings.component';
 import { LanguageService } from '../../services/language.service';
 import { DashboardService, DashboardRecentActivityDto, DashboardSummaryDto } from '../../services/dashboard.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -18,16 +19,35 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     StatCardComponent,
     RecentActivityComponent,
     QuickActionsComponent,
-    AnalyticsChartComponent
+    AnalyticsChartComponent,
+    DashboardSettingsComponent
   ],
   template: `
       <!-- Page Title -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-foreground">{{ lang.t("dashboard") }}</h1>
-        <p class="text-muted-foreground mt-1">
-          {{ lang.t("welcomeBack") }}
-        </p>
+      <div class="mb-8 flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-foreground">{{ lang.t("dashboard") }}</h1>
+          <p class="text-muted-foreground mt-1">
+            {{ lang.t("welcomeBack") }}
+          </p>
+        </div>
+        <button
+          type="button"
+          (click)="showSettings = !showSettings"
+          class="p-2 rounded-lg hover:bg-accent transition-colors"
+          [class.bg-accent]="showSettings"
+          [title]="lang.t('dashboardSettings')"
+        >
+          <lucide-icon [img]="settingsIcon" class="w-5 h-5 text-muted-foreground"></lucide-icon>
+        </button>
       </div>
+
+      <!-- Settings Panel (Collapsible) -->
+      @if (showSettings) {
+        <div class="mb-6">
+          <app-dashboard-settings></app-dashboard-settings>
+        </div>
+      }
 
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-6">
@@ -84,6 +104,9 @@ export class AdminComponent implements OnInit {
   private dashboardService = inject(DashboardService);
   private cdr = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
+
+  settingsIcon = Settings;
+  showSettings = false;
 
   stats: Array<{ titleKey: string; value: string; change: string; changeType: 'positive' | 'negative' | 'neutral'; icon: any; gradient?: boolean }> = [
     { titleKey: 'totalVisitors', value: '—', change: '—', changeType: 'neutral', icon: Eye, gradient: true },

@@ -56,6 +56,16 @@ export interface DashboardRecentActivityDto {
     time: string;
 }
 
+export interface DashboardSettingsDto {
+    visitorCountMode: 'Hits' | 'UniqueIp';
+    periodDays: number;
+}
+
+export interface UpdateDashboardSettingsDto {
+    visitorCountMode: 'Hits' | 'UniqueIp';
+    periodDays: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -75,6 +85,14 @@ export class DashboardService {
 
     getRecentActivity(): Observable<DashboardRecentActivityDto[]> {
         return this.http.get<DashboardRecentActivityDto[]>(`${this.baseUrl}/recent-activity`);
+    }
+
+    getSettings(): Observable<DashboardSettingsDto> {
+        return this.http.get<DashboardSettingsDto>(`${this.baseUrl}/settings`);
+    }
+
+    updateSettings(settings: UpdateDashboardSettingsDto): Observable<DashboardSettingsDto> {
+        return this.http.put<DashboardSettingsDto>(`${this.baseUrl}/settings`, settings);
     }
 
     trackVisit(): Observable<void> {

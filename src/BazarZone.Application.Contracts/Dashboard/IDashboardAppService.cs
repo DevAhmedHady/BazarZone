@@ -9,5 +9,7 @@ namespace BazarZone.Dashboard
         Task<DashboardSummaryDto> GetSummaryAsync();
         Task<DashboardTimeseriesDto> GetTimeseriesAsync(DashboardTimeseriesInputDto input);
         Task<List<DashboardRecentActivityDto>> GetRecentActivityAsync();
+        Task<DashboardSettingsDto> GetSettingsAsync();
+        Task<DashboardSettingsDto> UpdateSettingsAsync(UpdateDashboardSettingsDto input);
     }
 }

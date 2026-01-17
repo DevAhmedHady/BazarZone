@@ -177,6 +177,21 @@ export const translations: Translations = {
 
     // Loading
     loading: { en: "Loading...", ar: "جاري التحميل..." },
+
+    // Dashboard Settings
+    dashboardSettings: { en: "Dashboard Settings", ar: "إعدادات لوحة التحكم" },
+    configureDashboardBehavior: { en: "Configure how dashboard analytics are calculated", ar: "تكوين كيفية حساب تحليلات لوحة التحكم" },
+    visitorCountMode: { en: "Visitor Count Mode", ar: "طريقة حساب الزوار" },
+    countByHits: { en: "Count by Hits", ar: "حساب بالزيارات" },
+    countByHitsDescription: { en: "Count every page view as a visit", ar: "عد كل مشاهدة صفحة كزيارة" },
+    countByUniqueIp: { en: "Count by Unique IP", ar: "حساب بعناوين IP الفريدة" },
+    countByUniqueIpDescription: { en: "Count unique visitors by IP address", ar: "عد الزوار الفريدين بعنوان IP" },
+    comparisonPeriodDays: { en: "Comparison Period", ar: "فترة المقارنة" },
+    days: { en: "days", ar: "يوم" },
+    periodDaysDescription: { en: "Number of days used for period comparison (e.g., 'this period' vs 'last period')", ar: "عدد الأيام المستخدمة لمقارنة الفترات (مثل: 'هذه الفترة' مقابل 'الفترة السابقة')" },
+    saveSettings: { en: "Save Settings", ar: "حفظ الإعدادات" },
+    saving: { en: "Saving...", ar: "جاري الحفظ..." },
+    settingsSaved: { en: "Settings saved successfully!", ar: "تم حفظ الإعدادات بنجاح!" },
 };
 
 

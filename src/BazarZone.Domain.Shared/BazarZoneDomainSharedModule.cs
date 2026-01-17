@@ -9,9 +9,11 @@ using Volo.Abp.Validation.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
+using Volo.Abp.Settings;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.BlobStoring.Database;
+using BazarZone.Dashboard;
 
 namespace BazarZone;
 
@@ -35,6 +37,11 @@ public class BazarZoneDomainSharedModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        Configure<AbpSettingOptions>(options =>
+        {
+            options.DefinitionProviders.Add<DashboardSettingDefinitionProvider>();
+        });
+
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
             options.FileSets.AddEmbedded<BazarZoneDomainSharedModule>();

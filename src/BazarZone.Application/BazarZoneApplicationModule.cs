@@ -6,6 +6,7 @@ using Volo.Abp.Mapperly;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Modularity;
 using Microsoft.Extensions.DependencyInjection;
+using BazarZone.Dashboard;
 
 namespace BazarZone;
 
@@ -23,6 +24,7 @@ public class BazarZoneApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-
+        var configuration = context.Services.GetConfiguration();
+        context.Services.Configure<DashboardOptions>(configuration.GetSection(DashboardOptions.SectionName));
     }
 }
