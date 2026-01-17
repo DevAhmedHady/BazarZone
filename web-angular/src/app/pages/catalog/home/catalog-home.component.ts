@@ -4,14 +4,13 @@ import { finalize } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ContentDirective } from '../../../directives/content.directive';
 import { LucideAngularModule, Search, ArrowRight, User, Sparkles } from 'lucide-angular';
 import { LanguageService } from '../../../services/language.service';
 
 @Component({
     selector: 'app-catalog-home',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule, ContentDirective, LucideAngularModule],
+    imports: [CommonModule, FormsModule, RouterModule, LucideAngularModule],
     templateUrl: './catalog-home.component.html'
 })
 export class CatalogHomeComponent implements OnInit {

@@ -295,7 +295,10 @@ public class BazarZoneHttpApiHostModule : AbpModule
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 
-        if (MultiTenancyConsts.IsEnabled)
+        var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
+        var multiTenancyEnabled = configuration.GetValue<bool>("MultiTenancy:IsEnabled") || MultiTenancyConsts.IsEnabled;
+
+        if (multiTenancyEnabled)
         {
             app.UseMultiTenancy();
         }

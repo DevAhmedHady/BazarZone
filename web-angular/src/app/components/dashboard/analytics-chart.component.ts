@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ChangeDetectorRef, effect } from '@angular/core';
+import { Component, inject, ViewChild, effect, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
@@ -12,15 +12,15 @@ import { ThemeService } from '../../services/theme.service';
   template: `
     <div class="stat-card animate-fade-in col-span-full lg:col-span-2">
       <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
-        <h3 class="text-lg font-semibold text-foreground">{{ lang.t("revenueOverview") }}</h3>
+        <h3 class="text-lg font-semibold text-foreground">{{ lang.t(titleKey) }}</h3>
         <div class="flex gap-2">
-          <button class="px-3 py-1.5 text-sm font-medium rounded-lg bg-primary text-primary-foreground">
+          <button [class]="getPeriodButtonClass('monthly')" (click)="setPeriod('monthly')">
             {{ lang.t("monthly") }}
           </button>
-          <button class="px-3 py-1.5 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
+          <button [class]="getPeriodButtonClass('weekly')" (click)="setPeriod('weekly')">
             {{ lang.t("weekly") }}
           </button>
-          <button class="px-3 py-1.5 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
+          <button [class]="getPeriodButtonClass('daily')" (click)="setPeriod('daily')">
             {{ lang.t("daily") }}
           </button>
         </div>
@@ -35,25 +35,29 @@ import { ThemeService } from '../../services/theme.service';
     </div>
   `
 })
-export class AnalyticsChartComponent {
+export class AnalyticsChartComponent implements OnChanges {
   lang = inject(LanguageService);
   themeService = inject(ThemeService);
-  cdr = inject(ChangeDetectorRef);
+
+  @Input() titleKey = 'visitorsOverview';
+  @Input() datasetLabel = 'Visitors';
+  @Input() labels: string[] = [];
+  @Input() data: number[] = [];
+  @Input() period: 'daily' | 'weekly' | 'monthly' = 'monthly';
+  @Output() periodChange = new EventEmitter<'daily' | 'weekly' | 'monthly'>();
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'
-    ],
+    labels: [],
     datasets: [
       {
-        data: [4000, 3000, 5000, 4500, 6000, 5500, 7000],
-        label: 'Revenue',
+        data: [],
+        label: this.datasetLabel,
         fill: true,
         tension: 0.4,
         borderColor: 'hsl(38, 92%, 50%)',
-        backgroundColor: 'rgba(245, 158, 11, 0.2)', // Amber-500 equivalent transparent
+        backgroundColor: 'rgba(245, 158, 11, 0.2)',
         pointBackgroundColor: 'hsl(38, 92%, 50%)',
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: '#fff',
@@ -109,5 +113,37 @@ export class AnalyticsChartComponent {
       this.themeService.currentTheme();
       this.chart?.update();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['labels'] || changes['data'] || changes['datasetLabel']) {
+      this.lineChartData = {
+        labels: this.labels,
+        datasets: [
+          {
+            ...this.lineChartData.datasets[0],
+            label: this.datasetLabel,
+            data: this.data
+          }
+        ]
+      };
+      this.chart?.update();
+    }
+  }
+
+  setPeriod(value: 'daily' | 'weekly' | 'monthly') {
+    if (this.period === value) {
+      return;
+    }
+    this.period = value;
+    this.periodChange.emit(value);
+  }
+
+  getPeriodButtonClass(value: 'daily' | 'weekly' | 'monthly') {
+    const base = 'px-3 py-1.5 text-sm font-medium rounded-lg';
+    if (this.period === value) {
+      return `${base} bg-primary text-primary-foreground`;
+    }
+    return `${base} text-muted-foreground hover:bg-muted transition-colors`;
   }
 }

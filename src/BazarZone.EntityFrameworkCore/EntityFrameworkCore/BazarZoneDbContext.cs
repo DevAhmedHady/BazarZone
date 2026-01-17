@@ -17,6 +17,7 @@ using BazarZone.Services;
 using BazarZone.Products;
 using BazarZone.Content;
 using BazarZone.Sliders;
+using BazarZone.Visitors;
 
 namespace BazarZone.EntityFrameworkCore;
 
@@ -35,6 +36,7 @@ public class BazarZoneDbContext :
     public DbSet<Media.AppImage> AppImages { get; set; }
     public DbSet<Contact.ContactRequest> ContactRequests { get; set; }
     public DbSet<ProviderApplication> ProviderApplications { get; set; }
+    public DbSet<VisitLog> VisitLogs { get; set; }
 
 
 
@@ -156,6 +158,18 @@ public class BazarZoneDbContext :
             b.Property(x => x.ContactPerson).IsRequired().HasMaxLength(128);
             b.Property(x => x.Email).IsRequired().HasMaxLength(128);
             b.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(32);
+        });
+
+        builder.Entity<VisitLog>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "VisitLogs", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Path).IsRequired().HasMaxLength(512);
+            b.Property(x => x.ReferrerUrl).HasMaxLength(1024);
+            b.Property(x => x.UserAgent).HasMaxLength(512);
+            b.Property(x => x.IpAddress).HasMaxLength(64);
+            b.Property(x => x.Source).HasMaxLength(32);
+            b.HasIndex(x => x.CreationTime);
         });
     }
 }

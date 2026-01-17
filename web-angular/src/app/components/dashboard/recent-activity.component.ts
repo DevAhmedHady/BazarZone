@@ -1,12 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, User, ShoppingBag, CreditCard, AlertCircle } from 'lucide-angular';
+import { LucideAngularModule, User, ShoppingBag, CreditCard, AlertCircle, MessageSquare, Briefcase } from 'lucide-angular';
 import { cn } from '../../lib/utils';
 import { LanguageService } from '../../services/language.service';
 
 interface Activity {
-    id: number;
-    type: "user" | "order" | "payment" | "alert";
+  type: string;
     titleKey: string;
     description: string;
     time: string;
@@ -20,9 +19,9 @@ interface Activity {
     <div class="stat-card animate-fade-in">
       <h3 class="text-lg font-semibold text-foreground mb-4">{{ lang.t("recentActivity") }}</h3>
       <div class="space-y-4">
-        @for (activity of activities; track activity.id) {
+        @for (activity of activities; track $index) {
           <div class="flex items-start gap-3">
-            <div [class]="cn('p-2 rounded-lg flex-shrink-0', colorMap[activity.type])">
+            <div [class]="cn('p-2 rounded-lg flex-shrink-0', getColorClass(activity.type))">
               <lucide-icon [img]="getIcon(activity.type)" class="h-4 w-4"></lucide-icon>
             </div>
             <div class="flex-1 min-w-0">
@@ -44,19 +43,15 @@ export class RecentActivityComponent {
     lang = inject(LanguageService);
     cn = cn;
 
-    activities: Activity[] = [
-        { id: 1, type: "user", titleKey: "newUserRegistered", description: "john.doe@email.com", time: "2" },
-        { id: 2, type: "order", titleKey: "newOrderReceived", description: "#12345", time: "15" },
-        { id: 3, type: "payment", titleKey: "paymentReceived", description: "$1,234.00", time: "60" },
-        { id: 4, type: "alert", titleKey: "serverAlert", description: "highCpuUsage", time: "120" },
-        { id: 5, type: "user", titleKey: "newUserRegistered", description: "jane.smith@email.com", time: "180" },
-    ];
+  @Input() activities: Activity[] = [];
 
     colorMap: Record<string, string> = {
         user: "bg-primary/10 text-primary",
         order: "bg-admin-success/10 text-admin-success",
         payment: "bg-admin-warning/10 text-admin-warning",
         alert: "bg-destructive/10 text-destructive",
+    contact: "bg-admin-warning/10 text-admin-warning",
+    provider: "bg-admin-success/10 text-admin-success",
     };
 
     // Icon mapping
@@ -66,17 +61,33 @@ export class RecentActivityComponent {
             case 'order': return ShoppingBag;
             case 'payment': return CreditCard;
             case 'alert': return AlertCircle;
+      case 'contact': return MessageSquare;
+      case 'provider': return Briefcase;
             default: return User;
         }
     }
 
-    getTimeLabel(minutes: string) {
-        const min = parseInt(minutes);
-        if (min < 60) {
-            return `${min} ${this.lang.t("minAgo")}`;
-        } else {
-            const hours = Math.floor(min / 60);
-            return `${hours} ${hours === 1 ? this.lang.t("hourAgo") : this.lang.t("hoursAgo")}`;
-        }
+    getColorClass(type: string) {
+      return this.colorMap[type] || this.colorMap['user'];
+    }
+
+  getTimeLabel(time: string) {
+    const timeValue = new Date(time).getTime();
+    if (Number.isNaN(timeValue)) {
+      return '';
+    }
+
+    const diffMs = Date.now() - timeValue;
+    const min = Math.max(1, Math.floor(diffMs / 60000));
+    if (min < 60) {
+      return `${min} ${this.lang.t("minAgo")}`;
+    }
+    const hours = Math.floor(min / 60);
+    if (hours < 24) {
+      return `${hours} ${hours === 1 ? this.lang.t("hourAgo") : this.lang.t("hoursAgo")}`;
+    }
+
+    const days = Math.floor(hours / 24);
+    return `${days} ${this.lang.t("daysAgo")}`;
     }
 }
