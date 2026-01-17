@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LucideAngularModule, LayoutDashboard, Users, Settings, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages, Shield, Package, Layers, Briefcase, FileEdit, Image } from 'lucide-angular';
+import { LucideAngularModule, LayoutDashboard, Users, Settings, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages, Shield, Package, Layers, Briefcase, FileEdit, Image, MessageSquare, FileText } from 'lucide-angular';
+
 import { cn } from '../../lib/utils';
 import { LanguageService } from '../../services/language.service';
 import { ThemeService } from '../../services/theme.service';
@@ -264,7 +265,10 @@ export class AdminSidebarComponent {
     { icon: Package, labelKey: "products", path: "/admin/catalog/products" },
     { icon: FileEdit, labelKey: "content", path: "/admin/content" },
     { icon: Image, labelKey: "sliders", path: "/admin/sliders" },
+    { icon: MessageSquare, labelKey: "contactRequests", path: "/admin/contact-requests" },
+    { icon: FileText, labelKey: "providerApplications", path: "/admin/provider-applications" },
   ];
+
 
   isRTL() {
     return this.lang.language() === 'ar';

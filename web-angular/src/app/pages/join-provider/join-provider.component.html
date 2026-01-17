@@ -1,0 +1,138 @@
+<div class="min-h-screen pt-24 pb-12">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold text-foreground mb-4">{{ lang.t('joinProviderNetwork') }}</h1>
+                <p class="text-lg text-muted-foreground">{{ lang.t('joinProviderSubtitle') }}</p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="booth-card p-8">
+                <form [formGroup]="joinForm" (ngSubmit)="handleSubmit()" class="space-y-6">
+
+                    <!-- Company Info -->
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold text-foreground border-b border-border pb-2">
+                            {{ lang.t('companyInfo') }}</h2>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-foreground">{{ lang.t('companyName') }} *</label>
+                                <div class="relative">
+                                    <lucide-icon [img]="Building2"
+                                        class="absolute left-3 top-3 h-5 w-5 text-muted-foreground"></lucide-icon>
+                                    <input type="text" formControlName="companyName"
+                                        class="flex h-10 w-full rounded-md border border-input bg-secondary/50 pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-border/50 focus:border-primary text-foreground"
+                                        [placeholder]="lang.t('companyName')">
+                                </div>
+                                <div *ngIf="joinForm.get('companyName')?.touched && joinForm.get('companyName')?.errors?.['required']"
+                                    class="text-destructive text-xs">{{ lang.t('required') }}</div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-foreground">{{ lang.t('websiteUrl') }}</label>
+                                <div class="relative">
+                                    <lucide-icon [img]="Globe"
+                                        class="absolute left-3 top-3 h-5 w-5 text-muted-foreground"></lucide-icon>
+                                    <input type="url" formControlName="websiteUrl"
+                                        class="flex h-10 w-full rounded-md border border-input bg-secondary/50 pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-border/50 focus:border-primary text-foreground"
+                                        placeholder="https://example.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground">{{ lang.t('address') }}</label>
+                            <div class="relative">
+                                <lucide-icon [img]="MapPin"
+                                    class="absolute left-3 top-3 h-5 w-5 text-muted-foreground"></lucide-icon>
+                                <input type="text" formControlName="address"
+                                    class="flex h-10 w-full rounded-md border border-input bg-secondary/50 pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-border/50 focus:border-primary text-foreground"
+                                    [placeholder]="lang.t('address')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="space-y-6 pt-4">
+                        <h2 class="text-xl font-semibold text-foreground border-b border-border pb-2">
+                            {{ lang.t('contactDetails') }}</h2>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-foreground">{{ lang.t('contactPerson') }}
+                                    *</label>
+                                <div class="relative">
+                                    <lucide-icon [img]="User"
+                                        class="absolute left-3 top-3 h-5 w-5 text-muted-foreground"></lucide-icon>
+                                    <input type="text" formControlName="contactPerson"
+                                        class="flex h-10 w-full rounded-md border border-input bg-secondary/50 pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-border/50 focus:border-primary text-foreground"
+                                        [placeholder]="lang.t('contactPerson')">
+                                </div>
+                                <div *ngIf="joinForm.get('contactPerson')?.touched && joinForm.get('contactPerson')?.errors?.['required']"
+                                    class="text-destructive text-xs">{{ lang.t('required') }}</div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-foreground">{{ lang.t('emailAddress') }}
+                                    *</label>
+                                <div class="relative">
+                                    <lucide-icon [img]="Mail"
+                                        class="absolute left-3 top-3 h-5 w-5 text-muted-foreground"></lucide-icon>
+                                    <input type="email" formControlName="email"
+                                        class="flex h-10 w-full rounded-md border border-input bg-secondary/50 pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-border/50 focus:border-primary text-foreground"
+                                        [placeholder]="lang.t('emailAddress')">
+                                </div>
+                                <div *ngIf="joinForm.get('email')?.touched && joinForm.get('email')?.errors?.['required']"
+                                    class="text-destructive text-xs">{{ lang.t('required') }}</div>
+                                <div *ngIf="joinForm.get('email')?.touched && joinForm.get('email')?.errors?.['email']"
+                                    class="text-destructive text-xs">{{ lang.t('invalidEmail') }}</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground">{{ lang.t('phoneNumber') }} *</label>
+                            <div class="relative">
+                                <lucide-icon [img]="Phone"
+                                    class="absolute left-3 top-3 h-5 w-5 text-muted-foreground"></lucide-icon>
+                                <input type="tel" formControlName="phoneNumber"
+                                    class="flex h-10 w-full rounded-md border border-input bg-secondary/50 pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-border/50 focus:border-primary text-foreground"
+                                    [placeholder]="lang.t('phoneNumber')">
+                            </div>
+                            <div *ngIf="joinForm.get('phoneNumber')?.touched && joinForm.get('phoneNumber')?.errors?.['required']"
+                                class="text-destructive text-xs">{{ lang.t('required') }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="space-y-6 pt-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground">{{ lang.t('businessDescription')
+                                }}</label>
+                            <div class="relative">
+                                <textarea formControlName="businessDescription" rows="4"
+                                    class="flex min-h-[80px] w-full rounded-md border border-input bg-secondary/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border-border/50 focus:border-primary resize-none text-foreground"
+                                    [placeholder]="lang.t('tellUsAboutServices')"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="pt-6">
+                        <button appButton type="submit" variant="gold" class="w-full"
+                            [disabled]="loading || joinForm.invalid">
+                            <span class="flex items-center justify-center gap-2" *ngIf="!loading">
+                                {{ lang.t('submitApplication') }} <lucide-icon [img]="Send"
+                                    class="h-4 w-4"></lucide-icon>
+                            </span>
+                            <span *ngIf="loading">{{ lang.t('sending') }}</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<p-toast></p-toast>

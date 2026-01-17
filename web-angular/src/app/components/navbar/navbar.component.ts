@@ -24,7 +24,9 @@ export class NavbarComponent {
         { href: "/", label: "قاعة المعارض" },
         { href: "/about", label: "من نحن" },
         { href: "/contact", label: "تواصل معنا" },
+        { href: "/join-provider", label: "انضم كمزود خدمة" },
     ];
+
 
     toggleMobile() {
         this.mobileOpen.update(v => !v);

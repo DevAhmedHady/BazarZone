@@ -11,10 +11,21 @@
                 </h1>
                 <p class="text-muted-foreground mt-1">Manage website content and text elements</p>
             </div>
-            <p-button label="Add Content" icon="pi pi-plus" (click)="openNew()"
-                styleClass="p-button-lg shadow-lg hover:shadow-xl transition-shadow">
-            </p-button>
+
+            <div class="flex items-center gap-3">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText [(ngModel)]="sectionFilter" (keyup.enter)="loadContents()"
+                        placeholder="Filter by Section (e.g. About)" class="p-inputtext-sm w-48 md:w-64" />
+                </span>
+                <p-button icon="pi pi-search" (click)="loadContents()" [text]="true" [rounded]="true"></p-button>
+
+                <p-button label="Add Content" icon="pi pi-plus" (click)="openNew()"
+                    styleClass="p-button-lg shadow-lg hover:shadow-xl transition-shadow">
+                </p-button>
+            </div>
         </div>
+
     </div>
 
     <!-- Data Table Card -->

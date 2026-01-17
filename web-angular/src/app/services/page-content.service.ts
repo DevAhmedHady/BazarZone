@@ -30,6 +30,7 @@ export interface CreateUpdatePageContentDto {
 export interface GetPageContentInput {
     filter?: string;
     sorting?: string;
+    section?: string;
     skipCount?: number;
     maxResultCount?: number;
 }
@@ -46,10 +47,12 @@ export class PageContentService {
         let params = new HttpParams();
         if (input) {
             if (input.filter) params = params.set('Filter', input.filter);
+            if (input.section) params = params.set('Section', input.section);
             if (input.sorting) params = params.set('Sorting', input.sorting);
             if (input.skipCount !== undefined) params = params.set('SkipCount', input.skipCount.toString());
             if (input.maxResultCount !== undefined) params = params.set('MaxResultCount', input.maxResultCount.toString());
         }
+
         return this.http.get<PagedResultDto<PageContentDto>>(this.baseUrl, { params });
     }
 

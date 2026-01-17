@@ -110,7 +110,56 @@ export const translations: Translations = {
     sliderUpdated: { en: "Slider updated successfully", ar: "تم تحديث الشريحة بنجاح" },
     sliderDeleted: { en: "Slider deleted successfully", ar: "تم حذف الشريحة بنجاح" },
     validationError: { en: "Title and Image are required", ar: "العنوان وصورة البانر مطلوبان" },
+    contactRequests: { en: "Contact Requests", ar: "طلبات التواصل" },
+    providerApplications: { en: "Provider Applications", ar: "طلبات الانضمام" },
+
+    // Contact Page
+    letsStartConversation: { en: "Let's Start a", ar: "لنبدأ" },
+    conversation: { en: "Conversation", ar: "محادثة" },
+    contactHeroText: { en: "Have a project in mind? We'd love to hear about it. Get in touch and let's create something extraordinary together.", ar: "لديك مشروع في ذهنك؟ نحن نحب أن نسمع عنه. تواصل معنا ولنصنع شيئًا استثنائيًا معًا." },
+    visitUs: { en: "Visit Us", ar: "زرنا" },
+    emailUs: { en: "Email Us", ar: "راسلنا" },
+    callUs: { en: "Call Us", ar: "اتصل بنا" },
+    sendMessage: { en: "Send us a message", ar: "أرسل لنا رسالة" },
+    yourName: { en: "Your Name", ar: "اسمك" },
+    emailAddress: { en: "Email Address", ar: "البريد الإلكتروني" },
+    company: { en: "Company", ar: "الشركة" },
+    subject: { en: "Subject", ar: "الموضوع" },
+    yourMessage: { en: "Your Message", ar: "رسالتك" },
+    sendMessageBtn: { en: "Send Message", ar: "إرسال الرسالة" },
+    interactiveMapSoon: { en: "Interactive map coming soon", ar: "الخريطة التفاعلية قريبًا" },
+    messageSent: { en: "Message sent successfully! We will contact you within 24 hours.", ar: "تم إرسال الرسالة بنجاح! سنتواصل معك خلال ٢٤ ساعة." },
+    messageFailed: { en: "Failed to send message.", ar: "فشل إرسال الرسالة." },
+
+    // Join Provider Page
+    joinProviderNetwork: { en: "Join Our Provider Network", ar: "انضم لشبكة مزودي الخدمات" },
+    joinProviderSubtitle: { en: "Expand your business reach by becoming a verified service provider on BazarZone.", ar: "وسّع نطاق عملك من خلال أن تصبح مزود خدمة معتمد على بازار زون." },
+    companyInfo: { en: "Company Information", ar: "معلومات الشركة" },
+    companyName: { en: "Company Name", ar: "اسم الشركة" },
+    websiteUrl: { en: "Website URL", ar: "رابط الموقع" },
+    address: { en: "Address", ar: "العنوان" },
+    contactDetails: { en: "Contact Details", ar: "بيانات التواصل" },
+    contactPerson: { en: "Contact Person", ar: "الشخص المسؤول" },
+    phoneNumber: { en: "Phone Number", ar: "رقم الهاتف" },
+    businessDescription: { en: "Business Description", ar: "وصف العمل" },
+    tellUsAboutServices: { en: "Tell us about your services...", ar: "أخبرنا عن خدماتك..." },
+    submitApplication: { en: "Submit Application", ar: "إرسال الطلب" },
+    sending: { en: "Sending...", ar: "جاري الإرسال..." },
+    applicationSubmitted: { en: "Your application has been submitted successfully! We will contact you soon.", ar: "تم إرسال طلبك بنجاح! سنتواصل معك قريباً." },
+    applicationFailed: { en: "Failed to submit application. Please try again.", ar: "فشل إرسال الطلب. يرجى المحاولة مرة أخرى." },
+    required: { en: "Required", ar: "مطلوب" },
+    invalidEmail: { en: "Invalid email format", ar: "صيغة البريد الإلكتروني غير صحيحة" },
+
+    // Provider Application Status
+    pending: { en: "Pending", ar: "قيد الانتظار" },
+    approved: { en: "Approved", ar: "مقبول" },
+    rejected: { en: "Rejected", ar: "مرفوض" },
+    approve: { en: "Approve", ar: "قبول" },
+    reject: { en: "Reject", ar: "رفض" },
+    providerCreated: { en: "Provider created successfully", ar: "تم إنشاء مزود الخدمة بنجاح" },
+    statusUpdated: { en: "Status updated successfully", ar: "تم تحديث الحالة بنجاح" },
 };
+
 
 @Injectable({
     providedIn: 'root'

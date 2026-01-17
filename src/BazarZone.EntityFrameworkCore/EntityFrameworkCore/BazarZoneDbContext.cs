@@ -33,6 +33,9 @@ public class BazarZoneDbContext :
     public DbSet<PageContent> PageContents { get; set; }
     public DbSet<SliderBanner> SliderBanners { get; set; }
     public DbSet<Media.AppImage> AppImages { get; set; }
+    public DbSet<Contact.ContactRequest> ContactRequests { get; set; }
+    public DbSet<ProviderApplication> ProviderApplications { get; set; }
+
 
 
     #region Entities from the modules
@@ -133,6 +136,26 @@ public class BazarZoneDbContext :
             b.Property(x => x.FileName).IsRequired().HasMaxLength(255);
             b.Property(x => x.MimeType).IsRequired().HasMaxLength(128);
             // Content matches byte[] by default to varbinary(max) or bytea
+        });
+
+        builder.Entity<Contact.ContactRequest>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "ContactRequests", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Email).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Subject).IsRequired().HasMaxLength(256);
+            b.Property(x => x.Message).IsRequired().HasMaxLength(2048);
+        });
+
+        builder.Entity<ProviderApplication>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "ProviderApplications", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.CompanyName).IsRequired().HasMaxLength(128);
+            b.Property(x => x.ContactPerson).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Email).IsRequired().HasMaxLength(128);
+            b.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(32);
         });
     }
 }

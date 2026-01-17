@@ -20,10 +20,11 @@
                 </a>
             </ng-container>
             <app-theme-toggle></app-theme-toggle>
-            <button appButton variant="gold" size="sm">
+            <a routerLink="/join-provider" appButton variant="gold" size="sm">
                 ابدأ الآن
-            </button>
+            </a>
         </div>
+
 
         <!-- Mobile Menu Button -->
         <div class="md:hidden flex items-center gap-2">
@@ -44,9 +45,10 @@
                     {{ link.label }}
                 </a>
             </ng-container>
-            <button appButton variant="gold" class="mt-2" w-full>
+            <a routerLink="/join-provider" (click)="closeMobile()" appButton variant="gold" class="mt-2 w-full">
                 ابدأ الآن
-            </button>
+            </a>
         </div>
+
     </div>
 </header>

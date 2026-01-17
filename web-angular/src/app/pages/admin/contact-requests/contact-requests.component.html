@@ -1,0 +1,80 @@
+<div class="card p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Contact Requests</h2>
+            <p class="text-zinc-500 dark:text-zinc-400 mt-1">Manage incoming messages from the contact form.</p>
+        </div>
+        <button pButton icon="pi pi-refresh" (click)="loadRequests()" class="p-button-text p-button-rounded"></button>
+    </div>
+
+    <p-table [value]="requests" [loading]="loading" [rowHover]="true" [paginator]="true" [rows]="10"
+        styleClass="p-datatable-sm" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="creationTime">Date <p-sortIcon field="creationTime"></p-sortIcon></th>
+                <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+                <th pSortableColumn="subject">Subject <p-sortIcon field="subject"></p-sortIcon></th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-req>
+            <tr>
+                <td>{{req.creationTime | date:'medium'}}</td>
+                <td class="font-medium">{{req.name}}</td>
+                <td>
+                    <a href="mailto:{{req.email}}" class="text-primary hover:underline">{{req.email}}</a>
+                </td>
+                <td>{{req.subject}}</td>
+                <td>
+                    <div class="flex gap-2">
+                        <button pButton icon="pi pi-eye" class="p-button-text p-button-rounded p-button-info"
+                            (click)="viewRequest(req)" pTooltip="View Details"></button>
+                        <button pButton icon="pi pi-trash" class="p-button-text p-button-rounded p-button-danger"
+                            (click)="deleteRequest(req)" pTooltip="Delete"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5" class="text-center p-4 text-zinc-500">No contact requests found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialogVisible" [style]="{width: '500px'}" header="Message Details" [modal]="true"
+    styleClass="p-fluid">
+    <div *ngIf="selectedRequest" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-zinc-500">From</label>
+                <div class="text-zinc-900 dark:text-zinc-100">{{selectedRequest.name}}</div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-zinc-500">Date</label>
+                <div class="text-zinc-900 dark:text-zinc-100">{{selectedRequest.creationTime | date:'medium'}}</div>
+            </div>
+            <div class="col-span-2">
+                <label class="block text-sm font-medium text-zinc-500">Email</label>
+                <div class="text-zinc-900 dark:text-zinc-100">{{selectedRequest.email}}</div>
+            </div>
+        </div>
+
+        <div class="border-t border-zinc-200 dark:border-zinc-700 pt-4">
+            <h3 class="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{{selectedRequest.subject}}</h3>
+            <p class="text-zinc-600 dark:text-zinc-300 whitespace-pre-wrap bg-zinc-50 dark:bg-zinc-800 p-3 rounded-lg">
+                {{selectedRequest.message}}</p>
+        </div>
+
+        <div class="flex justify-end pt-2">
+            <a pButton label="Reply via Email" icon="pi pi-envelope"
+                href="mailto:{{selectedRequest.email}}?subject=Re: {{selectedRequest.subject}}"
+                class="p-button-outlined"></a>
+        </div>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

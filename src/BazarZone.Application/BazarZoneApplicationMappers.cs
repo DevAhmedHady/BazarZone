@@ -1,9 +1,12 @@
 using Riok.Mapperly.Abstractions;
 using Volo.Abp.Mapperly;
-using BazarZone.ServiceProviders;
-using BazarZone.Services;
 using BazarZone.Products;
+using BazarZone.Services;
 using BazarZone.Content;
+using BazarZone.Contact;
+using BazarZone.ServiceProviders;
+
+
 
 namespace BazarZone;
 
@@ -89,4 +92,35 @@ public partial class AppImageToAppImageDtoMapper : MapperBase<Media.AppImage, Me
     public override partial Media.AppImageDto Map(Media.AppImage source);
     public override partial void Map(Media.AppImage source, Media.AppImageDto destination);
 }
+
+// ContactRequest mappers
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class ContactRequestToContactRequestDtoMapper : MapperBase<Contact.ContactRequest, Contact.ContactRequestDto>
+{
+    public override partial Contact.ContactRequestDto Map(Contact.ContactRequest source);
+    public override partial void Map(Contact.ContactRequest source, Contact.ContactRequestDto destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class CreateContactRequestDtoToContactRequestMapper : MapperBase<Contact.CreateContactRequestDto, Contact.ContactRequest>
+{
+    public override partial Contact.ContactRequest Map(Contact.CreateContactRequestDto source);
+    public override partial void Map(Contact.CreateContactRequestDto source, Contact.ContactRequest destination);
+}
+
+// ProviderApplication mappers
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class ProviderApplicationToProviderApplicationDtoMapper : MapperBase<ProviderApplication, ProviderApplicationDto>
+{
+    public override partial ProviderApplicationDto Map(ProviderApplication source);
+    public override partial void Map(ProviderApplication source, ProviderApplicationDto destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class CreateProviderApplicationDtoToProviderApplicationMapper : MapperBase<CreateProviderApplicationDto, ProviderApplication>
+{
+    public override partial ProviderApplication Map(CreateProviderApplicationDto source);
+    public override partial void Map(CreateProviderApplicationDto source, ProviderApplication destination);
+}
+
 

@@ -13,7 +13,8 @@ namespace BazarZone.Content
 {
     [RemoteService]
     [Route("api/app/page-content")]
-    public class PageContentAppService : CrudAppService<PageContent, PageContentDto, Guid, PagedAndSortedResultRequestDto, CreateUpdatePageContentDto>, IPageContentAppService
+    public class PageContentAppService : CrudAppService<PageContent, PageContentDto, Guid, GetPageContentInput, CreateUpdatePageContentDto>, IPageContentAppService
+
     {
         public PageContentAppService(IRepository<PageContent, Guid> repository) : base(repository)
         {
@@ -21,10 +22,20 @@ namespace BazarZone.Content
 
         [AllowAnonymous]
         [HttpGet]
-        public override Task<PagedResultDto<PageContentDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public override Task<PagedResultDto<PageContentDto>> GetListAsync(GetPageContentInput input)
+
         {
             return base.GetListAsync(input);
         }
+
+        protected override async Task<IQueryable<PageContent>> CreateFilteredQueryAsync(GetPageContentInput input)
+        {
+            var query = await base.CreateFilteredQueryAsync(input);
+            return query
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Filter), x => x.Key.Contains(input.Filter!) || x.Value.Contains(input.Filter!))
+                .WhereIf(!string.IsNullOrWhiteSpace(input.Section), x => x.Section == input.Section);
+        }
+
 
         [AllowAnonymous]
         [HttpGet("{id}")]

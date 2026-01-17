@@ -40,6 +40,7 @@ export class ContentManagementComponent implements OnInit {
 
     isEdit = false;
     editingId: string | null = null;
+    sectionFilter = '';
 
     types = [
         { label: 'Text', value: PageContentType.Text },
@@ -61,7 +62,7 @@ export class ContentManagementComponent implements OnInit {
     loadContents(): void {
         this.loading = true;
         this.cdr.detectChanges();
-        this.pageContentService.getList({ maxResultCount: 1000 })
+        this.pageContentService.getList({ maxResultCount: 1000, section: this.sectionFilter || undefined })
             .pipe(finalize(() => {
                 this.loading = false;
                 this.cdr.detectChanges();

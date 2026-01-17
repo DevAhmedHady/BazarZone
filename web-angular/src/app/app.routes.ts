@@ -18,7 +18,11 @@ import { ServiceManagementComponent } from './pages/admin/catalog/service-manage
 import { ProductManagementComponent } from './pages/admin/catalog/product-management/product-management.component';
 import { ContentManagementComponent } from './pages/admin/content-management/content-management.component';
 import { SliderManagementComponent } from './pages/admin/slider-management/slider-management.component';
+import { JoinProviderComponent } from './pages/join-provider/join-provider.component';
+import { ContactRequestsComponent } from './pages/admin/contact-requests/contact-requests.component';
+import { ProviderApplicationsComponent } from './pages/admin/provider-applications/provider-applications.component';
 import { authGuard, adminGuard } from './guards/auth.guard';
+
 
 export const routes: Routes = [
     {
@@ -32,7 +36,9 @@ export const routes: Routes = [
             { path: 'contact', component: ContactComponent },
             { path: 'catalog', component: CatalogHomeComponent },
             { path: 'catalog/:id', component: ProviderDetailComponent },
+            { path: 'join-provider', component: JoinProviderComponent },
         ]
+
     },
     {
         path: 'login',
@@ -50,8 +56,11 @@ export const routes: Routes = [
             { path: 'catalog/services', component: ServiceManagementComponent, canActivate: [adminGuard] },
             { path: 'catalog/products', component: ProductManagementComponent, canActivate: [adminGuard] },
             { path: 'content', component: ContentManagementComponent, canActivate: [adminGuard] },
-            { path: 'sliders', component: SliderManagementComponent, canActivate: [adminGuard] }
+            { path: 'sliders', component: SliderManagementComponent, canActivate: [adminGuard] },
+            { path: 'contact-requests', component: ContactRequestsComponent, canActivate: [adminGuard] },
+            { path: 'provider-applications', component: ProviderApplicationsComponent, canActivate: [adminGuard] }
         ]
+
     },
     { path: '**', component: NotFoundComponent }
 ];
