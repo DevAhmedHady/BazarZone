@@ -44,6 +44,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
         // Update existing providers with social links if they don't have any
         await UpdateProviderSocialLinksAsync(existingProviders);
 
+        var existingProducts = await _productRepository.GetListAsync();
+        await UpdateProductSocialLinksAsync(existingProducts, existingProviders);
+
         if (existingProviders.Any())
         {
             var newProducts = new List<Product>();
@@ -76,7 +79,13 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                             $"منتج مميز من {provider.Name} يناسب احتياجاتك اليومية.",
                             99 + (i * 75),
                             imageUrls[(new Random().Next(0, imageUrls.Length))]
-                        ));
+                        )
+                        {
+                            FacebookUrl = provider.FacebookUrl,
+                            InstagramUrl = provider.InstagramUrl,
+                            TwitterUrl = provider.TwitterUrl,
+                            LinkedInUrl = provider.LinkedInUrl
+                        });
                     }
                 }
             }
@@ -147,6 +156,51 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
         if (updated)
         {
             await _providerRepository.UpdateManyAsync(providers, autoSave: true);
+        }
+    }
+
+    private async Task UpdateProductSocialLinksAsync(List<Product> products, IReadOnlyList<ServiceProvider> providers)
+    {
+        if (products.Count == 0 || providers.Count == 0)
+        {
+            return;
+        }
+
+        var providerMap = providers.ToDictionary(p => p.Id);
+        var updated = false;
+
+        foreach (var product in products)
+        {
+            if (!providerMap.TryGetValue(product.ServiceProviderId, out var provider))
+            {
+                continue;
+            }
+
+            if (string.IsNullOrEmpty(product.FacebookUrl) && !string.IsNullOrEmpty(provider.FacebookUrl))
+            {
+                product.FacebookUrl = provider.FacebookUrl;
+                updated = true;
+            }
+            if (string.IsNullOrEmpty(product.InstagramUrl) && !string.IsNullOrEmpty(provider.InstagramUrl))
+            {
+                product.InstagramUrl = provider.InstagramUrl;
+                updated = true;
+            }
+            if (string.IsNullOrEmpty(product.TwitterUrl) && !string.IsNullOrEmpty(provider.TwitterUrl))
+            {
+                product.TwitterUrl = provider.TwitterUrl;
+                updated = true;
+            }
+            if (string.IsNullOrEmpty(product.LinkedInUrl) && !string.IsNullOrEmpty(provider.LinkedInUrl))
+            {
+                product.LinkedInUrl = provider.LinkedInUrl;
+                updated = true;
+            }
+        }
+
+        if (updated)
+        {
+            await _productRepository.UpdateManyAsync(products, autoSave: true);
         }
     }
 
@@ -318,7 +372,13 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                     $"منتج مميز من {provider.Name} يناسب احتياجاتك اليومية.",
                     99 + (i * 75) + (providerIndex * 10),
                     imageUrls[(providerIndex + i) % imageUrls.Length]
-                ));
+                )
+                {
+                    FacebookUrl = provider.FacebookUrl,
+                    InstagramUrl = provider.InstagramUrl,
+                    TwitterUrl = provider.TwitterUrl,
+                    LinkedInUrl = provider.LinkedInUrl
+                });
             }
             providerIndex++;
         }

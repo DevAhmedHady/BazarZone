@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LucideAngularModule, ArrowLeft } from 'lucide-angular';
+import { LucideAngularModule, ArrowLeft, Facebook, Instagram, Twitter, Linkedin } from 'lucide-angular';
 import { PublicProvider } from '@/app/models/public-catalog';
 import { ProductCarouselComponent } from '../product-carousel/product-carousel.component';
 import { CommonModule } from '@angular/common';
@@ -16,4 +16,8 @@ export class BoothCardComponent {
     @Input({ required: true }) index!: number;
 
     readonly ArrowLeft = ArrowLeft;
+    readonly Facebook = Facebook;
+    readonly Instagram = Instagram;
+    readonly Twitter = Twitter;
+    readonly Linkedin = Linkedin;
 }

@@ -130,34 +130,71 @@
 
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @for (product of brand.products; track product.id; let index = $index) {
-                <div class="animate-fade-in" [style.animationDelay]="(index * 50) + 'ms'">
-                    <a [routerLink]="['/product', product.id]" class="product-card block group overflow-hidden">
-                        <div class="aspect-square overflow-hidden">
-                            @if (product.imageUrl) {
-                            <img [src]="product.imageUrl" [alt]="product.name"
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                loading="lazy" />
-                            } @else {
-                            <div
-                                class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-2xl">
-                                {{ product.name.charAt(0) }}
+                    <div class="animate-fade-in" [style.animationDelay]="(index * 50) + 'ms'">
+                        <div class="product-card block group overflow-hidden">
+                            <a [routerLink]="['/product', product.id]" class="block">
+                                <div class="aspect-square overflow-hidden">
+                                    @if (product.imageUrl) {
+                                    <img [src]="product.imageUrl" [alt]="product.name"
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        loading="lazy" />
+                                    } @else {
+                                    <div
+                                        class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground text-2xl">
+                                        {{ product.name.charAt(0) }}
+                                    </div>
+                                    }
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-foreground mb-1">
+                                        {{ product.name }}
+                                    </h3>
+                                    @if (product.description) {
+                                    <p class="text-muted-foreground text-sm">
+                                        {{ product.description }}
+                                    </p>
+                                    }
+                                </div>
+                            </a>
+
+                            @if (product.facebookUrl || product.instagramUrl || product.twitterUrl || product.linkedInUrl) {
+                            <div class="px-4 pb-4 flex items-center gap-2">
+                                @if (product.facebookUrl) {
+                                <a [href]="product.facebookUrl" target="_blank" rel="noopener noreferrer"
+                                    class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                                    title="Facebook" aria-label="Facebook">
+                                    <lucide-icon [name]="Facebook" class="w-4 h-4"></lucide-icon>
+                                </a>
+                                }
+                                @if (product.instagramUrl) {
+                                <a [href]="product.instagramUrl" target="_blank" rel="noopener noreferrer"
+                                    class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity"
+                                    title="Instagram" aria-label="Instagram">
+                                    <lucide-icon [name]="Instagram" class="w-4 h-4"></lucide-icon>
+                                </a>
+                                }
+                                @if (product.twitterUrl) {
+                                <a [href]="product.twitterUrl" target="_blank" rel="noopener noreferrer"
+                                    class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+                                    title="X / Twitter" aria-label="X / Twitter">
+                                    <lucide-icon [name]="Twitter" class="w-4 h-4"></lucide-icon>
+                                </a>
+                                }
+                                @if (product.linkedInUrl) {
+                                <a [href]="product.linkedInUrl" target="_blank" rel="noopener noreferrer"
+                                    class="w-8 h-8 rounded-full bg-blue-700 text-white flex items-center justify-center hover:bg-blue-800 transition-colors"
+                                    title="LinkedIn" aria-label="LinkedIn">
+                                    <lucide-icon [name]="Linkedin" class="w-4 h-4"></lucide-icon>
+                                </a>
+                                }
                             </div>
                             }
+
+                            <div class="h-1 w-0 transition-all duration-300 group-hover:w-full"
+                                [style.background]="'hsl(' + brand.color + ')'">
+                            </div>
                         </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-foreground mb-1">
-                                {{ product.name }}
-                            </h3>
-                            @if (product.description) {
-                            <p class="text-muted-foreground text-sm">
-                                {{ product.description }}
-                            </p>
-                            }
-                        </div>
-                        <div class="h-1 w-0 transition-all duration-300 group-hover:w-full"
-                            [style.background]="'hsl(' + brand.color + ')'"></div>
-                    </a>
-                </div>
+                    </div>
                 }
             </div>
         </div>

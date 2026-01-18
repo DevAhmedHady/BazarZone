@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ServiceProviderService, ServiceProviderDto } from '../../../services/service-provider.service';
 import { ServiceService, ServiceDto } from '../../../services/service.service';
 import { ProductService, ProductDto } from '../../../services/product.service';
-import { LucideAngularModule, Sparkles } from 'lucide-angular';
+import { LucideAngularModule, Sparkles, Facebook, Instagram, Twitter, Linkedin } from 'lucide-angular';
 
 @Component({
     selector: 'app-provider-detail',
@@ -19,6 +19,10 @@ export class ProviderDetailComponent implements OnInit {
     loading: boolean = false;
 
     readonly Sparkles = Sparkles;
+    readonly Facebook = Facebook;
+    readonly Instagram = Instagram;
+    readonly Twitter = Twitter;
+    readonly Linkedin = Linkedin;
 
     private cdr = inject(ChangeDetectorRef);
 

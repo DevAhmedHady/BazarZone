@@ -86,60 +86,94 @@
         <!-- Providers Grid -->
         <div *ngIf="!loading && providers.length > 0"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <a *ngFor="let provider of providers" [routerLink]="['/catalog', provider.id]"
-                class="group block h-full outline-none">
+            <div *ngFor="let provider of providers" class="group block h-full outline-none">
                 <div
                     class="bg-card rounded-3xl overflow-hidden border border-border/50 shadow-sm transition-all duration-500 hover:shadow-xl hover:border-primary/20 hover:-translate-y-2 h-full flex flex-col relative">
 
-                    <!-- Card Image -->
-                    <div class="relative h-56 overflow-hidden bg-muted">
-                        <img *ngIf="provider.logoUrl" [src]="provider.logoUrl" alt="{{provider.name}}"
-                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <a [routerLink]="['/catalog', provider.id]" class="flex flex-col flex-grow">
+                        <!-- Card Image -->
+                        <div class="relative h-56 overflow-hidden bg-muted">
+                            <img *ngIf="provider.logoUrl" [src]="provider.logoUrl" alt="{{provider.name}}"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
 
-                        <div *ngIf="!provider.logoUrl"
-                            class="w-full h-full flex items-center justify-center bg-accent/20 group-hover:bg-accent/30 transition-colors">
-                            <lucide-icon [img]="User" class="w-16 h-16 text-muted-foreground/30"></lucide-icon>
+                            <div *ngIf="!provider.logoUrl"
+                                class="w-full h-full flex items-center justify-center bg-accent/20 group-hover:bg-accent/30 transition-colors">
+                                <lucide-icon [img]="User" class="w-16 h-16 text-muted-foreground/30"></lucide-icon>
+                            </div>
+
+                            <!-- Overlay Gradient -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60">
+                            </div>
+
+                            <!-- Category Badge -->
+                            <div
+                                class="absolute top-4 right-4 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/90 backdrop-blur text-xs font-bold text-gray-900 shadow-lg">
+                                    {{provider.category || 'Service'}}
+                                </span>
+                            </div>
                         </div>
 
-                        <!-- Overlay Gradient -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60">
-                        </div>
+                        <!-- Content -->
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="mb-auto">
+                                <h3
+                                    class="text-xl font-bold text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+                                    {{provider.name}}
+                                </h3>
+                                <p class="text-sm font-medium text-primary mb-3">{{provider.category || 'Service Provider'}}
+                                </p>
+                                <p class="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
+                                    {{provider.description || 'No description available.'}}
+                                </p>
+                            </div>
 
-                        <!-- Category Badge -->
-                        <div
-                            class="absolute top-4 right-4 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                            <span
-                                class="px-3 py-1 rounded-full bg-white/90 backdrop-blur text-xs font-bold text-gray-900 shadow-lg">
-                                {{provider.category || 'Service'}}
-                            </span>
+                            <div
+                                class="pt-6 mt-4 border-t border-border/50 flex items-center justify-between text-sm font-semibold text-primary">
+                                <span>{{ lang.t('viewDetails') }}</span>
+                                <lucide-icon [img]="ArrowRight"
+                                    class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                                    [class.rotate-180]="lang.language() === 'ar'"></lucide-icon>
+                            </div>
                         </div>
+                    </a>
+
+                    @if (provider.facebookUrl || provider.instagramUrl || provider.twitterUrl || provider.linkedInUrl) {
+                    <div class="px-6 pb-5 pt-2 flex items-center gap-2">
+                        @if (provider.facebookUrl) {
+                        <a [href]="provider.facebookUrl" target="_blank" rel="noopener noreferrer"
+                            class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+                            title="Facebook" aria-label="Facebook">
+                            <lucide-icon [img]="Facebook" class="w-4 h-4"></lucide-icon>
+                        </a>
+                        }
+                        @if (provider.instagramUrl) {
+                        <a [href]="provider.instagramUrl" target="_blank" rel="noopener noreferrer"
+                            class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity"
+                            title="Instagram" aria-label="Instagram">
+                            <lucide-icon [img]="Instagram" class="w-4 h-4"></lucide-icon>
+                        </a>
+                        }
+                        @if (provider.twitterUrl) {
+                        <a [href]="provider.twitterUrl" target="_blank" rel="noopener noreferrer"
+                            class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+                            title="X / Twitter" aria-label="X / Twitter">
+                            <lucide-icon [img]="Twitter" class="w-4 h-4"></lucide-icon>
+                        </a>
+                        }
+                        @if (provider.linkedInUrl) {
+                        <a [href]="provider.linkedInUrl" target="_blank" rel="noopener noreferrer"
+                            class="w-8 h-8 rounded-full bg-blue-700 text-white flex items-center justify-center hover:bg-blue-800 transition-colors"
+                            title="LinkedIn" aria-label="LinkedIn">
+                            <lucide-icon [img]="Linkedin" class="w-4 h-4"></lucide-icon>
+                        </a>
+                        }
                     </div>
-
-                    <!-- Content -->
-                    <div class="p-6 flex flex-col flex-grow">
-                        <div class="mb-auto">
-                            <h3
-                                class="text-xl font-bold text-foreground mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-                                {{provider.name}}
-                            </h3>
-                            <p class="text-sm font-medium text-primary mb-3">{{provider.category || 'Service Provider'}}
-                            </p>
-                            <p class="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
-                                {{provider.description || 'No description available.'}}
-                            </p>
-                        </div>
-
-                        <div
-                            class="pt-6 mt-4 border-t border-border/50 flex items-center justify-between text-sm font-semibold text-primary">
-                            <span>{{ lang.t('viewDetails') }}</span>
-                            <lucide-icon [img]="ArrowRight"
-                                class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                                [class.rotate-180]="lang.language() === 'ar'"></lucide-icon>
-                        </div>
-                    </div>
+                    }
                 </div>
-            </a>
+            </div>
         </div>
 
         <!-- Empty State -->

@@ -33,6 +33,40 @@
         <app-product-carousel [products]="brand.products" [brandColor]="brand.color"></app-product-carousel>
     </div>
 
+    <!-- Social Links -->
+    @if (brand.facebookUrl || brand.instagramUrl || brand.twitterUrl || brand.linkedInUrl) {
+    <div class="px-6 pb-4 flex items-center gap-2">
+        @if (brand.facebookUrl) {
+        <a [href]="brand.facebookUrl" target="_blank" rel="noopener noreferrer"
+            class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+            title="Facebook" aria-label="Facebook">
+            <lucide-icon [name]="Facebook" class="w-4 h-4"></lucide-icon>
+        </a>
+        }
+        @if (brand.instagramUrl) {
+        <a [href]="brand.instagramUrl" target="_blank" rel="noopener noreferrer"
+            class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity"
+            title="Instagram" aria-label="Instagram">
+            <lucide-icon [name]="Instagram" class="w-4 h-4"></lucide-icon>
+        </a>
+        }
+        @if (brand.twitterUrl) {
+        <a [href]="brand.twitterUrl" target="_blank" rel="noopener noreferrer"
+            class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+            title="X / Twitter" aria-label="X / Twitter">
+            <lucide-icon [name]="Twitter" class="w-4 h-4"></lucide-icon>
+        </a>
+        }
+        @if (brand.linkedInUrl) {
+        <a [href]="brand.linkedInUrl" target="_blank" rel="noopener noreferrer"
+            class="w-8 h-8 rounded-full bg-blue-700 text-white flex items-center justify-center hover:bg-blue-800 transition-colors"
+            title="LinkedIn" aria-label="LinkedIn">
+            <lucide-icon [name]="Linkedin" class="w-4 h-4"></lucide-icon>
+        </a>
+        }
+    </div>
+    }
+
     <!-- Booth Footer -->
     <div class="px-6 py-4 border-t border-border/20">
         <a [routerLink]="['/brand', brand.id]" class="flex items-center justify-between text-sm font-medium group/link">

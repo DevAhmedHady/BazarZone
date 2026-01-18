@@ -4,7 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { LucideAngularModule, Search, ArrowRight, User, Sparkles } from 'lucide-angular';
+import { LucideAngularModule, Search, ArrowRight, User, Sparkles, Facebook, Instagram, Twitter, Linkedin } from 'lucide-angular';
 import { LanguageService } from '../../../services/language.service';
 
 @Component({
@@ -29,6 +29,10 @@ export class CatalogHomeComponent implements OnInit {
     ArrowRight = ArrowRight;
     User = User;
     Sparkles = Sparkles;
+    Facebook = Facebook;
+    Instagram = Instagram;
+    Twitter = Twitter;
+    Linkedin = Linkedin;
 
     constructor(private providerService: ServiceProviderService) { }
 

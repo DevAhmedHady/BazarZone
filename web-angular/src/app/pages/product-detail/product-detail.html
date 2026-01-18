@@ -90,21 +90,6 @@
                         </p>
                     </div>
 
-                    <div class="flex flex-wrap gap-4 mb-8">
-                        <button appButton variant="gold" size="lg"
-                            [style.background]="'linear-gradient(135deg, hsl(' + brandColor() + ') 0%, hsl(' + brandColor() + ' / 0.8) 100%)'">
-                            <lucide-icon [name]="ShoppingBag" class="w-5 h-5"></lucide-icon>
-                            عرض المنتج
-                        </button>
-                        <button appButton variant="glass" size="lg">
-                            <lucide-icon [name]="Heart" class="w-5 h-5"></lucide-icon>
-                            حفظ
-                        </button>
-                        <button appButton variant="glass" size="lg">
-                            <lucide-icon [name]="Share2" class="w-5 h-5"></lucide-icon>
-                        </button>
-                    </div>
-
                     <!-- Product Social Links -->
                     @if (product()!.facebookUrl || product()!.instagramUrl || product()!.twitterUrl || product()!.linkedInUrl) {
                     <div class="mb-8">

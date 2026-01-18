@@ -1,25 +1,61 @@
-<a [routerLink]="['/product', product.id]" class="product-card block overflow-hidden group h-full">
-    <div class="aspect-[4/3] overflow-hidden">
-        @if (product.imageUrl) {
-        <img [src]="product.imageUrl" [alt]="product.name"
-            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
-        } @else {
-        <div class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground">
-            {{ product.name.charAt(0) }}
+<div class="product-card block overflow-hidden group h-full">
+    <a [routerLink]="['/product', product.id]" class="block">
+        <div class="aspect-[4/3] overflow-hidden">
+            @if (product.imageUrl) {
+            <img [src]="product.imageUrl" [alt]="product.name"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+            } @else {
+            <div class="w-full h-full flex items-center justify-center bg-accent text-muted-foreground">
+                {{ product.name.charAt(0) }}
+            </div>
+            }
         </div>
+        <div class="p-3">
+            <h4 class="font-medium text-foreground text-sm truncate">
+                {{ product.name }}
+            </h4>
+            @if (product.description) {
+            <p class="text-muted-foreground text-xs mt-0.5 truncate">
+                {{ product.description }}
+            </p>
+            }
+        </div>
+    </a>
+
+    @if (product.facebookUrl || product.instagramUrl || product.twitterUrl || product.linkedInUrl) {
+    <div class="px-3 pb-3 flex items-center gap-2">
+        @if (product.facebookUrl) {
+        <button type="button" (click)="openExternal(product.facebookUrl, $event)"
+            class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+            title="Facebook" aria-label="Facebook">
+            <lucide-icon [name]="Facebook" class="w-3.5 h-3.5"></lucide-icon>
+        </button>
+        }
+        @if (product.instagramUrl) {
+        <button type="button" (click)="openExternal(product.instagramUrl, $event)"
+            class="w-7 h-7 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity"
+            title="Instagram" aria-label="Instagram">
+            <lucide-icon [name]="Instagram" class="w-3.5 h-3.5"></lucide-icon>
+        </button>
+        }
+        @if (product.twitterUrl) {
+        <button type="button" (click)="openExternal(product.twitterUrl, $event)"
+            class="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+            title="X / Twitter" aria-label="X / Twitter">
+            <lucide-icon [name]="Twitter" class="w-3.5 h-3.5"></lucide-icon>
+        </button>
+        }
+        @if (product.linkedInUrl) {
+        <button type="button" (click)="openExternal(product.linkedInUrl, $event)"
+            class="w-7 h-7 rounded-full bg-blue-700 text-white flex items-center justify-center hover:bg-blue-800 transition-colors"
+            title="LinkedIn" aria-label="LinkedIn">
+            <lucide-icon [name]="Linkedin" class="w-3.5 h-3.5"></lucide-icon>
+        </button>
         }
     </div>
-    <div class="p-3">
-        <h4 class="font-medium text-foreground text-sm truncate">
-            {{ product.name }}
-        </h4>
-        @if (product.description) {
-        <p class="text-muted-foreground text-xs mt-0.5 truncate">
-            {{ product.description }}
-        </p>
-        }
-    </div>
+    }
+
     <!-- Hover accent line -->
     <div class="h-0.5 w-0 transition-all duration-300 group-hover:w-full"
         [style.background]="'hsl(' + brandColor + ')'"></div>
-</a>
+</div>
