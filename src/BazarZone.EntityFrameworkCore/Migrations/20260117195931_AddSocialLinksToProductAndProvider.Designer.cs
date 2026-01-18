@@ -3,6 +3,7 @@ using System;
 using BazarZone.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace BazarZone.Migrations
 {
     [DbContext(typeof(BazarZoneDbContext))]
-    partial class BazarZoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260117195931_AddSocialLinksToProductAndProvider")]
+    partial class AddSocialLinksToProductAndProvider
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -581,18 +584,10 @@ namespace BazarZone.Migrations
                     b.Property<bool>("IsAuthenticated")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Method")
-                        .HasMaxLength(16)
-                        .HasColumnType("character varying(16)");
-
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
-
-                    b.Property<string>("QueryString")
-                        .HasMaxLength(1024)
-                        .HasColumnType("character varying(1024)");
 
                     b.Property<string>("ReferrerUrl")
                         .HasMaxLength(1024)

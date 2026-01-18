@@ -1,9 +1,11 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using BazarZone.Visitors;
@@ -25,6 +27,27 @@ namespace BazarZone.Visitors
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpGet]
+        public async Task<PagedResultDto<VisitLogDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        {
+            if (input.Sorting.IsNullOrWhiteSpace())
+            {
+                input.Sorting = nameof(VisitLog.CreationTime) + " desc";
+            }
+
+            var count = await _visitLogRepository.GetCountAsync();
+            var list = await _visitLogRepository.GetPagedListAsync(
+                input.SkipCount,
+                input.MaxResultCount,
+                input.Sorting
+            );
+
+            return new PagedResultDto<VisitLogDto>(
+                count,
+                ObjectMapper.Map<List<VisitLog>, List<VisitLogDto>>(list)
+            );
+        }
+
         [AllowAnonymous]
         [HttpPost("track")]
         public async Task TrackAsync()
@@ -39,6 +62,8 @@ namespace BazarZone.Visitors
 
             var visit = new VisitLog(GuidGenerator.Create(), path)
             {
+                QueryString = context.Request.QueryString.HasValue ? context.Request.QueryString.Value : null,
+                Method = context.Request.Method,
                 ReferrerUrl = context.Request.Headers.Referer.ToString(),
                 UserAgent = context.Request.Headers.UserAgent.ToString(),
                 IpAddress = context.Connection.RemoteIpAddress?.ToString(),

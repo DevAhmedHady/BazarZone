@@ -5,6 +5,10 @@ export interface PublicProduct {
     description?: string;
     imageUrl?: string;
     price?: number;
+    facebookUrl?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
+    linkedInUrl?: string;
 }
 
 export interface PublicProvider {
@@ -17,4 +21,8 @@ export interface PublicProvider {
     websiteUrl?: string;
     color: string;
     products: PublicProduct[];
+    facebookUrl?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
+    linkedInUrl?: string;
 }

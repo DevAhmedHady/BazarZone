@@ -105,6 +105,43 @@
                         </button>
                     </div>
 
+                    <!-- Product Social Links -->
+                    @if (product()!.facebookUrl || product()!.instagramUrl || product()!.twitterUrl || product()!.linkedInUrl) {
+                    <div class="mb-8">
+                        <p class="text-sm text-muted-foreground mb-3">تابع هذا المنتج على</p>
+                        <div class="flex flex-wrap gap-3">
+                            @if (product()!.facebookUrl) {
+                            <a [href]="product()!.facebookUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-700 transition-colors"
+                                title="Facebook">
+                                <lucide-icon [name]="Facebook" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                            @if (product()!.instagramUrl) {
+                            <a [href]="product()!.instagramUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                                title="Instagram">
+                                <lucide-icon [name]="Instagram" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                            @if (product()!.twitterUrl) {
+                            <a [href]="product()!.twitterUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"
+                                title="X / Twitter">
+                                <lucide-icon [name]="Twitter" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                            @if (product()!.linkedInUrl) {
+                            <a [href]="product()!.linkedInUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
+                                title="LinkedIn">
+                                <lucide-icon [name]="Linkedin" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                        </div>
+                    </div>
+                    }
+
                     <div class="glass-panel p-4 inline-flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10">
                             <span class="text-primary text-lg">✓</span>

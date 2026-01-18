@@ -14,6 +14,12 @@ namespace BazarZone.ServiceProviders
         public string? Address { get; set; }
         public string? Category { get; set; } // Simple category string as per "simple catalog" req, or could be relation later
         public bool IsActive { get; set; }
+        
+        // Social Links
+        public string? FacebookUrl { get; set; }
+        public string? InstagramUrl { get; set; }
+        public string? TwitterUrl { get; set; }
+        public string? LinkedInUrl { get; set; }
 
         public ServiceProvider()
         {

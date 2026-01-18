@@ -111,7 +111,11 @@ export class IndexComponent implements OnInit {
             name: product.name,
             description: product.description,
             imageUrl: product.imageUrl,
-            price: product.price
+            price: product.price,
+            facebookUrl: product.facebookUrl,
+            instagramUrl: product.instagramUrl,
+            twitterUrl: product.twitterUrl,
+            linkedInUrl: product.linkedInUrl
         };
     }
 
@@ -125,7 +129,11 @@ export class IndexComponent implements OnInit {
             category: provider.category,
             websiteUrl: provider.websiteUrl,
             color: getProviderColor(provider.id),
-            products
+            products,
+            facebookUrl: provider.facebookUrl,
+            instagramUrl: provider.instagramUrl,
+            twitterUrl: provider.twitterUrl,
+            linkedInUrl: provider.linkedInUrl
         };
     }
 }

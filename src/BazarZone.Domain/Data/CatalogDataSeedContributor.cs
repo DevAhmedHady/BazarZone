@@ -41,6 +41,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
 
         var existingProviders = await _providerRepository.GetListAsync();
 
+        // Update existing providers with social links if they don't have any
+        await UpdateProviderSocialLinksAsync(existingProviders);
+
         if (existingProviders.Any())
         {
             var newProducts = new List<Product>();
@@ -97,6 +100,56 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
         }
     }
 
+    private async Task UpdateProviderSocialLinksAsync(List<ServiceProvider> providers)
+    {
+        var socialLinksMap = new Dictionary<string, (string? Facebook, string? Instagram, string? Twitter, string? LinkedIn)>
+        {
+            { "Aurora Tech", ("https://facebook.com/auroratech", "https://instagram.com/auroratech", "https://x.com/auroratech", "https://linkedin.com/company/auroratech") },
+            { "Zen Living", ("https://facebook.com/zenliving", "https://instagram.com/zenliving", null, null) },
+            { "Pixel Craft", (null, "https://instagram.com/pixelcraft", "https://x.com/pixelcraft", null) },
+            { "Smart Kitchen", ("https://facebook.com/smartkitchen", "https://instagram.com/smartkitchen", null, "https://linkedin.com/company/smartkitchen") },
+            { "Urban Brew", (null, "https://instagram.com/urbanbrew", "https://x.com/urbanbrew", null) },
+            { "Nova Sports", ("https://facebook.com/novasports", "https://instagram.com/novasports", "https://x.com/novasports", null) },
+            { "Velvet Luxe", (null, "https://instagram.com/velvetluxe", null, "https://linkedin.com/company/velvetluxe") },
+            { "Eco Earth", ("https://facebook.com/ecoearth", "https://instagram.com/ecoearth", "https://x.com/ecoearth", "https://linkedin.com/company/ecoearth") },
+            { "Game Forge", (null, "https://instagram.com/gameforge", "https://x.com/gameforge", null) },
+            { "Travel Pro", ("https://facebook.com/travelpro", "https://instagram.com/travelpro", null, null) }
+        };
+
+        var updated = false;
+        foreach (var provider in providers)
+        {
+            if (socialLinksMap.TryGetValue(provider.Name, out var links))
+            {
+                if (string.IsNullOrEmpty(provider.FacebookUrl) && !string.IsNullOrEmpty(links.Facebook))
+                {
+                    provider.FacebookUrl = links.Facebook;
+                    updated = true;
+                }
+                if (string.IsNullOrEmpty(provider.InstagramUrl) && !string.IsNullOrEmpty(links.Instagram))
+                {
+                    provider.InstagramUrl = links.Instagram;
+                    updated = true;
+                }
+                if (string.IsNullOrEmpty(provider.TwitterUrl) && !string.IsNullOrEmpty(links.Twitter))
+                {
+                    provider.TwitterUrl = links.Twitter;
+                    updated = true;
+                }
+                if (string.IsNullOrEmpty(provider.LinkedInUrl) && !string.IsNullOrEmpty(links.LinkedIn))
+                {
+                    provider.LinkedInUrl = links.LinkedIn;
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated)
+        {
+            await _providerRepository.UpdateManyAsync(providers, autoSave: true);
+        }
+    }
+
     private static List<ServiceProvider> BuildProviders()
     {
         return new List<ServiceProvider>
@@ -109,7 +162,11 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://aurora-tech.example.com",
                 Address = "Riyadh, KSA",
                 Category = "تقنية",
-                IsActive = true
+                IsActive = true,
+                FacebookUrl = "https://facebook.com/auroratech",
+                InstagramUrl = "https://instagram.com/auroratech",
+                TwitterUrl = "https://x.com/auroratech",
+                LinkedInUrl = "https://linkedin.com/company/auroratech"
             },
             new ServiceProvider(Guid.NewGuid(), "Zen Living", "منتجات عافية وصحة طبيعية لأسلوب حياة متوازن.",
                 "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
@@ -119,7 +176,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://zenliving.example.com",
                 Address = "Jeddah, KSA",
                 Category = "صحة",
-                IsActive = true
+                IsActive = true,
+                FacebookUrl = "https://facebook.com/zenliving",
+                InstagramUrl = "https://instagram.com/zenliving"
             },
             new ServiceProvider(Guid.NewGuid(), "Pixel Craft", "أدوات التصميم والإبداع الرقمي للمحترفين.",
                 "https://images.unsplash.com/photo-1616469829935-c0e995fbf036?w=200&h=200&fit=crop",
@@ -129,7 +188,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://pixelcraft.example.com",
                 Address = "Dammam, KSA",
                 Category = "تصميم",
-                IsActive = true
+                IsActive = true,
+                InstagramUrl = "https://instagram.com/pixelcraft",
+                TwitterUrl = "https://x.com/pixelcraft"
             },
             new ServiceProvider(Guid.NewGuid(), "Smart Kitchen", "أجهزة مطبخ ذكية ومبتكرة لمنزل عصري.",
                 "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?w=200&h=200&fit=crop",
@@ -139,7 +200,10 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://smartkitchen.example.com",
                 Address = "Riyadh, KSA",
                 Category = "مطبخ",
-                IsActive = true
+                IsActive = true,
+                FacebookUrl = "https://facebook.com/smartkitchen",
+                InstagramUrl = "https://instagram.com/smartkitchen",
+                LinkedInUrl = "https://linkedin.com/company/smartkitchen"
             },
             new ServiceProvider(Guid.NewGuid(), "Urban Brew", "قهوة حرفية ومعدات تحضير متميزة.",
                 "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&h=200&fit=crop",
@@ -149,7 +213,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://urbanbrew.example.com",
                 Address = "Makkah, KSA",
                 Category = "مشروبات",
-                IsActive = true
+                IsActive = true,
+                InstagramUrl = "https://instagram.com/urbanbrew",
+                TwitterUrl = "https://x.com/urbanbrew"
             },
             new ServiceProvider(Guid.NewGuid(), "Nova Sports", "معدات رياضية عالية الأداء للرياضيين المحترفين.",
                 "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=200&h=200&fit=crop",
@@ -159,7 +225,10 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://novasports.example.com",
                 Address = "Riyadh, KSA",
                 Category = "رياضة",
-                IsActive = true
+                IsActive = true,
+                FacebookUrl = "https://facebook.com/novasports",
+                InstagramUrl = "https://instagram.com/novasports",
+                TwitterUrl = "https://x.com/novasports"
             },
             new ServiceProvider(Guid.NewGuid(), "Velvet Luxe", "علامة تجارية فاخرة للعطور والإكسسوارات الراقية.",
                 "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=200&fit=crop",
@@ -169,7 +238,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://velvetluxe.example.com",
                 Address = "Khobar, KSA",
                 Category = "أسلوب حياة",
-                IsActive = true
+                IsActive = true,
+                InstagramUrl = "https://instagram.com/velvetluxe",
+                LinkedInUrl = "https://linkedin.com/company/velvetluxe"
             },
             new ServiceProvider(Guid.NewGuid(), "Eco Earth", "منتجات صديقة للبيئة لحياة مستدامة.",
                 "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=200&h=200&fit=crop",
@@ -179,7 +250,11 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://ecoearth.example.com",
                 Address = "Medina, KSA",
                 Category = "استدامة",
-                IsActive = true
+                IsActive = true,
+                FacebookUrl = "https://facebook.com/ecoearth",
+                InstagramUrl = "https://instagram.com/ecoearth",
+                TwitterUrl = "https://x.com/ecoearth",
+                LinkedInUrl = "https://linkedin.com/company/ecoearth"
             },
             new ServiceProvider(Guid.NewGuid(), "Game Forge", "مستلزمات الألعاب وأجهزة الترفيه الحديثة.",
                 "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=200&h=200&fit=crop",
@@ -189,7 +264,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://gameforge.example.com",
                 Address = "Riyadh, KSA",
                 Category = "ألعاب",
-                IsActive = true
+                IsActive = true,
+                TwitterUrl = "https://x.com/gameforge",
+                InstagramUrl = "https://instagram.com/gameforge"
             },
             new ServiceProvider(Guid.NewGuid(), "Travel Pro", "حقائب ومستلزمات سفر عملية للمغامرين.",
                 "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=200&h=200&fit=crop",
@@ -199,7 +276,9 @@ public class CatalogDataSeedContributor : IDataSeedContributor, ITransientDepend
                 WebsiteUrl = "https://travelpro.example.com",
                 Address = "Jeddah, KSA",
                 Category = "سفر",
-                IsActive = true
+                IsActive = true,
+                FacebookUrl = "https://facebook.com/travelpro",
+                InstagramUrl = "https://instagram.com/travelpro"
             }
         };
     }

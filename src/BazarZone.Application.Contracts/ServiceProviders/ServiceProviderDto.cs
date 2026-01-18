@@ -16,6 +16,10 @@ namespace BazarZone.ServiceProviders
             WebsiteUrl = string.Empty;
             Address = string.Empty;
             Category = string.Empty;
+            FacebookUrl = string.Empty;
+            InstagramUrl = string.Empty;
+            TwitterUrl = string.Empty;
+            LinkedInUrl = string.Empty;
         }
 
         public string Name { get; set; } = string.Empty;
@@ -27,6 +31,12 @@ namespace BazarZone.ServiceProviders
         public string Address { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+        
+        // Social Links
+        public string FacebookUrl { get; set; } = string.Empty;
+        public string InstagramUrl { get; set; } = string.Empty;
+        public string TwitterUrl { get; set; } = string.Empty;
+        public string LinkedInUrl { get; set; } = string.Empty;
     }
 }
 #nullable restore

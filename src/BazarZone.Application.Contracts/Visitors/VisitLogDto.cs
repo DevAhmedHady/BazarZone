@@ -1,9 +1,9 @@
 using System;
-using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.Application.Dtos;
 
 namespace BazarZone.Visitors
 {
-    public class VisitLog : CreationAuditedEntity<Guid>
+    public class VisitLogDto : EntityDto<Guid>
     {
         public string Path { get; set; } = string.Empty;
         public string? QueryString { get; set; }
@@ -14,14 +14,6 @@ namespace BazarZone.Visitors
         public bool IsAuthenticated { get; set; }
         public Guid? UserId { get; set; }
         public string? Source { get; set; }
-
-        public VisitLog()
-        {
-        }
-
-        public VisitLog(Guid id, string path) : base(id)
-        {
-            Path = path;
-        }
+        public DateTime CreationTime { get; set; }
     }
 }

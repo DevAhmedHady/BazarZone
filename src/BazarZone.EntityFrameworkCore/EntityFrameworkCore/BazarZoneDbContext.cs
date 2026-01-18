@@ -165,6 +165,8 @@ public class BazarZoneDbContext :
             b.ToTable(BazarZoneConsts.DbTablePrefix + "VisitLogs", BazarZoneConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Path).IsRequired().HasMaxLength(512);
+            b.Property(x => x.QueryString).HasMaxLength(1024);
+            b.Property(x => x.Method).HasMaxLength(16);
             b.Property(x => x.ReferrerUrl).HasMaxLength(1024);
             b.Property(x => x.UserAgent).HasMaxLength(512);
             b.Property(x => x.IpAddress).HasMaxLength(64);

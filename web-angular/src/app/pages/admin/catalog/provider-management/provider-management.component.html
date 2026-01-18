@@ -199,6 +199,43 @@
                     placeholder="https://www.example.com" />
             </div>
 
+            <!-- Social Links Section -->
+            <div class="form-field">
+                <label class="form-label mb-3">
+                    <i class="pi pi-share-alt mr-2 text-primary"></i>Social Links
+                </label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-field">
+                        <label for="facebookUrl" class="form-label text-sm">
+                            <i class="pi pi-facebook mr-2 text-blue-600"></i>Facebook
+                        </label>
+                        <input type="url" pInputText id="facebookUrl" [(ngModel)]="provider.facebookUrl" class="w-full"
+                            placeholder="https://facebook.com/..." />
+                    </div>
+                    <div class="form-field">
+                        <label for="instagramUrl" class="form-label text-sm">
+                            <i class="pi pi-instagram mr-2 text-pink-600"></i>Instagram
+                        </label>
+                        <input type="url" pInputText id="instagramUrl" [(ngModel)]="provider.instagramUrl" class="w-full"
+                            placeholder="https://instagram.com/..." />
+                    </div>
+                    <div class="form-field">
+                        <label for="twitterUrl" class="form-label text-sm">
+                            <i class="pi pi-twitter mr-2 text-sky-500"></i>Twitter / X
+                        </label>
+                        <input type="url" pInputText id="twitterUrl" [(ngModel)]="provider.twitterUrl" class="w-full"
+                            placeholder="https://x.com/..." />
+                    </div>
+                    <div class="form-field">
+                        <label for="linkedInUrl" class="form-label text-sm">
+                            <i class="pi pi-linkedin mr-2 text-blue-700"></i>LinkedIn
+                        </label>
+                        <input type="url" pInputText id="linkedInUrl" [(ngModel)]="provider.linkedInUrl" class="w-full"
+                            placeholder="https://linkedin.com/..." />
+                    </div>
+                </div>
+            </div>
+
             <!-- Status Toggle -->
             <div class="form-field">
                 <div class="flex items-center gap-3 p-4 rounded-xl bg-accent/50 border border-border">

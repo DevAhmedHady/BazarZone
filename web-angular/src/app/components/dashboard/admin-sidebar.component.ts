@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LucideAngularModule, LayoutDashboard, Users, Settings, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages, Shield, Package, Layers, Briefcase, FileEdit, Image, MessageSquare, FileText } from 'lucide-angular';
+import { LucideAngularModule, LayoutDashboard, Users, Settings, ChevronLeft, ChevronRight, LogOut, User, Sun, Moon, Languages, Shield, Package, Layers, Briefcase, FileEdit, Image, MessageSquare, FileText, Activity } from 'lucide-angular';
 
 import { cn } from '../../lib/utils';
 import { LanguageService } from '../../services/language.service';
@@ -267,6 +267,7 @@ export class AdminSidebarComponent {
     { icon: Image, labelKey: "sliders", path: "/admin/sliders" },
     { icon: MessageSquare, labelKey: "contactRequests", path: "/admin/contact-requests" },
     { icon: FileText, labelKey: "providerApplications", path: "/admin/provider-applications" },
+    { icon: Activity, labelKey: "visitorLogs", path: "/admin/visitor-logs" },
   ];
 
 

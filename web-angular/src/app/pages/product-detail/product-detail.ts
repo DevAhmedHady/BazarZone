@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { LucideAngularModule, ArrowRight, ShoppingBag, Heart, Share2, Sparkles } from 'lucide-angular';
+import { LucideAngularModule, ArrowRight, ShoppingBag, Heart, Share2, Sparkles, Facebook, Instagram, Twitter, Linkedin } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { ServiceProviderService, ServiceProviderDto } from '@/app/services/service-provider.service';
 import { ProductService, ProductDto } from '@/app/services/product.service';
@@ -35,6 +35,10 @@ export class ProductDetailComponent implements OnInit {
   readonly Heart = Heart;
   readonly Share2 = Share2;
   readonly Sparkles = Sparkles;
+  readonly Facebook = Facebook;
+  readonly Instagram = Instagram;
+  readonly Twitter = Twitter;
+  readonly Linkedin = Linkedin;
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -79,7 +83,11 @@ export class ProductDetailComponent implements OnInit {
       name: product.name,
       description: product.description,
       imageUrl: product.imageUrl,
-      price: product.price
+      price: product.price,
+      facebookUrl: product.facebookUrl,
+      instagramUrl: product.instagramUrl,
+      twitterUrl: product.twitterUrl,
+      linkedInUrl: product.linkedInUrl
     };
   }
 }

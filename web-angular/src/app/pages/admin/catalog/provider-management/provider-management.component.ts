@@ -42,7 +42,11 @@ export class ProviderManagementComponent implements OnInit {
         websiteUrl: '',
         address: '',
         category: '',
-        isActive: true
+        isActive: true,
+        facebookUrl: '',
+        instagramUrl: '',
+        twitterUrl: '',
+        linkedInUrl: ''
     };
 
     isEdit = false;
@@ -78,7 +82,7 @@ export class ProviderManagementComponent implements OnInit {
     }
 
     openNew(): void {
-        this.provider = { name: '', description: '', logoUrl: '', contactEmail: '', contactPhone: '', websiteUrl: '', address: '', category: '', isActive: true };
+        this.provider = { name: '', description: '', logoUrl: '', contactEmail: '', contactPhone: '', websiteUrl: '', address: '', category: '', isActive: true, facebookUrl: '', instagramUrl: '', twitterUrl: '', linkedInUrl: '' };
         this.isEdit = false;
         this.editingId = null;
         this.dialogVisible = true;
@@ -159,7 +163,11 @@ export class ProviderManagementComponent implements OnInit {
             websiteUrl: trimOrUndefined(input.websiteUrl),
             address: trimOrUndefined(input.address),
             category: trimOrUndefined(input.category),
-            isActive: input.isActive ?? true
+            isActive: input.isActive ?? true,
+            facebookUrl: trimOrUndefined(input.facebookUrl),
+            instagramUrl: trimOrUndefined(input.instagramUrl),
+            twitterUrl: trimOrUndefined(input.twitterUrl),
+            linkedInUrl: trimOrUndefined(input.linkedInUrl)
         };
     }
 

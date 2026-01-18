@@ -74,6 +74,40 @@
                                 مشاركة الجناح
                             </button>
                         </div>
+                        
+                        <!-- Social Links -->
+                        @if (brand.facebookUrl || brand.instagramUrl || brand.twitterUrl || brand.linkedInUrl) {
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            @if (brand.facebookUrl) {
+                            <a [href]="brand.facebookUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white hover:bg-blue-700 transition-colors"
+                                title="Facebook">
+                                <lucide-icon [name]="Facebook" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                            @if (brand.instagramUrl) {
+                            <a [href]="brand.instagramUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                                title="Instagram">
+                                <lucide-icon [name]="Instagram" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                            @if (brand.twitterUrl) {
+                            <a [href]="brand.twitterUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white hover:bg-gray-800 transition-colors"
+                                title="X / Twitter">
+                                <lucide-icon [name]="Twitter" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                            @if (brand.linkedInUrl) {
+                            <a [href]="brand.linkedInUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center text-white hover:bg-blue-800 transition-colors"
+                                title="LinkedIn">
+                                <lucide-icon [name]="Linkedin" class="w-5 h-5"></lucide-icon>
+                            </a>
+                            }
+                        </div>
+                        }
                     </div>
                 </div>
 

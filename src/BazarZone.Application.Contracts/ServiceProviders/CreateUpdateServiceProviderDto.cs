@@ -21,5 +21,11 @@ namespace BazarZone.ServiceProviders
         public string? Address { get; set; }
         public string? Category { get; set; }
         public bool IsActive { get; set; } = true;
+        
+        // Social Links
+        public string? FacebookUrl { get; set; }
+        public string? InstagramUrl { get; set; }
+        public string? TwitterUrl { get; set; }
+        public string? LinkedInUrl { get; set; }
     }
 }

@@ -19,6 +19,10 @@ export interface ServiceProviderDto {
     address?: string;
     category?: string;
     isActive: boolean;
+    facebookUrl?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
+    linkedInUrl?: string;
     creationTime: string;
 }
 
@@ -32,6 +36,10 @@ export interface CreateUpdateServiceProviderDto {
     address?: string;
     category?: string;
     isActive: boolean;
+    facebookUrl?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
+    linkedInUrl?: string;
 }
 
 export interface GetServiceProviderInput {

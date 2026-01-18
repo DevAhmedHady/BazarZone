@@ -11,6 +11,10 @@ export interface ProductDto {
     description?: string;
     price?: number;
     imageUrl?: string;
+    facebookUrl?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
+    linkedInUrl?: string;
     creationTime: string;
 }
 
@@ -20,6 +24,10 @@ export interface CreateUpdateProductDto {
     description?: string;
     price?: number;
     imageUrl?: string;
+    facebookUrl?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
+    linkedInUrl?: string;
 }
 
 export interface GetProductInput {

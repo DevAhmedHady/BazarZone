@@ -180,6 +180,7 @@ export const translations: Translations = {
 
     // Dashboard Settings
     dashboardSettings: { en: "Dashboard Settings", ar: "إعدادات لوحة التحكم" },
+    visitorLogs: { en: "Visitor Logs", ar: "سجلات الزوار" },
     configureDashboardBehavior: { en: "Configure how dashboard analytics are calculated", ar: "تكوين كيفية حساب تحليلات لوحة التحكم" },
     visitorCountMode: { en: "Visitor Count Mode", ar: "طريقة حساب الزوار" },
     countByHits: { en: "Count by Hits", ar: "حساب بالزيارات" },

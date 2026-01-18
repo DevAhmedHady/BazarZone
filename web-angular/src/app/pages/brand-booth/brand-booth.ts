@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, ArrowRight, ExternalLink, Share2, Sparkles } from 'lucide-angular';
+import { LucideAngularModule, ArrowRight, ExternalLink, Share2, Sparkles, Facebook, Instagram, Twitter, Linkedin } from 'lucide-angular';
 import { ButtonComponent } from '@/app/components/ui/button/button.component';
 import { ServiceProviderService, ServiceProviderDto } from '@/app/services/service-provider.service';
 import { ProductService, ProductDto } from '@/app/services/product.service';
@@ -34,6 +34,10 @@ export class BrandBoothComponent implements OnInit {
   readonly ExternalLink = ExternalLink;
   readonly Share2 = Share2;
   readonly Sparkles = Sparkles;
+  readonly Facebook = Facebook;
+  readonly Instagram = Instagram;
+  readonly Twitter = Twitter;
+  readonly Linkedin = Linkedin;
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -69,7 +73,11 @@ export class BrandBoothComponent implements OnInit {
       name: product.name,
       description: product.description,
       imageUrl: product.imageUrl,
-      price: product.price
+      price: product.price,
+      facebookUrl: product.facebookUrl,
+      instagramUrl: product.instagramUrl,
+      twitterUrl: product.twitterUrl,
+      linkedInUrl: product.linkedInUrl
     };
   }
 
@@ -83,7 +91,11 @@ export class BrandBoothComponent implements OnInit {
       category: provider.category,
       websiteUrl: provider.websiteUrl,
       color: getProviderColor(provider.id),
-      products
+      products,
+      facebookUrl: provider.facebookUrl,
+      instagramUrl: provider.instagramUrl,
+      twitterUrl: provider.twitterUrl,
+      linkedInUrl: provider.linkedInUrl
     };
   }
 }

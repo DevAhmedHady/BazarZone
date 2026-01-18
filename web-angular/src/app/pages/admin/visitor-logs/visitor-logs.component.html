@@ -1,0 +1,96 @@
+<div class="card p-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Visitor Logs</h2>
+            <p class="text-zinc-500 dark:text-zinc-400 mt-1">Track and analyze visitor traffic.</p>
+        </div>
+        <button pButton icon="pi pi-refresh" (click)="loadLogs()" class="p-button-text p-button-rounded"></button>
+    </div>
+
+    <p-table [value]="logs" [loading]="loading" [rowHover]="true" [paginator]="true" [rows]="10"
+        styleClass="p-datatable-sm" responsiveLayout="scroll" [rowsPerPageOptions]="[10,25,50]"
+        [lazy]="true" (onLazyLoad)="loadLogs($event)" [totalRecords]="totalRecords">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="creationTime" style="width: 15%">Time <p-sortIcon field="creationTime"></p-sortIcon></th>
+                <th pSortableColumn="method" style="width: 10%">Method <p-sortIcon field="method"></p-sortIcon></th>
+                <th pSortableColumn="path">Path <p-sortIcon field="path"></p-sortIcon></th>
+                <th pSortableColumn="ipAddress" style="width: 15%">IP Address <p-sortIcon field="ipAddress"></p-sortIcon></th>
+                <th style="width: 10%">User</th>
+                <th style="width: 10%">Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-log>
+            <tr>
+                <td>{{log.creationTime | date:'medium'}}</td>
+                <td><span class="font-mono text-xs px-2 py-1 rounded bg-gray-100 dark:bg-zinc-800">{{log.method || 'GET'}}</span></td>
+                <td class="break-all">
+                    <div class="font-medium text-sm">{{log.path}}</div>
+                    <div *ngIf="log.queryString" class="text-xs text-gray-500 truncate max-w-xs">{{log.queryString}}</div>
+                </td>
+                <td>{{log.ipAddress}}</td>
+                <td>
+                    <span *ngIf="log.isAuthenticated" class="text-green-600 dark:text-green-400"><i class="pi pi-check-circle"></i> Auth</span>
+                    <span *ngIf="!log.isAuthenticated" class="text-gray-400"><i class="pi pi-user"></i> Guest</span>
+                </td>
+                <td>
+                    <button pButton icon="pi pi-eye" class="p-button-text p-button-rounded p-button-info"
+                        (click)="viewLog(log)" pTooltip="View Details"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6" class="text-center p-4 text-zinc-500">No logs found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialogVisible" [style]="{width: '600px'}" header="Visit Details" [modal]="true"
+    styleClass="p-fluid">
+    <div *ngIf="selectedLog" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-zinc-500">Timestamp</label>
+                <div class="text-zinc-900 dark:text-zinc-100">{{selectedLog.creationTime | date:'medium'}}</div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-zinc-500">IP Address</label>
+                <div class="text-zinc-900 dark:text-zinc-100">{{selectedLog.ipAddress || 'N/A'}}</div>
+            </div>
+            <div>
+                 <label class="block text-sm font-medium text-zinc-500">Method</label>
+                 <div class="text-zinc-900 dark:text-zinc-100 font-mono">{{selectedLog.method || 'GET'}}</div>
+            </div>
+            <div>
+                 <label class="block text-sm font-medium text-zinc-500">User ID</label>
+                 <div class="text-zinc-900 dark:text-zinc-100 font-mono text-xs">{{selectedLog.userId || 'Guest'}}</div>
+            </div>
+        </div>
+
+        <div class="border-t border-zinc-200 dark:border-zinc-700 pt-4">
+            <label class="block text-sm font-medium text-zinc-500 mb-1">Full Path</label>
+            <div class="bg-zinc-50 dark:bg-zinc-800 p-2 rounded text-sm font-mono break-all text-zinc-900 dark:text-zinc-100">
+                {{selectedLog.path}}{{selectedLog.queryString || ''}}
+            </div>
+        </div>
+
+         <div class="border-t border-zinc-200 dark:border-zinc-700 pt-4" *ngIf="selectedLog.referrerUrl">
+            <label class="block text-sm font-medium text-zinc-500 mb-1">Referrer</label>
+            <div class="text-sm text-zinc-900 dark:text-zinc-100 break-all">
+                <a [href]="selectedLog.referrerUrl" target="_blank" class="text-primary hover:underline">{{selectedLog.referrerUrl}}</a>
+            </div>
+        </div>
+
+        <div class="border-t border-zinc-200 dark:border-zinc-700 pt-4">
+            <label class="block text-sm font-medium text-zinc-500 mb-1">User Agent</label>
+            <div class="text-xs text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800 p-2 rounded break-all">
+                {{selectedLog.userAgent}}
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton label="Close" icon="pi pi-times" (click)="dialogVisible=false" class="p-button-text"></button>
+    </ng-template>
+</p-dialog>

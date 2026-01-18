@@ -40,7 +40,11 @@ export class ProductManagementComponent implements OnInit {
         name: '',
         description: '',
         price: 0,
-        imageUrl: ''
+        imageUrl: '',
+        facebookUrl: '',
+        instagramUrl: '',
+        twitterUrl: '',
+        linkedInUrl: ''
     };
 
     isEdit = false;
@@ -82,7 +86,7 @@ export class ProductManagementComponent implements OnInit {
     }
 
     openNew(): void {
-        this.product = { serviceProviderId: '', name: '', description: '', price: 0, imageUrl: '' };
+        this.product = { serviceProviderId: '', name: '', description: '', price: 0, imageUrl: '', facebookUrl: '', instagramUrl: '', twitterUrl: '', linkedInUrl: '' };
         this.isEdit = false;
         this.editingId = null;
         this.dialogVisible = true;

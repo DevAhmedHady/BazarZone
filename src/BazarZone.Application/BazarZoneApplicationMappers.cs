@@ -124,3 +124,12 @@ public partial class CreateProviderApplicationDtoToProviderApplicationMapper : M
 }
 
 
+
+// VisitLog mappers
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class VisitLogToVisitLogDtoMapper : MapperBase<BazarZone.Visitors.VisitLog, BazarZone.Visitors.VisitLogDto>
+{
+    public override partial BazarZone.Visitors.VisitLogDto Map(BazarZone.Visitors.VisitLog source);
+    public override partial void Map(BazarZone.Visitors.VisitLog source, BazarZone.Visitors.VisitLogDto destination);
+}
+
