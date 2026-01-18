@@ -1,0 +1,32 @@
+<p-dialog [(visible)]="display" [modal]="true" [style]="{width: '450px'}" [closable]="true"
+    header="اشترك في خدماتنا" styleClass="p-fluid rtl-dialog" (onHide)="onHide()">
+    <div class="text-center mb-6" dir="rtl">
+        <h3 class="text-xl font-bold text-zinc-800 dark:text-zinc-100 mb-2">هل تريد الإشتراك في خدماتنا؟</h3>
+        <p class="text-zinc-600 dark:text-zinc-400">سجل بياناتك لنتواصل معك بأحدث العروض</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4" dir="rtl">
+        <div class="field">
+            <label for="name" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">الاسم</label>
+            <input id="name" type="text" pInputText formControlName="name" 
+                class="w-full" placeholder="اكتب اسمك ثلاثي" />
+        </div>
+
+        <div class="field">
+            <label for="phone" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">رقم الهاتف</label>
+            <input id="phone" type="text" pInputText formControlName="phoneNumber" 
+                class="w-full" placeholder="01xxxxxxxxx" />
+        </div>
+
+        <div class="field">
+            <label for="email" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">البريد الإلكتروني</label>
+            <input id="email" type="email" pInputText formControlName="email" 
+                class="w-full" placeholder="example@mail.com" />
+        </div>
+
+        <div class="flex justify-end gap-2 mt-6">
+            <button pButton type="button" label="لا شكراً" class="p-button-text p-button-secondary" (click)="close()"></button>
+            <button pButton type="submit" label="اشترك الآن" [loading]="loading" [disabled]="form.invalid"></button>
+        </div>
+    </form>
+</p-dialog>

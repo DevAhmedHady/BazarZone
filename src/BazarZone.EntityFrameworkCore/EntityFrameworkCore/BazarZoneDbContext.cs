@@ -37,6 +37,7 @@ public class BazarZoneDbContext :
     public DbSet<Contact.ContactRequest> ContactRequests { get; set; }
     public DbSet<ProviderApplication> ProviderApplications { get; set; }
     public DbSet<VisitLog> VisitLogs { get; set; }
+    public DbSet<VisitorSubscription> VisitorSubscriptions { get; set; }
 
 
 
@@ -172,6 +173,17 @@ public class BazarZoneDbContext :
             b.Property(x => x.IpAddress).HasMaxLength(64);
             b.Property(x => x.Source).HasMaxLength(32);
             b.HasIndex(x => x.CreationTime);
+        });
+
+        builder.Entity<VisitorSubscription>(b =>
+        {
+            b.ToTable(BazarZoneConsts.DbTablePrefix + "VisitorSubscriptions", BazarZoneConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(32);
+            b.Property(x => x.Email).IsRequired().HasMaxLength(128);
+            b.Property(x => x.IpAddress).HasMaxLength(64);
+            b.Property(x => x.UserAgent).HasMaxLength(512);
         });
     }
 }

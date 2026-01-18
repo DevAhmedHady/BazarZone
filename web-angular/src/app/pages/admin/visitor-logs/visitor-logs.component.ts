@@ -4,9 +4,11 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { TabsModule } from 'primeng/tabs';
 import { MessageService } from 'primeng/api';
 import { VisitLogService } from '../../../services/visit-log.service';
 import { VisitLogDto } from '../../../models/visit-log';
+import { VisitorSummaryDto } from '../../../models/visitor-summary';
 import { finalize } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
@@ -14,14 +16,16 @@ import { DatePipe } from '@angular/common';
     selector: 'app-visitor-logs',
     standalone: true,
     imports: [
-        CommonModule, TableModule, ButtonModule, DialogModule, TooltipModule
+        CommonModule, TableModule, ButtonModule, DialogModule, TooltipModule, TabsModule
     ],
     providers: [MessageService, DatePipe],
     templateUrl: './visitor-logs.component.html'
 })
 export class VisitorLogsComponent implements OnInit {
     logs: VisitLogDto[] = [];
+    summaries: VisitorSummaryDto[] = [];
     loading = true;
+    loadingSummaries = false;
     dialogVisible = false;
     selectedLog: VisitLogDto | null = null;
     totalRecords = 0;
@@ -70,6 +74,30 @@ export class VisitorLogsComponent implements OnInit {
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load logs' });
                 }
             });
+    }
+
+    loadSummaries(): void {
+        this.loadingSummaries = true;
+        this.visitLogService.getSummaries()
+            .pipe(finalize(() => {
+                this.loadingSummaries = false;
+                this.cdr.detectChanges();
+            }))
+            .subscribe({
+                next: (data) => {
+                    this.summaries = data;
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.messageService.add({severity: 'error', summary: 'Error', detail: 'Failed to load summaries.'});
+                }
+            });
+    }
+
+    onTabChange(value: string | number | undefined): void {
+        if (value === '1' && this.summaries.length === 0) {
+            this.loadSummaries();
+        }
     }
 
     viewLog(log: VisitLogDto): void {

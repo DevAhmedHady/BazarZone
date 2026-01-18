@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
@@ -17,13 +18,16 @@ namespace BazarZone.Visitors
     public class VisitLogAppService : BazarZoneAppService
     {
         private readonly IRepository<VisitLog, Guid> _visitLogRepository;
+        private readonly IRepository<VisitorSubscription, Guid> _subscriptionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public VisitLogAppService(
             IRepository<VisitLog, Guid> visitLogRepository,
+            IRepository<VisitorSubscription, Guid> subscriptionRepository,
             IHttpContextAccessor httpContextAccessor)
         {
             _visitLogRepository = visitLogRepository;
+            _subscriptionRepository = subscriptionRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -74,5 +78,41 @@ namespace BazarZone.Visitors
 
             await _visitLogRepository.InsertAsync(visit);
         }
+
+        [HttpGet("summaries")]
+        public async Task<List<VisitorSummaryDto>> GetVisitorSummariesAsync()
+        {
+            var visitQuery = await _visitLogRepository.GetQueryableAsync();
+            var subscriptionQuery = await _subscriptionRepository.GetQueryableAsync();
+
+            var query = from v in visitQuery
+                        group v by v.IpAddress into g
+                        select new
+                        {
+                            IpAddress = g.Key,
+                            VisitCount = g.Count(),
+                            FirstVisitTime = g.Min(x => x.CreationTime),
+                            LastVisitTime = g.Max(x => x.CreationTime)
+                        };
+
+            var joinedQuery = from g in query
+                              join s in subscriptionQuery on g.IpAddress equals s.IpAddress into subs
+                              from sub in subs.DefaultIfEmpty()
+                              select new VisitorSummaryDto
+                              {
+                                  IpAddress = g.IpAddress,
+                                  VisitCount = g.VisitCount,
+                                  FirstVisitTime = g.FirstVisitTime,
+                                  LastVisitTime = g.LastVisitTime,
+                                  IsSubscribed = sub != null,
+                                  SubscriptionName = sub != null ? sub.Name : null,
+                                  SubscriptionEmail = sub != null ? sub.Email : null,
+                                  SubscriptionPhoneNumber = sub != null ? sub.PhoneNumber : null,
+                                  SubscriptionDate = sub != null ? sub.CreationTime : (DateTime?)null
+                              };
+
+            return await AsyncExecuter.ToListAsync(joinedQuery);
+        }
     }
 }
+

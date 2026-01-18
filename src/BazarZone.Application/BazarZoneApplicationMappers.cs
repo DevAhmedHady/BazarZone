@@ -133,3 +133,19 @@ public partial class VisitLogToVisitLogDtoMapper : MapperBase<BazarZone.Visitors
     public override partial void Map(BazarZone.Visitors.VisitLog source, BazarZone.Visitors.VisitLogDto destination);
 }
 
+
+// VisitorSubscription mappers
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class VisitorSubscriptionToVisitorSubscriptionDtoMapper : MapperBase<BazarZone.Visitors.VisitorSubscription, BazarZone.Visitors.VisitorSubscriptionDto>
+{
+    public override partial BazarZone.Visitors.VisitorSubscriptionDto Map(BazarZone.Visitors.VisitorSubscription source);
+    public override partial void Map(BazarZone.Visitors.VisitorSubscription source, BazarZone.Visitors.VisitorSubscriptionDto destination);
+}
+
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
+public partial class CreateVisitorSubscriptionDtoToVisitorSubscriptionMapper : MapperBase<BazarZone.Visitors.CreateVisitorSubscriptionDto, BazarZone.Visitors.VisitorSubscription>
+{
+    public override partial BazarZone.Visitors.VisitorSubscription Map(BazarZone.Visitors.CreateVisitorSubscriptionDto source);
+    public override partial void Map(BazarZone.Visitors.CreateVisitorSubscriptionDto source, BazarZone.Visitors.VisitorSubscription destination);
+}
+

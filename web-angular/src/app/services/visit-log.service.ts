@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { VisitLogDto } from '../models/visit-log';
+import { VisitorSummaryDto } from '../models/visitor-summary';
 
 export interface PagedResultDto<T> {
   totalCount: number;
@@ -25,6 +26,10 @@ export class VisitLogService {
 
   track(): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/track`, {});
+  }
+
+  getSummaries(): Observable<VisitorSummaryDto[]> {
+    return this.http.get<VisitorSummaryDto[]>(`${this.baseUrl}/summaries`);
   }
 
   getList(input: PagedAndSortedResultRequestDto): Observable<PagedResultDto<VisitLogDto>> {

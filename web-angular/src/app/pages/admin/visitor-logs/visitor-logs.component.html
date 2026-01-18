@@ -4,10 +4,20 @@
             <h2 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Visitor Logs</h2>
             <p class="text-zinc-500 dark:text-zinc-400 mt-1">Track and analyze visitor traffic.</p>
         </div>
-        <button pButton icon="pi pi-refresh" (click)="loadLogs()" class="p-button-text p-button-rounded"></button>
     </div>
 
-    <p-table [value]="logs" [loading]="loading" [rowHover]="true" [paginator]="true" [rows]="10"
+    <p-tabs value="0" (valueChange)="onTabChange($event)">
+        <p-tablist>
+            <p-tab value="0">Raw Logs</p-tab>
+            <p-tab value="1">Grouped Analysis</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+            <p-tabpanel value="0">
+                <div class="flex justify-end mb-4">
+                    <button pButton icon="pi pi-refresh" (click)="loadLogs()" class="p-button-text p-button-rounded"></button>
+                </div>
+
+                <p-table [value]="logs" [loading]="loading" [rowHover]="true" [paginator]="true" [rows]="10"
         styleClass="p-datatable-sm" responsiveLayout="scroll" [rowsPerPageOptions]="[10,25,50]"
         [lazy]="true" (onLazyLoad)="loadLogs($event)" [totalRecords]="totalRecords">
         <ng-template pTemplate="header">
@@ -45,7 +55,58 @@
             </tr>
         </ng-template>
     </p-table>
-</div>
+            </p-tabpanel>
+
+            <p-tabpanel value="1">
+                <div class="flex justify-end mb-4">
+                    <button pButton icon="pi pi-refresh" (click)="loadSummaries()" class="p-button-text p-button-rounded"></button>
+                </div>
+                <p-table [value]="summaries" [loading]="loadingSummaries" [rowHover]="true" [paginator]="true" [rows]="10"
+                    styleClass="p-datatable-sm" responsiveLayout="scroll" [rowsPerPageOptions]="[10,25,50]">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="ipAddress">IP Address <p-sortIcon field="ipAddress"></p-sortIcon></th>
+                            <th pSortableColumn="visitCount">Visits <p-sortIcon field="visitCount"></p-sortIcon></th>
+                            <th pSortableColumn="firstVisitTime">First Seen <p-sortIcon field="firstVisitTime"></p-sortIcon></th>
+                            <th pSortableColumn="lastVisitTime">Last Seen <p-sortIcon field="lastVisitTime"></p-sortIcon></th>
+                            <th pSortableColumn="isSubscribed">Subscribed <p-sortIcon field="isSubscribed"></p-sortIcon></th>
+                            <th>Subscription Info</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-s>
+                        <tr>
+                            <td class="font-mono text-xs">{{s.ipAddress}}</td>
+                            <td><span class="font-semibold">{{s.visitCount}}</span></td>
+                            <td>{{s.firstVisitTime | date:'short'}}</td>
+                            <td>{{s.lastVisitTime | date:'short'}}</td>
+                            <td>
+                                <span *ngIf="s.isSubscribed" class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                    Yes
+                                </span>
+                                <span *ngIf="!s.isSubscribed" class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300">
+                                    No
+                                </span>
+                            </td>
+                            <td>
+                                <div *ngIf="s.isSubscribed" class="text-sm space-y-1">
+                                    <div class="font-medium">{{s.subscriptionName}}</div>
+                                    <div *ngIf="s.subscriptionEmail" class="text-xs text-gray-600 dark:text-gray-400">{{s.subscriptionEmail}}</div>
+                                    <div *ngIf="s.subscriptionPhoneNumber" class="text-xs text-gray-600 dark:text-gray-400">{{s.subscriptionPhoneNumber}}</div>
+                                    <div *ngIf="s.subscriptionDate" class="text-xs text-gray-500 italic">Since {{s.subscriptionDate | date:'shortDate'}}</div>
+                                </div>
+                                <span *ngIf="!s.isSubscribed" class="text-gray-400 text-xs">-</span>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6" class="text-center p-4 text-zinc-500">No data found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
 
 <p-dialog [(visible)]="dialogVisible" [style]="{width: '600px'}" header="Visit Details" [modal]="true"
     styleClass="p-fluid">
